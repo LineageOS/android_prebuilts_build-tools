@@ -74,7 +74,7 @@ if [ -n ${build_go} ]; then
     (
         cd ${GO_OUT}/src
         export GOROOT_BOOTSTRAP=${TOP}/prebuilts/go/${OS}-x86
-        export GOROOT_FINAL=./prebuilts/go/${OS}
+        export GOROOT_FINAL=./prebuilts/go/${OS}-x86
         export GO_TEST_TIMEOUT_SCALE=100
         ./make.bash
         GOROOT=$(pwd)/.. ../bin/go install -race std
