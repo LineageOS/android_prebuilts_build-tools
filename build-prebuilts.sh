@@ -24,9 +24,6 @@ build_soong=1
 if [ -d ${TOP}/toolchain/go ]; then
     build_go=1
 fi
-if [ -d ${TOP}/external/ninja ]; then
-    build_ninja=1
-fi
 
 if [ -n ${build_soong} ]; then
     # ckati and makeparallel (Soong)
@@ -47,22 +44,12 @@ if [ -n ${build_soong} ]; then
 }
 EOF
     BUILDDIR=${SOONG_OUT} ./bootstrap.bash
-    ${SOONG_OUT}/soong ${SOONG_HOST_OUT}/bin/ckati ${SOONG_HOST_OUT}/bin/makeparallel
+    ${SOONG_OUT}/soong ${SOONG_HOST_OUT}/bin/ckati ${SOONG_HOST_OUT}/bin/makeparallel ${SOONG_HOST_OUT}/bin/ninja ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
     (
         cd ${SOONG_HOST_OUT}
         zip -qryX build-prebuilts.zip bin/ lib*/
     )
-fi
-
-# Ninja
-if [ -n ${build_ninja} ]; then
-    NINJA_OUT=${OUT_DIR}/obj/ninja
-    rm -rf ${NINJA_OUT}
-    mkdir -p ${NINJA_OUT}
-    (
-        cd ${NINJA_OUT}
-        ${TOP}/external/ninja/configure.py --bootstrap
-    )
+    ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
 fi
 
 # Go
@@ -90,9 +77,6 @@ if [ -n "${DIST_DIR}" ]; then
 
     if [ -n ${build_soong} ]; then
         cp ${SOONG_HOST_OUT}/build-prebuilts.zip ${DIST_DIR}/
-    fi
-    if [ -n ${build_ninja} ]; then
-        cp ${NINJA_OUT}/ninja ${DIST_DIR}/
     fi
     if [ -n ${build_go} ]; then
         cp ${GO_OUT}/go.zip ${DIST_DIR}/
