@@ -77,6 +77,7 @@ if [ -n "${DIST_DIR}" ]; then
 
     if [ -n ${build_soong} ]; then
         cp ${SOONG_HOST_OUT}/build-prebuilts.zip ${DIST_DIR}/
+	cp ${SOONG_OUT}/.bootstrap/docs/soong_build.html ${DIST_DIR}/
     fi
     if [ -n ${build_go} ]; then
         cp ${GO_OUT}/go.zip ${DIST_DIR}/
