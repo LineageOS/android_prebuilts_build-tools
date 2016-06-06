@@ -44,10 +44,11 @@ if [ -n ${build_soong} ]; then
 }
 EOF
     BUILDDIR=${SOONG_OUT} ./bootstrap.bash
-    ${SOONG_OUT}/soong ${SOONG_HOST_OUT}/bin/ckati ${SOONG_HOST_OUT}/bin/makeparallel ${SOONG_HOST_OUT}/bin/ninja ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
+    SOONG_BINARIES=( acp ckati ijar makeparallel ninja ziptime )
+    ${SOONG_OUT}/soong ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
     (
         cd ${SOONG_HOST_OUT}
-        zip -qryX build-prebuilts.zip bin/ lib*/
+        zip -qryX build-prebuilts.zip ${SOONG_BINARIES[@]/#/bin/} lib*/
     )
     ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
 fi
