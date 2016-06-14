@@ -44,7 +44,7 @@ if [ -n ${build_soong} ]; then
 }
 EOF
     BUILDDIR=${SOONG_OUT} ./bootstrap.bash
-    SOONG_BINARIES=( acp ckati ijar makeparallel ninja ziptime )
+    SOONG_BINARIES=( acp ckati ijar ijar_libc++ makeparallel ninja ziptime )
     ${SOONG_OUT}/soong ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
     (
         cd ${SOONG_HOST_OUT}
