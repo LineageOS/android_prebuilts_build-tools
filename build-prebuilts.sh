@@ -35,12 +35,7 @@ if [ -n ${build_soong} ]; then
 {
     "Allow_missing_dependencies": true,
     "HostArch":"x86_64",
-    "HostSecondaryArch":"x86",
-
-    "DeviceName": "generic",
-    "DeviceArch": "arm",
-    "DeviceArchVariant": "armv7-a",
-    "DeviceCpuVariant": "generic"
+    "HostSecondaryArch":"x86"
 }
 EOF
     BUILDDIR=${SOONG_OUT} ./bootstrap.bash
