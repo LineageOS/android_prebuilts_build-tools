@@ -3,16 +3,16 @@
   <remote fetch=".." name="aosp" review="https://android-review.googlesource.com/" />
   <default remote="aosp" revision="master" sync-j="4" />
   <!-- build projects -->
-  <project name="platform/build" path="build" revision="e0f42b41f629803557cf7706cce8768d54ffdf25" upstream="master">
+  <project name="platform/build" path="build" revision="7bc770492131319e16fe6064a01481736396f294" upstream="master">
     <copyfile dest="Makefile" src="core/root.mk" />
   </project>
   <project name="platform/build/blueprint" path="build/blueprint" revision="ea5898231e39fcb690f6de9202984eaefbca6a61" upstream="master" />
-  <project name="platform/build/kati" path="build/kati" revision="38315d2f21d9db622b90f307737f1e370ff9cea9" upstream="master" />
-  <project name="platform/build/soong" path="build/soong" revision="26c34ede294735354d75a5f511d9afd39dc8013c" upstream="master">
+  <project name="platform/build/kati" path="build/kati" revision="1b68243cf2dc9e09c9723f695431125690359417" upstream="master" />
+  <project name="platform/build/soong" path="build/soong" revision="0b24c74fcbb37628f2e6f9eb54d82586a27d41dc" upstream="master">
     <linkfile dest="Android.bp" src="root.bp" />
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
   </project>
-  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="ae525e53ba65b1251ad10e1c1d97d18d5f5828d0" upstream="master" />
+  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="5b6cdcc13b519b42a2d37ffb730957bad4a2cc49" upstream="master" />
   <!-- toolchain linux prebuilts -->
   <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/linux-x86" path="prebuilts/clang/host/linux-x86" revision="99029d6cb777757ec9b15011ab369eb3ed19aab6" upstream="master" />
   <project clone-depth="1" name="platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" revision="73ca99196723f810dad42390d154654354f57c16" upstream="master" />
