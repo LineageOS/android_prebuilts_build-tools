@@ -41,11 +41,33 @@ EOF
     BUILDDIR=${SOONG_OUT} ./bootstrap.bash
     SOONG_BINARIES=( acp ckati ijar makeparallel ninja ziptime )
     ${SOONG_OUT}/soong ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
-    (
-        cd ${SOONG_HOST_OUT}
-        zip -qryX build-prebuilts.zip ${SOONG_BINARIES[@]/#/bin/} lib*/
-    )
     ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
+    mkdir -p ${SOONG_OUT}/dist/bin
+    cp ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_OUT}/dist/bin/
+    cp -R ${SOONG_HOST_OUT}/lib* ${SOONG_OUT}/dist/
+
+    if [[ $OS == "linux" ]]; then
+        # Build ASAN versions
+        export ASAN_OPTIONS=detect_leaks=0
+        cat > ${SOONG_OUT}/soong.variables << EOF
+{
+    "Allow_missing_dependencies": true,
+    "HostArch":"x86_64",
+    "HostSecondaryArch":"x86",
+    "SanitizeHost": ["address"]
+}
+EOF
+        ${SOONG_OUT}/soong ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
+        ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
+        mkdir -p ${SOONG_OUT}/dist/asan/bin
+        cp ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_OUT}/dist/asan/bin/
+        cp -R ${SOONG_HOST_OUT}/lib* ${SOONG_OUT}/dist/asan/
+    fi
+
+    (
+        cd ${SOONG_OUT}/dist
+        zip -qryX build-prebuilts.zip *
+    )
 fi
 
 # Go
@@ -72,8 +94,8 @@ if [ -n "${DIST_DIR}" ]; then
     mkdir -p ${DIST_DIR} || true
 
     if [ -n ${build_soong} ]; then
-        cp ${SOONG_HOST_OUT}/build-prebuilts.zip ${DIST_DIR}/
-	cp ${SOONG_OUT}/.bootstrap/docs/soong_build.html ${DIST_DIR}/
+        cp ${SOONG_OUT}/dist/build-prebuilts.zip ${DIST_DIR}/
+        cp ${SOONG_OUT}/.bootstrap/docs/soong_build.html ${DIST_DIR}/
     fi
     if [ -n ${build_go} ]; then
         cp ${GO_OUT}/go.zip ${DIST_DIR}/
