@@ -39,7 +39,7 @@ if [ -n ${build_soong} ]; then
 }
 EOF
     BUILDDIR=${SOONG_OUT} ./bootstrap.bash
-    SOONG_BINARIES=( acp ckati ijar makeparallel ninja ziptime )
+    SOONG_BINARIES=( acp bpfmt ckati ckati_stamp_dump ijar makeparallel ninja ziptime )
     ${SOONG_OUT}/soong ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
     ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
     mkdir -p ${SOONG_OUT}/dist/bin
@@ -49,6 +49,8 @@ EOF
     if [[ $OS == "linux" ]]; then
         # Build ASAN versions
         export ASAN_OPTIONS=detect_leaks=0
+        # Remove Go binaries that won't change with ASAN
+        SOONG_BINARIES=( ${SOONG_BINARIES[@]/bpfmt} )
         cat > ${SOONG_OUT}/soong.variables << EOF
 {
     "Allow_missing_dependencies": true,
