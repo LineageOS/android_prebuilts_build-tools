@@ -3,16 +3,16 @@
   <remote fetch=".." name="aosp" review="https://android-review.googlesource.com/" />
   <default remote="aosp" revision="master" sync-j="4" />
   <!-- build projects -->
-  <project name="platform/build" path="build/make" revision="515f43bb6e24b2dcd2c704951a637f51b4b4ec78" upstream="master">
+  <project name="platform/build" path="build/make" revision="49758959f204f408f3391e9c1541e8f3e61a0b6f" upstream="master">
     <linkfile dest="build/tools" src="tools" />
   </project>
-  <project name="platform/build/blueprint" path="build/blueprint" revision="faac78c6fb67f7118f42bb4cdff83ba44282fb5c" upstream="master" />
+  <project name="platform/build/blueprint" path="build/blueprint" revision="5e10ceb33a27fad5364c70bd4b0edf612a0e96ac" upstream="master" />
   <project name="platform/build/kati" path="build/kati" revision="7e2a7c776b73857214538760ab6aa08c6c831486" upstream="master" />
-  <project name="platform/build/soong" path="build/soong" revision="5d5db02bf6cd527455abcbf3502e990bb2d21e5a" upstream="master">
+  <project name="platform/build/soong" path="build/soong" revision="a5662d5e4ef7bc2cc63a5c3c123e29c93956686c" upstream="master">
     <linkfile dest="Android.bp" src="root.bp" />
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
   </project>
-  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="84943c0a7235962b1adbb0a515f6bc404ed645c9" upstream="master" />
+  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="1285dab756a963a5dd05c96e3663c745f3f388eb" upstream="master" />
   <!-- toolchain linux prebuilts -->
   <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/linux-x86" path="prebuilts/clang/host/linux-x86" revision="3a1e6a6c6d906c27e69e3a5dd154d1aba09cbe9b" upstream="master" />
   <project clone-depth="1" name="platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" revision="73ca99196723f810dad42390d154654354f57c16" upstream="master" />
@@ -35,5 +35,5 @@
   <project name="platform/external/libunwind_llvm" path="external/libunwind_llvm" revision="5dedb3c1c266802f328be58720adf736bfa38762" upstream="master" />
   <!-- target projects -->
   <project name="toolchain/go" path="toolchain/go" revision="a31456e050e4d072975c99350764b2fa888a368b" upstream="master" />
-  <project name="platform/external/ninja" path="external/ninja" revision="50b38266ade00e1d73c91c95e4786bd80a4d0547" upstream="master" />
+  <project name="platform/external/ninja" path="external/ninja" revision="55f37d47faed58f7bbdabce727391c89db45072e" upstream="master" />
 </manifest>
