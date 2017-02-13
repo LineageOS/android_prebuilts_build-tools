@@ -3,37 +3,37 @@
   <remote fetch=".." name="aosp" review="https://android-review.googlesource.com/" />
   <default remote="aosp" revision="master" sync-j="4" />
   <!-- build projects -->
-  <project name="platform/build" path="build/make" revision="f8acdc50fa88eb5b3cd819547a93408ea65fb8eb" upstream="master">
+  <project name="platform/build" path="build/make" revision="b99df8d27dc07e5df971a2d06d49416e421c7ae9" upstream="master">
     <linkfile dest="build/tools" src="tools" />
   </project>
-  <project name="platform/build/blueprint" path="build/blueprint" revision="bb4c2a054f2a622fd54132c02911c48c4ef6755e" upstream="master" />
+  <project name="platform/build/blueprint" path="build/blueprint" revision="ef1cdc2521245b6cbc8716df0c65f6bb60c207e7" upstream="master" />
   <project name="platform/build/kati" path="build/kati" revision="dd026a6d01375d1abebc7f5b2e69912515b52cd2" upstream="master" />
-  <project name="platform/build/soong" path="build/soong" revision="1a01e83725cabcef13941d3cc2216a32bd9ce851" upstream="master">
+  <project name="platform/build/soong" path="build/soong" revision="040ffff84b7ee65faf8c2a250ad580dd332d6835" upstream="master">
     <linkfile dest="Android.bp" src="root.bp" />
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
   </project>
-  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="e465fa7f551bc7d4e09456333898cf49937a01d8" upstream="master" />
+  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="ff39700ae0a356b5317eadfca6f39236a0cd923f" upstream="master" />
   <!-- toolchain linux prebuilts -->
-  <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/linux-x86" path="prebuilts/clang/host/linux-x86" revision="8eb2cea18ef8672eafca64c10b64c1fa681ad07c" upstream="master" />
+  <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/linux-x86" path="prebuilts/clang/host/linux-x86" revision="03113dd6cb2c88ac64ba0008d06ad260c81cc034" upstream="master" />
   <project clone-depth="1" name="platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" revision="73ca99196723f810dad42390d154654354f57c16" upstream="master" />
-  <project clone-depth="1" groups="linux" name="platform/prebuilts/go/linux-x86" path="prebuilts/go/linux-x86" revision="bbdf6646ffb911ac36720a9ec09f80dd31429b33" upstream="master" />
+  <project clone-depth="1" groups="linux" name="platform/prebuilts/go/linux-x86" path="prebuilts/go/linux-x86" revision="1d8b74d1ad3854bdaf8ede7e223c3d015ec96628" upstream="master" />
   <project clone-depth="1" groups="linux" name="platform/prebuilts/ninja/linux-x86" path="prebuilts/ninja/linux-x86" revision="6369b19fc3fbe765636af75d394627e2b92599ed" upstream="master" />
   <!-- toolchain darwin prebuilts -->
-  <project clone-depth="1" groups="darwin" name="platform/prebuilts/clang/host/darwin-x86" path="prebuilts/clang/host/darwin-x86" revision="73e58d09a20724718e3c963ea5867835c43a7544" upstream="master" />
+  <project clone-depth="1" groups="darwin" name="platform/prebuilts/clang/host/darwin-x86" path="prebuilts/clang/host/darwin-x86" revision="444091e7d355e35b6f16ddb4b1745851250e5374" upstream="master" />
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/gcc/darwin-x86/host/headers" path="prebuilts/gcc/darwin-x86/host/headers" revision="4ac4f7cc41cf3c9e36fc3d6cf37fd1cfa9587a68" upstream="master" />
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/gcc/darwin-x86/host/i686-apple-darwin-4.2.1" path="prebuilts/gcc/darwin-x86/host/i686-apple-darwin-4.2.1" revision="ec5aa66aaa4964c27564d0ec84dc1f18a2d72b7e" upstream="master" />
-  <project clone-depth="1" groups="darwin" name="platform/prebuilts/go/darwin-x86" path="prebuilts/go/darwin-x86" revision="ebae30230ea323ebd5d80796b00cc5234e0a02f1" upstream="master" />
+  <project clone-depth="1" groups="darwin" name="platform/prebuilts/go/darwin-x86" path="prebuilts/go/darwin-x86" revision="b57d852e2ede84d37441fda0eba3142b2b3c4f74" upstream="master" />
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/ninja/darwin-x86" path="prebuilts/ninja/darwin-x86" revision="00f798346dedb4a7a6a6dcc9ad32ff09d66ee0db" upstream="master" />
   <!-- toolchain windows prebuilts -->
-  <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/windows-x86" path="prebuilts/clang/host/windows-x86" revision="d56c012cc7dfe258810ace806eb4bf4757af1882" upstream="master" />
-  <project clone-depth="1" groups="linux" name="platform/prebuilts/gcc/linux-x86/host/x86_64-w64-mingw32-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-w64-mingw32-4.8" revision="47200031477701f568a772368e3f6c8ce49fe05c" upstream="master" />
+  <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/windows-x86" path="prebuilts/clang/host/windows-x86" revision="ad5cc7abb01ae678806d57c9b4136e4ebd53de20" upstream="master" />
+  <project clone-depth="1" groups="linux" name="platform/prebuilts/gcc/linux-x86/host/x86_64-w64-mingw32-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-w64-mingw32-4.8" revision="904c3639d1e574671c969f3642ca475d3b00c382" upstream="master" />
   <!-- dependency source -->
   <project name="platform/external/compiler-rt" path="external/compiler-rt" revision="efe317fe688734ca6566f936ba00a92c9670bbaf" upstream="master" />
-  <project name="platform/external/libcxx" path="external/libcxx" revision="9dbdfe58421f46ce919432093f7a417cec7fba2e" upstream="master" />
-  <project name="platform/external/libcxxabi" path="external/libcxxabi" revision="67e4d55dd44cfde34898ee254e0dc7a13174b6b7" upstream="master" />
+  <project name="platform/external/libcxx" path="external/libcxx" revision="cebe3685c0b367477d3f708c3fb0a278ab645c06" upstream="master" />
+  <project name="platform/external/libcxxabi" path="external/libcxxabi" revision="9dd52f430013999817d3b9e7104d4a067cea89f7" upstream="master" />
   <project name="platform/external/libunwind" path="external/libunwind" revision="de858ed3a4d47e1b8b774ed7d99c992c479d0f56" upstream="master" />
   <project name="platform/external/libunwind_llvm" path="external/libunwind_llvm" revision="a11710620089fbf1004d526abba03819811fae19" upstream="master" />
   <!-- target projects -->
-  <project name="toolchain/go" path="toolchain/go" revision="01ef1ee7a9c34612517759019eb5ac21ecc252b7" upstream="master" />
-  <project name="platform/external/ninja" path="external/ninja" revision="2da57d18d554a8f3cc27a39d500e26bd4869c120" upstream="master" />
+  <project name="toolchain/go" path="toolchain/go" revision="804e1e183e5d9c39258cc4dbe06a21c64d379d76" upstream="master" />
+  <project name="platform/external/ninja" path="external/ninja" revision="f3eb4f49aec7119e62841566bc88ccbfc2a45d14" upstream="master" />
 </manifest>
