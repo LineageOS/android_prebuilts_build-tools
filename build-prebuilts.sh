@@ -58,6 +58,7 @@ EOF
     "SanitizeHost": ["address"]
 }
 EOF
+        rm -rf ${SOONG_HOST_OUT}
         ${SOONG_OUT}/soong ${SOONG_ASAN_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
         ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
         mkdir -p ${SOONG_OUT}/dist/asan/bin
