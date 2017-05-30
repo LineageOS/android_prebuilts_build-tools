@@ -3,18 +3,18 @@
   <remote fetch=".." name="aosp" review="https://android-review.googlesource.com/" />
   <default remote="aosp" revision="master" sync-j="4" />
   <!-- build projects -->
-  <project name="platform/build" path="build/make" revision="ec0dec8599c78bfc7c3e510fc9ed9bec0578c190" upstream="master">
+  <project name="platform/build" path="build/make" revision="81787c1bbc69ea1a89495cfc2b801ef77219db47" upstream="master">
     <linkfile dest="build/tools" src="tools" />
   </project>
   <project name="platform/build/blueprint" path="build/blueprint" revision="e257cf82bdb9c5c1c35969e1977470fb6fb96837" upstream="master" />
-  <project name="platform/build/kati" path="build/kati" revision="66f48dd6cddd0b150000ade707096e701dbde9f3" upstream="master" />
-  <project name="platform/build/soong" path="build/soong" revision="a9ec71f54f41c6261909525030a44d34a8cff479" upstream="master">
+  <project name="platform/build/kati" path="build/kati" revision="59a7a0e0f750f53049702937d0000c7ca86092e5" upstream="master" />
+  <project name="platform/build/soong" path="build/soong" revision="977fd8f1fa60ea51f280962e3074d6999ff38c0b" upstream="master">
     <linkfile dest="Android.bp" src="root.bp" />
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
   </project>
-  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="ce1c0735e1a6cf0d4ba985cf3a7a0d99feeb224c" upstream="master" />
+  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="de6ba97efb8eaacaf3f7eb9715b4b9f0cd8cbe19" upstream="master" />
   <!-- toolchain linux prebuilts -->
-  <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/linux-x86" path="prebuilts/clang/host/linux-x86" revision="768cef363941c8c0a6b1e093bce5dc8b20e03119" upstream="master" />
+  <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/linux-x86" path="prebuilts/clang/host/linux-x86" revision="9b72e35f15d9353a3d672746bc934c1cb818a578" upstream="master" />
   <project clone-depth="1" name="platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" revision="73ca99196723f810dad42390d154654354f57c16" upstream="master" />
   <project clone-depth="1" groups="linux" name="platform/prebuilts/go/linux-x86" path="prebuilts/go/linux-x86" revision="2519fc4d3dfdd95b72eb5b8d1c46dce107f6482e" upstream="master" />
   <project clone-depth="1" groups="linux" name="platform/prebuilts/ninja/linux-x86" path="prebuilts/ninja/linux-x86" revision="6369b19fc3fbe765636af75d394627e2b92599ed" upstream="master" />
@@ -28,14 +28,14 @@
   <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/windows-x86" path="prebuilts/clang/host/windows-x86" revision="ce841596d2b8f85a26fc1b829308fe09174c409b" upstream="master" />
   <project clone-depth="1" groups="linux" name="platform/prebuilts/gcc/linux-x86/host/x86_64-w64-mingw32-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-w64-mingw32-4.8" revision="d3566f4f19b660d98ff237825ed775289c102420" upstream="master" />
   <!-- dependency source -->
-  <project name="platform/development" path="development" revision="0a318e9244941e7f8b3fdd622eba2c458fe4a725" upstream="master" />
+  <project name="platform/development" path="development" revision="1a5b9104fda7685b37c37e020e4f5625e68e628e" upstream="master" />
   <project name="platform/external/clang" path="external/clang" revision="2910a18bf8b63ea2a2cc2c6c8be7e7c05faff66b" upstream="master" />
   <project name="platform/external/compiler-rt" path="external/compiler-rt" revision="8bdaf98eeb4dd0f7b8cae390cd18c097a9eb4e2f" upstream="master" />
   <project name="platform/external/libcxx" path="external/libcxx" revision="1e705dad853445419ccc8d35d82de263e91de3f3" upstream="master" />
   <project name="platform/external/libcxxabi" path="external/libcxxabi" revision="c41479a1d7de7fe6e9cfbff9be21382f7b23ace7" upstream="master" />
   <project name="platform/external/libunwind" path="external/libunwind" revision="adfc0a1a325ab560f74d404fd833e2661bef7a53" upstream="master" />
   <project name="platform/external/libunwind_llvm" path="external/libunwind_llvm" revision="93d99bf31d081198030380a946f4c29e38159b25" upstream="master" />
-  <project name="platform/external/llvm" path="external/llvm" revision="e0b553c6a8733b0569b9fa228f623da904ff649e" upstream="master" />
+  <project name="platform/external/llvm" path="external/llvm" revision="a564ef3792a3bcb5c69a1e2c4e4c745ae3f9159e" upstream="master" />
   <project name="platform/external/protobuf" path="external/protobuf" revision="06884d010cc3abbd97861e696cae2c1736679168" upstream="master" />
   <project name="platform/external/zlib" path="external/zlib" revision="30595680d975bf98dd62e3c25d16562ab33c3d4d" upstream="master" />
   <!-- target projects -->
