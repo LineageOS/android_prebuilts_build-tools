@@ -39,7 +39,22 @@ if [ -n ${build_soong} ]; then
 }
 EOF
     BUILDDIR=${SOONG_OUT} ./bootstrap.bash
-    SOONG_BINARIES=( acp bpfmt ckati ckati_stamp_dump ijar makeparallel ninja ziptime header-abi-linker header-abi-dumper header-abi-diff merge-abi-diff)
+    SOONG_BINARIES=(
+        acp
+        bpfmt
+        ckati
+        ckati_stamp_dump
+        header-abi-linker
+        header-abi-dumper
+        header-abi-diff
+        ijar
+        makeparallel
+        merge-abi-diff
+        ninja
+        soong_zip
+        zip2zip
+        ziptime
+    )
     SOONG_ASAN_BINARIES=( acp ckati ijar makeparallel ninja ziptime )
     ${SOONG_OUT}/soong ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
     ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
