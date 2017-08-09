@@ -38,7 +38,6 @@ if [ -n ${build_soong} ]; then
     "HostSecondaryArch":"x86"
 }
 EOF
-    BUILDDIR=${SOONG_OUT} ./bootstrap.bash
     SOONG_BINARIES=(
         acp
         bpfmt
@@ -56,7 +55,7 @@ EOF
         ziptime
     )
     SOONG_ASAN_BINARIES=( acp ckati ijar makeparallel ninja ziptime )
-    ${SOONG_OUT}/soong ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
+    build/soong/soong_ui.bash --make-mode --skip-make ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
     ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
     mkdir -p ${SOONG_OUT}/dist/bin
     cp ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_OUT}/dist/bin/
@@ -74,7 +73,7 @@ EOF
 }
 EOF
         rm -rf ${SOONG_HOST_OUT}
-        ${SOONG_OUT}/soong ${SOONG_ASAN_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
+        build/soong/soong_ui.bash --make-mode --skip-make ${SOONG_ASAN_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
         ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
         mkdir -p ${SOONG_OUT}/dist/asan/bin
         cp ${SOONG_ASAN_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_OUT}/dist/asan/bin/
