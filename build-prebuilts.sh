@@ -46,7 +46,6 @@ EOF
         header-abi-linker
         header-abi-dumper
         header-abi-diff
-        ijar
         makeparallel
         merge-abi-diff
         ninja
@@ -54,7 +53,7 @@ EOF
         zip2zip
         ziptime
     )
-    SOONG_ASAN_BINARIES=( acp ckati ijar makeparallel ninja ziptime )
+    SOONG_ASAN_BINARIES=( acp ckati makeparallel ninja ziptime )
     build/soong/soong_ui.bash --make-mode --skip-make ${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/} ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
     ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
     mkdir -p ${SOONG_OUT}/dist/bin
