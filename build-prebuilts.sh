@@ -71,6 +71,7 @@ EOF
     )
 
     binaries=$(for i in "${SOONG_BINARIES[@]}"; do echo ${SOONG_HOST_OUT}/bin/${i}; done)
+    asan_binaries=$(for i in "${SOONG_ASAN_BINARIES[@]}"; do echo ${SOONG_HOST_OUT}/bin/${i}; done)
     jars=$(for i in "${SOONG_JAVA_LIBRARIES[@]}"; do echo ${SOONG_HOST_OUT}/framework/${i}.jar; done)
     wrappers=$(for i in "${SOONG_JAVA_WRAPPERS[@]}"; do echo ${SOONG_HOST_OUT}/bin/${i}; done)
 
@@ -111,7 +112,7 @@ EOF
 
         # Build everything with ASAN
         build/soong/soong_ui.bash --make-mode --skip-make \
-            ${binaries} \
+            ${asan_binaries} \
             ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
 
         # Run ninja tests
@@ -119,7 +120,7 @@ EOF
 
         # Copy arch-specific binaries
         mkdir -p ${SOONG_OUT}/dist/asan/bin
-        cp ${binaries} ${SOONG_OUT}/dist/asan/bin/
+        cp ${asan_binaries} ${SOONG_OUT}/dist/asan/bin/
         cp -R ${SOONG_HOST_OUT}/lib* ${SOONG_OUT}/dist/asan/
     fi
 
