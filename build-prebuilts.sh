@@ -64,6 +64,7 @@ EOF
         desugar
         dx
         d8
+        turbine
     )
     SOONG_JAVA_WRAPPERS=(
         dx
