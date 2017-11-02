@@ -63,10 +63,12 @@ EOF
     SOONG_JAVA_LIBRARIES=(
         desugar
         dx
+        d8
         turbine
     )
     SOONG_JAVA_WRAPPERS=(
         dx
+        d8
     )
 
     binaries=$(for i in "${SOONG_BINARIES[@]}"; do echo ${SOONG_HOST_OUT}/bin/${i}; done)
