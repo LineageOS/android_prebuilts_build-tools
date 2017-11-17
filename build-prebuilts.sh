@@ -40,6 +40,7 @@ if [ -n ${build_soong} ]; then
 EOF
     SOONG_BINARIES=(
         acp
+        aidl
         bpfmt
         ckati
         ckati_stamp_dump
@@ -51,13 +52,16 @@ EOF
         ninja
         soong_zip
         zip2zip
+        zipalign
         ziptime
     )
     SOONG_ASAN_BINARIES=(
         acp
+        aidl
         ckati
         makeparallel
         ninja
+        zipalign
         ziptime
     )
     SOONG_JAVA_LIBRARIES=(
