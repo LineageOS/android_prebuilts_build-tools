@@ -83,7 +83,8 @@ EOF
         ${binaries} \
         ${wrappers} \
         ${jars} \
-        ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
+        ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test \
+        soong_docs
 
     # Run ninja tests
     ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
@@ -167,7 +168,7 @@ if [ -n "${DIST_DIR}" ]; then
     if [ -n ${build_soong} ]; then
         cp ${SOONG_OUT}/dist/build-prebuilts.zip ${DIST_DIR}/
         cp ${SOONG_OUT}/dist-common/build-common-prebuilts.zip ${DIST_DIR}/
-        cp ${SOONG_OUT}/.bootstrap/docs/soong_build.html ${DIST_DIR}/
+        cp ${SOONG_OUT}/docs/soong_build.html ${DIST_DIR}/
     fi
     if [ -n ${build_go} ]; then
         cp ${GO_OUT}/go.zip ${DIST_DIR}/
