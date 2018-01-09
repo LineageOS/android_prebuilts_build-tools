@@ -41,6 +41,7 @@ EOF
     SOONG_BINARIES=(
         acp
         aidl
+        bison
         bpfmt
         ckati
         ckati_stamp_dump
@@ -98,6 +99,8 @@ EOF
     mkdir -p ${SOONG_OUT}/dist-common/bin ${SOONG_OUT}/dist-common/framework
     cp ${wrappers} ${SOONG_OUT}/dist-common/bin
     cp ${jars} ${SOONG_OUT}/dist-common/framework
+
+    cp -r external/bison/data ${SOONG_OUT}/dist-common/bison
 
     if [[ $OS == "linux" ]]; then
         # Build ASAN versions
