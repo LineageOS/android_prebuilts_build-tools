@@ -3,16 +3,16 @@
   <remote fetch=".." name="aosp" review="https://android-review.googlesource.com/" />
   <default remote="aosp" revision="master" sync-j="4" />
   <!-- build projects -->
-  <project name="platform/build" path="build/make" revision="f9a1e6a72a86f1502f2730a2019bf46f56d1e650" upstream="master">
+  <project name="platform/build" path="build/make" revision="8d3fde909e6c8df1757da5cb0cc722f6da61fe73" upstream="master">
     <linkfile dest="build/tools" src="tools" />
   </project>
   <project name="platform/build/blueprint" path="build/blueprint" revision="3aaf722a8d25ed726d4aba5d96bd325afe74a61c" upstream="master" />
   <project name="platform/build/kati" path="build/kati" revision="cfcaaa25117310666e02a989a6bd9d45e82d8041" upstream="master" />
-  <project name="platform/build/soong" path="build/soong" revision="a5fcf862ce3706372f9d7740fbd35d22cf6841a4" upstream="master">
+  <project name="platform/build/soong" path="build/soong" revision="e6f4ee2061b49899c71faeb9684d77ac53b27d6a" upstream="master">
     <linkfile dest="Android.bp" src="root.bp" />
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
   </project>
-  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="bccf557e348d22493f97605ce982daed26714704" upstream="master" />
+  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="10aabfe4d8f6652eb0bc0af0b852e9da61fe5745" upstream="master" />
   <!-- toolchain linux prebuilts -->
   <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/linux-x86" path="prebuilts/clang/host/linux-x86" revision="83a396dcf00dc17328afe63f3214920e2232c34f" upstream="master" />
   <project clone-depth="1" name="platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" revision="2ccb38af8c940f1feef62ff5986f4bbc5d899e66" upstream="master" />
@@ -29,26 +29,26 @@
   <project clone-depth="1" groups="linux" name="platform/prebuilts/gcc/linux-x86/host/x86_64-w64-mingw32-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-w64-mingw32-4.8" revision="e76a9a506d7ad132f107eb2f7c27b6a8ccb68b91" upstream="master" />
   <!-- toolchain jdk prebuilts -->
   <project clone-depth="1" name="platform/prebuilts/jdk/jdk8" path="prebuilts/jdk/jdk8" revision="636b6973a6918b01c5a21ff397479ab9ecea2306" upstream="master" />
-  <project clone-depth="1" name="platform/prebuilts/jdk/jdk9" path="prebuilts/jdk/jdk9" revision="a7e687c16c4cd3af60f234af8fc31b8bd5ec4819" upstream="master" />
+  <project clone-depth="1" name="platform/prebuilts/jdk/jdk9" path="prebuilts/jdk/jdk9" revision="fcf4fb0cd5be7b58645d08b9a9e03057b47567fb" upstream="master" />
   <!-- dependency prebuilts -->
-  <project clone-depth="1" name="platform/prebuilts/misc" path="prebuilts/misc" revision="ac4db5fb603e2e3e25ab98b373c8ba44f235e762" upstream="master" />
+  <project clone-depth="1" name="platform/prebuilts/misc" path="prebuilts/misc" revision="740e1a8b57bb3f03c978e14328652c3470211b74" upstream="master" />
   <!-- dependency source -->
-  <project name="platform/development" path="development" revision="84cfb6cbe1253b113952839dcd1bf385433918dc" upstream="master" />
-  <project name="platform/external/bison" path="external/bison" revision="8f93f2aa6db1ac910d740159fe998fd8634052d7" upstream="master" />
-  <project name="platform/external/clang" path="external/clang" revision="ada6fc6a425edd49bd5c2ca827db369c35224541" upstream="master" />
-  <project name="platform/external/compiler-rt" path="external/compiler-rt" revision="cbf9649679e65e89eb0d008bf273de69c03bdd29" upstream="master" />
+  <project name="platform/development" path="development" revision="f22e0b738ab5c7b63260f354e54c4219eddde4f0" upstream="master" />
+  <project name="platform/external/bison" path="external/bison" revision="e16291bf844ee1ba60abd7ed28a386a1eff425d5" upstream="master" />
+  <project name="platform/external/clang" path="external/clang" revision="363a210ec57a0dfdcbcfc96161c0ea7b7f82ae2c" upstream="master" />
+  <project name="platform/external/compiler-rt" path="external/compiler-rt" revision="12abeff10335d239f2d5aeaa638d45e2dc28565d" upstream="master" />
   <project name="platform/external/dagger2" path="external/dagger2" revision="aa6a6e2682aed0d5bb483baa37a04357af0ea918" upstream="master" />
-  <project name="platform/external/googletest" path="external/googletest" revision="a713a12c9d76bf286f3b899db0b4ecbfbe37dca2" upstream="master" />
+  <project name="platform/external/googletest" path="external/googletest" revision="220810a546aa9db3a3cfd39874663884dbbe8c59" upstream="master" />
   <project name="platform/external/libcxx" path="external/libcxx" revision="f20819f925e1ca67fc187e5f08413624a5994efc" upstream="master" />
   <project name="platform/external/libcxxabi" path="external/libcxxabi" revision="b1bb6be3f2103a0c33a55769cd393bfa2f37fad6" upstream="master" />
   <project name="platform/external/libunwind" path="external/libunwind" revision="41ba0e90f33fe3b5d1467e4fab5e0a709685c0db" upstream="master" />
   <project name="platform/external/libunwind_llvm" path="external/libunwind_llvm" revision="9ca0ad7a15a8b9868f22f67d13fe49a2d02601dc" upstream="master" />
-  <project name="platform/external/llvm" path="external/llvm" revision="4db5ecb8bc4649c407b42a67160552aac93b886f" upstream="master" />
-  <project name="platform/external/protobuf" path="external/protobuf" revision="c767d0ebcb11ccff383a6aab38b960caf93f1ac1" upstream="master" />
+  <project name="platform/external/llvm" path="external/llvm" revision="79c7f5d7a2be0de081031e0ebcd481ab7905854b" upstream="master" />
+  <project name="platform/external/protobuf" path="external/protobuf" revision="80fc989f3e8d04525ebc8a54f3546452ceffe859" upstream="master" />
   <project name="platform/external/safe-iop" path="external/safe-iop" revision="4e20417f767dedadd684930ff1517b03751b3af8" upstream="master" />
   <project name="platform/external/zlib" path="external/zlib" revision="45db7492d69cca5ed41f751e324f2bd28958a4c8" upstream="master" />
   <project name="platform/external/zopfli" path="external/zopfli" revision="326ac1cbe4782894dd1be564bfcab361ddd4f8f3" upstream="master" />
-  <project name="platform/system/core" path="system/core" revision="370d2e02e007d495fc0bba6d4a593350846c08a8" upstream="master" />
+  <project name="platform/system/core" path="system/core" revision="ef213b6d5b5c5e8d9403c7d41724c815d2831055" upstream="master" />
   <!-- target projects -->
   <project name="toolchain/go" path="toolchain/go" revision="fea2d2393bd3da68879fa4eabd8ef663f222d037" upstream="master" />
   <project name="platform/dalvik" path="dalvik" revision="dd452a4244dad07c53db525d314fdcf4429ffd46" upstream="master" />
