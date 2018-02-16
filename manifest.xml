@@ -3,16 +3,16 @@
   <remote fetch=".." name="aosp" review="https://android-review.googlesource.com/" />
   <default remote="aosp" revision="master" sync-j="4" />
   <!-- build projects -->
-  <project name="platform/build" path="build/make" revision="b5751e4bd7c39e3f2b2ba7764f7abfaba1d89443" upstream="master">
+  <project name="platform/build" path="build/make" revision="b9a66a6250117846be11efd75b2e6be04e65e356" upstream="master">
     <linkfile dest="build/tools" src="tools" />
   </project>
   <project name="platform/build/blueprint" path="build/blueprint" revision="3aaf722a8d25ed726d4aba5d96bd325afe74a61c" upstream="master" />
-  <project name="platform/build/kati" path="build/kati" revision="398aa879e959a01d3feb7ba18c2cb163ff41180e" upstream="master" />
-  <project name="platform/build/soong" path="build/soong" revision="f91a08caca76559feaa12e742abcd1e5f4284fd2" upstream="master">
+  <project name="platform/build/kati" path="build/kati" revision="0f3785677c3399ba61a958c3b015b632e4d1cc8f" upstream="master" />
+  <project name="platform/build/soong" path="build/soong" revision="2e6a4ff3beaff084082a054c668ec5b6d29ffdf7" upstream="master">
     <linkfile dest="Android.bp" src="root.bp" />
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
   </project>
-  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="2562421cba679f8bd053c73aae756e52fe559f0d" upstream="master" />
+  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="fe85be0fe4ac5fef3dcdd7a5922a0dca1a215505" upstream="master" />
   <!-- toolchain linux prebuilts -->
   <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/linux-x86" path="prebuilts/clang/host/linux-x86" revision="162aadd1938471524b639032948793d291516303" upstream="master" />
   <project clone-depth="1" name="platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8" revision="2ccb38af8c940f1feef62ff5986f4bbc5d899e66" upstream="master" />
@@ -31,24 +31,24 @@
   <project clone-depth="1" name="platform/prebuilts/jdk/jdk8" path="prebuilts/jdk/jdk8" revision="636b6973a6918b01c5a21ff397479ab9ecea2306" upstream="master" />
   <project clone-depth="1" name="platform/prebuilts/jdk/jdk9" path="prebuilts/jdk/jdk9" revision="bc70fd09a3506b4568113a9844af856219203f66" upstream="master" />
   <!-- dependency prebuilts -->
-  <project clone-depth="1" name="platform/prebuilts/misc" path="prebuilts/misc" revision="5b0a2e38750ef0e241c8b159d0ffc1a6363e8de4" upstream="master" />
+  <project clone-depth="1" name="platform/prebuilts/misc" path="prebuilts/misc" revision="a87160614507574b2af3fbe2c9148a7474db2397" upstream="master" />
   <!-- dependency source -->
-  <project name="platform/development" path="development" revision="326a4ed36789c5eeac8fbde49fb3b29c85716840" upstream="master" />
+  <project name="platform/development" path="development" revision="86c0968a0507eeaca12cec1dfccbd4bd4c45aa77" upstream="master" />
   <project name="platform/external/bison" path="external/bison" revision="e16291bf844ee1ba60abd7ed28a386a1eff425d5" upstream="master" />
   <project name="platform/external/clang" path="external/clang" revision="0a0aca98bdcb51766a7bbbd071e7dd4ea4ab40cb" upstream="master" />
   <project name="platform/external/compiler-rt" path="external/compiler-rt" revision="12abeff10335d239f2d5aeaa638d45e2dc28565d" upstream="master" />
   <project name="platform/external/dagger2" path="external/dagger2" revision="aa6a6e2682aed0d5bb483baa37a04357af0ea918" upstream="master" />
-  <project name="platform/external/googletest" path="external/googletest" revision="220810a546aa9db3a3cfd39874663884dbbe8c59" upstream="master" />
-  <project name="platform/external/libcxx" path="external/libcxx" revision="e90ce7b5d60c704be09a8ae458fa72d727ccfe63" upstream="master" />
-  <project name="platform/external/libcxxabi" path="external/libcxxabi" revision="fd5cfb8557ee5599498a63f08f500ae930a1b53b" upstream="master" />
+  <project name="platform/external/googletest" path="external/googletest" revision="23f59843dbc16e86d0451123c55243c5f3fdbc33" upstream="master" />
+  <project name="platform/external/libcxx" path="external/libcxx" revision="02ad8ad9214145f918020b17fb9a0f0d3f86dd46" upstream="master" />
+  <project name="platform/external/libcxxabi" path="external/libcxxabi" revision="2eddfdfc541f691d49a425d037aa5d4f32ef22dd" upstream="master" />
   <project name="platform/external/libunwind" path="external/libunwind" revision="41ba0e90f33fe3b5d1467e4fab5e0a709685c0db" upstream="master" />
   <project name="platform/external/libunwind_llvm" path="external/libunwind_llvm" revision="9ca0ad7a15a8b9868f22f67d13fe49a2d02601dc" upstream="master" />
   <project name="platform/external/llvm" path="external/llvm" revision="79c7f5d7a2be0de081031e0ebcd481ab7905854b" upstream="master" />
-  <project name="platform/external/protobuf" path="external/protobuf" revision="76fb3ef233afdb2401936faa7b3b95ce8851f4d7" upstream="master" />
+  <project name="platform/external/protobuf" path="external/protobuf" revision="a56b371c82caba91f92f8cee1ebf9aae6564ebf5" upstream="master" />
   <project name="platform/external/safe-iop" path="external/safe-iop" revision="4e20417f767dedadd684930ff1517b03751b3af8" upstream="master" />
   <project name="platform/external/zlib" path="external/zlib" revision="0d8ec3aa938b73192a8fd69f9cd1b2568f12c4ed" upstream="master" />
   <project name="platform/external/zopfli" path="external/zopfli" revision="326ac1cbe4782894dd1be564bfcab361ddd4f8f3" upstream="master" />
-  <project name="platform/system/core" path="system/core" revision="c50d19c0b09b99b4b28573d054c1680923e5095e" upstream="master" />
+  <project name="platform/system/core" path="system/core" revision="851803d3cf3e874bb9305341a681a56cc73e7c57" upstream="master" />
   <!-- target projects -->
   <project name="toolchain/go" path="toolchain/go" revision="fea2d2393bd3da68879fa4eabd8ef663f222d037" upstream="master" />
   <project name="platform/dalvik" path="dalvik" revision="6e979de7e80bdab27a9a396bb7204f0f7d475362" upstream="master" />
