@@ -85,10 +85,14 @@ EOF
         ${wrappers} \
         ${jars} \
         ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test \
+        ${SOONG_HOST_OUT}/nativetest64/ckati_test/find_test \
         soong_docs
 
     # Run ninja tests
     ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
+
+    # Run ckati tests
+    ${SOONG_HOST_OUT}/nativetest64/ckati_test/find_test
 
     # Copy arch-specific binaries
     mkdir -p ${SOONG_OUT}/dist/bin
@@ -120,10 +124,14 @@ EOF
         # Build everything with ASAN
         build/soong/soong_ui.bash --make-mode --skip-make \
             ${asan_binaries} \
-            ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
+            ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test \
+            ${SOONG_HOST_OUT}/nativetest64/ckati_test/find_test
 
         # Run ninja tests
         ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test
+
+        # Run ckati tests
+        ${SOONG_HOST_OUT}/nativetest64/ckati_test/find_test
 
         # Copy arch-specific binaries
         mkdir -p ${SOONG_OUT}/dist/asan/bin
