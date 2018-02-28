@@ -45,11 +45,7 @@ EOF
         bpfmt
         ckati
         ckati_stamp_dump
-        header-abi-linker
-        header-abi-dumper
-        header-abi-diff
         makeparallel
-        merge-abi-diff
         ninja
         soong_zip
         zip2zip
