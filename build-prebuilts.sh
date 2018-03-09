@@ -48,6 +48,7 @@ EOF
         makeparallel
         ninja
         soong_zip
+        xz
         zip2zip
         zipalign
         ziptime
