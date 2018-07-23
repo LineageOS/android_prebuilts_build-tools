@@ -161,9 +161,9 @@ if [ -n ${build_go} ]; then
         export GOROOT_BOOTSTRAP=${TOP}/prebuilts/go/${OS}-x86
         export GOROOT_FINAL=./prebuilts/go/${OS}-x86
         export GO_TEST_TIMEOUT_SCALE=100
-        export GOCACHE=off
         ./make.bash
         rm -rf ../pkg/bootstrap
+        rm -rf ../pkg/obj
         GOROOT=$(pwd)/.. ../bin/go install -race std
     )
     (
