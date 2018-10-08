@@ -45,6 +45,7 @@ EOF
         ckati
         ckati_stamp_dump
         flex
+        make
         makeparallel
         ninja
         soong_zip
