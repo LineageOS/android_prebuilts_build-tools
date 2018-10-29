@@ -71,6 +71,14 @@ EOF
     SOONG_JAVA_WRAPPERS=(
         dx
     )
+    if [[ $OS == "linux" ]]; then
+        SOONG_BINARIES+=(
+            toybox
+        )
+        SOONG_ASAN_BINARIES+=(
+            toybox
+        )
+    fi
 
     binaries=$(for i in "${SOONG_BINARIES[@]}"; do echo ${SOONG_HOST_OUT}/bin/${i}; done)
     asan_binaries=$(for i in "${SOONG_ASAN_BINARIES[@]}"; do echo ${SOONG_HOST_OUT}/bin/${i}; done)
