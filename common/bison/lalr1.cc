@@ -376,9 +376,7 @@ do {					\
               if (*++yyp != '\\')
                 goto do_not_strip_quotes;
               /* Fall through.  */
-#if defined(__has_cpp_attribute) && __has_cpp_attribute(clang::fallthrough)
-              [[clang::fallthrough]];
-#endif
+              [[fallthrough]];
             default:
               yyr += *yyp;
               break;
