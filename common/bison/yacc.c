@@ -1209,8 +1209,8 @@ yytnamerr (char *yyres, const char *yystr)
 	    if (*++yyp != '\\')
 	      goto do_not_strip_quotes;
 	    /* Fall through.  */
-#if defined(__has_cpp_attribute) && __has_cpp_attribute(clang::fallthrough)
-	    [[clang::fallthrough]];
+#ifdef __cplusplus
+	    [[fallthrough]];
 #endif
 	  default:
 	    if (yyres)
