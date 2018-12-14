@@ -40,6 +40,7 @@ EOF
     SOONG_BINARIES=(
         acp
         aidl
+        one-true-awk
         bison
         bpfmt
         ckati
