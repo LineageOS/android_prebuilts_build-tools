@@ -74,6 +74,7 @@ EOF
     )
     if [[ $OS == "linux" ]]; then
         SOONG_BINARIES+=(
+            nsjail
             toybox
         )
         SOONG_ASAN_BINARIES+=(
