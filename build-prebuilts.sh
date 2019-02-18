@@ -49,6 +49,7 @@ EOF
         make
         makeparallel
         ninja
+        py2-cmd
         soong_zip
         xz
         zip2zip
