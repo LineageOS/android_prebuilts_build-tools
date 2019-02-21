@@ -40,15 +40,16 @@ EOF
     SOONG_BINARIES=(
         acp
         aidl
-        one-true-awk
         bison
         bpfmt
+        bzip2
         ckati
         ckati_stamp_dump
         flex
         make
         makeparallel
         ninja
+        one-true-awk
         py2-cmd
         soong_zip
         xz
