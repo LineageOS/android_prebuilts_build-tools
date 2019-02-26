@@ -5,7 +5,7 @@
 
   <default remote="aosp" revision="master" />
 
-  <project name="platform/development" path="development" revision="7da7f8870ab89635d312b4e9f4fae0220f544a46" />
+  <project name="platform/external/bzip2" path="external/bzip2" revision="956e233d9ab49cbf45602abaf654342cdfb4d33d" />
 
   <project clone-depth="1" name="platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8" revision="33581f7b65a5545e9ad836bab9495e95a59c63bf" />
 
@@ -13,7 +13,11 @@
 
   <project name="platform/external/golang-protobuf" path="external/golang-protobuf" revision="3a61e5431bd00a1840213b69992db1dd8cc5e68b" />
 
-  <project name="platform/external/selinux" path="external/selinux" revision="13030b2fd3cc59d77d953455827b9f64da66e0da" />
+  <project name="platform/build/soong" path="build/soong" revision="e608a51b06031d3765541859068a2be298d19374">
+    <linkfile dest="Android.bp" src="root.bp" />
+
+    <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
+</project>
 
   <project name="platform/external/desugar" path="external/desugar" revision="ec181dda0f856e6c1aea4f8102ae8af4c145b1f7" />
 
@@ -29,9 +33,9 @@
 
   <project name="platform/external/sqlite" path="external/sqlite" revision="d168e3c466233a2a8992733631b2ea110451f370" />
 
-  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="d095cc77c8a8baef20276789f6b7a4ac9aa4dd85" />
+  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="8f0c912baeec2bc7b15017a59ccacef748a6e7c1" />
 
-  <project name="platform/bionic" path="bionic" revision="b656d4a1da35eac817950f906ce1c26259c05e82" />
+  <project name="platform/bionic" path="bionic" revision="58239d002023143d43bdd1eb78f427ce985ad10b" />
 
   <project name="platform/external/icu" path="external/icu" revision="a4d9cc461174336c1af64a82a96efcb2a8bd62a0" />
 
@@ -45,17 +49,13 @@
 
   <project name="platform/external/clang" path="external/clang" revision="32290d3463d1ca9037fc8a1f3aa15129c46f3567" />
 
-  <project name="platform/build/soong" path="build/soong" revision="11545323d23e3a5852aea361d39897cc332882a2">
-    <linkfile dest="Android.bp" src="root.bp" />
-
-    <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
-</project>
-
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/go/darwin-x86" path="prebuilts/go/darwin-x86" revision="28437c29d829b8c753e7128090faf134181fdf19" />
 
   <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/windows-x86" path="prebuilts/clang/host/windows-x86" revision="b777438cf4e7cb70265851d77e4625da7cd61904" />
 
   <project name="platform/external/safe-iop" path="external/safe-iop" revision="b805514f31a231a0e78a18f296c0454fcadead1a" />
+
+  <project name="platform/external/selinux" path="external/selinux" revision="28cf7ea80d067f070453d47a9a1881517f14d433" />
 
   <project name="platform/external/libcxx" path="external/libcxx" revision="0680af728815bb00742ce0302fdf06a59c85f39a" />
 
@@ -75,7 +75,7 @@
 
   <project name="toolchain/make" revision="13854caa2e8addb6dad174944e62a9ef6378e3f2" />
 
-  <project name="platform/external/toybox" path="external/toybox" revision="7548b01c9a22a7de314321b3ff035088a301f1b9" />
+  <project name="platform/external/toybox" path="external/toybox" revision="24ff57f33cf6c6769669d2c636da41e6d9cad1ed" />
 
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/gcc/darwin-x86/host/headers" path="prebuilts/gcc/darwin-x86/host/headers" revision="4ac4f7cc41cf3c9e36fc3d6cf37fd1cfa9587a68" />
 
@@ -83,7 +83,7 @@
 
   <project name="platform/external/libunwind" path="external/libunwind" revision="2cda02158017f406a7f3f3e09e51a6349186cb44" />
 
-  <project name="platform/system/core" path="system/core" revision="4bb7b18fe1c00b965d4d4445f06f0047096f3304" />
+  <project name="platform/system/core" path="system/core" revision="084d3b9124b504c38e773ff2bb40c4e24b1dcf89" />
 
   <project name="toolchain/xz" revision="1eba63ef29b17b43e7e2c6968207bd171b73f485" />
 
@@ -109,9 +109,9 @@
 
   <project name="platform/external/llvm" path="external/llvm" revision="c06f72f41a0d3e0b5116971e2cb770384df6ac37" />
 
-  <project name="platform/system/tools/aidl" path="system/tools/aidl" revision="54fa1e0b02f136fb7d545d4a0e800d8ea66f22fb" />
+  <project name="platform/system/tools/aidl" path="system/tools/aidl" revision="e072e6cd193728e0bba96dac334bdf1e028194bc" />
 
-  <project name="platform/build" path="build/make" revision="5fa7e2fa2cfdd17d7cd24760ec3b968dfe110635">
+  <project name="platform/build" path="build/make" revision="8f948fe2929071c6eee64d91da037e9519bc11e2">
     <linkfile dest="build/tools" src="tools" />
 </project>
 
@@ -132,6 +132,8 @@
   <project name="platform/external/one-true-awk" path="external/one-true-awk" revision="56215208c0bc33009630223a3bb2345aeffa8a02" />
 
   <project name="platform/external/python/cpython2" path="external/python/cpython2" revision="a7c6b232c595589642caa1833279d940661120c2" />
+
+  <project name="platform/development" path="development" revision="7da7f8870ab89635d312b4e9f4fae0220f544a46" />
 
   <project name="platform/dalvik" path="dalvik" revision="9c98845827afbe8e3edb81b9c4fe64de8a6b01a3" />
 
