@@ -1,0 +1,14 @@
+cc_prebuilt_binary {
+    name: "bison",
+    device_supported: false,
+    host_supported: true,
+
+    target: {
+        linux: {
+            srcs: ["linux-x86/bin/bison"],
+        },
+        darwin: {
+            srcs: ["darwin-x86/bin/bison"],
+        },
+    },
+}
