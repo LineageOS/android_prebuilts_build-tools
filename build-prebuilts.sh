@@ -46,6 +46,7 @@ EOF
         ckati
         ckati_stamp_dump
         flex
+        m4
         make
         makeparallel
         ninja
