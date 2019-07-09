@@ -71,6 +71,7 @@ EOF
         desugar
         dx
         turbine
+        javac_extractor
     )
     SOONG_JAVA_WRAPPERS=(
         dx
