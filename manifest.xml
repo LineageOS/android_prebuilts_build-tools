@@ -13,7 +13,7 @@
 
   <project name="platform/external/golang-protobuf" path="external/golang-protobuf" revision="bd46f6d13b7e62e5cae7ababbf081fe13704c939" />
 
-  <project name="platform/build/soong" path="build/soong" revision="b11c72b0b8fb98f52ca9a64807954ef4ebef7da4">
+  <project name="platform/build/soong" path="build/soong" revision="68c9eed6b25552762baee688c2c986a68e995e73">
     <linkfile dest="Android.bp" src="root.bp" />
 
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
@@ -31,19 +31,19 @@
 
   <project name="platform/external/jsoncpp" path="external/jsoncpp" revision="805300e85055a1c647168b679c10ecb66fe5d7db" />
 
-  <project name="platform/external/googletest" path="external/googletest" revision="e4ff1aac05e6e1d18acc83fde7c4f620e081b078" />
+  <project name="platform/external/googletest" path="external/googletest" revision="b50a46e2cd227c465f5ad8afeaaa7aca6f65aef2" />
 
   <project name="platform/external/sqlite" path="external/sqlite" revision="f26d1a1b9c3392f7dd0738dc2d47a889bc593672" />
 
-  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="9867042b2ca10d3e718ad60927efe9af25b8f994" />
+  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="3f5f1056574850e89b9a8c6195cb51635bfa0f0e" />
 
-  <project name="platform/bionic" path="bionic" revision="1eb5976d7505f299754040e19792a0de94abccbc" />
+  <project name="platform/bionic" path="bionic" revision="c80af7f146df928dadee254467d6f0fc4401585f" />
 
-  <project name="platform/external/icu" path="external/icu" revision="56db1c913edf8faa34d526ebc269708b3c62ba69" />
+  <project name="platform/external/icu" path="external/icu" revision="60affcd5b33006db609cadfd57ca01ba58d17a36" />
 
   <project clone-depth="1" groups="linux" name="platform/prebuilts/go/linux-x86" path="prebuilts/go/linux-x86" revision="7090742e29742aa23b3c3dc2818e403e418139a2" />
 
-  <project name="platform/external/zlib" path="external/zlib" revision="2d980dbf0c08323007dbe4740c11354b643845d8" />
+  <project name="platform/external/zlib" path="external/zlib" revision="685d492bc0dbedd308ff26f1de55b10410d5643d" />
 
   <project name="platform/external/libcxxabi" path="external/libcxxabi" revision="ebe828e0f9ec7cbaa7a8173703bf7a0457629a60" />
 
@@ -53,23 +53,25 @@
 
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/go/darwin-x86" path="prebuilts/go/darwin-x86" revision="f3bd0922b829f1ed00048e1af17f9070383f7451" />
 
-  <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/windows-x86" path="prebuilts/clang/host/windows-x86" revision="7bf2a68dcf485400f66f66614027c7e5217c506a" />
+  <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/windows-x86" path="prebuilts/clang/host/windows-x86" revision="6f7f24aad566a1069a65e2934a0996345b141d97" />
 
   <project name="platform/external/safe-iop" path="external/safe-iop" revision="b805514f31a231a0e78a18f296c0454fcadead1a" />
 
-  <project name="platform/external/selinux" path="external/selinux" revision="e690b03a93580f162feea34dce9bf16191974271" />
+  <project name="platform/external/selinux" path="external/selinux" revision="97f1ad659152558eb6d8118bed78bffb6f156608" />
+
+  <project name="platform/external/kythe" path="external/kythe" revision="08bbfb77588a6551a4970342e626a14e9818432c" />
 
   <project name="platform/external/libcxx" path="external/libcxx" revision="81231c9ecd77a2f6492cf87807392434eb83134e" />
 
-  <project name="platform/external/dagger2" path="external/dagger2" revision="5f999f07916853390a299278d4aa328000750c9c" />
+  <project name="platform/external/dagger2" path="external/dagger2" revision="e895619db958f79f6c2f2eae9346f169e49756ba" />
 
-  <project name="platform/external/boringssl" path="external/boringssl" revision="14f3edacf265936196e6ed0999c727741d229e78" />
+  <project name="platform/external/boringssl" path="external/boringssl" revision="cb6fdd2c554b117ce1100249a0f8a91519782c12" />
 
   <project clone-depth="1" groups="linux" name="platform/prebuilts/ninja/linux-x86" path="prebuilts/ninja/linux-x86" revision="6369b19fc3fbe765636af75d394627e2b92599ed" />
 
   <project name="platform/external/zopfli" path="external/zopfli" revision="ac17b699bec31c3969bec5669e84d074ebef4544" />
 
-  <project name="platform/external/pcre" path="external/pcre" revision="35bd209e23dcbc3e58ee4345c8a1da7523a05b9d" />
+  <project name="platform/external/expat" path="external/expat" revision="75a0ba404a3a1b4a6d3d95ca99d6d6736db04b50" />
 
   <project name="platform/build/kati" path="build/kati" revision="d7689735b44a3b321cb9a9d3b1a79942456edb10" />
 
@@ -77,21 +79,23 @@
 
   <project name="toolchain/make" revision="0e5088b737c763044b8d125b5c018b6e75f0c5a9" />
 
-  <project name="platform/external/toybox" path="external/toybox" revision="ec09fd9faf614052d5318ee8325ef51bdfbef0a5" />
+  <project name="platform/external/toybox" path="external/toybox" revision="0aafccff0b531245aa8290babce992d7f2691bc6" />
 
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/gcc/darwin-x86/host/headers" path="prebuilts/gcc/darwin-x86/host/headers" revision="4ac4f7cc41cf3c9e36fc3d6cf37fd1cfa9587a68" />
 
   <project clone-depth="1" name="platform/external/error_prone" path="external/error_prone" revision="c1030829a880c0f5ba9d93c035c6fb35a448269d" />
 
+  <project name="platform/external/jsr305" path="external/jsr305" revision="7c0b2041e28c86dfbe1d3fd9e54049c6fb973188" />
+
   <project name="platform/external/libunwind" path="external/libunwind" revision="086e0c2a159d1b639725315f79eaa87e6f7d71c4" />
 
-  <project name="platform/system/core" path="system/core" revision="2d620c00f3f074d16a4e94b96e9a82f277b7bf6f" />
+  <project name="platform/system/core" path="system/core" revision="e0b729d2141e213d20d88908bacae20b7272b9d6" />
 
   <project name="toolchain/xz" revision="1eba63ef29b17b43e7e2c6968207bd171b73f485" />
 
-  <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/linux-x86" path="prebuilts/clang/host/linux-x86" revision="8a6de3cbfcd642b21ebaf9663596b3f7e942d1c5" />
+  <project clone-depth="1" groups="pdk,tools" name="platform/prebuilts/tools" path="prebuilts/tools" revision="50209fcf178d56fbdc77ec800223a62936ae1e72" />
 
-  <project name="platform/external/expat" path="external/expat" revision="b3c1eed0334b163388b3b3e67a1ea95e87386d5b" />
+  <project name="platform/external/guava" path="external/guava" revision="9e499222f1d0cd3cff5d85e6f2472318ac75a3d6" />
 
   <project name="platform/external/jemalloc" path="external/jemalloc" revision="0cb4d835824491547ad26e43123c71f731901358" />
 
@@ -101,47 +105,53 @@
 
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/gcc/darwin-x86/host/i686-apple-darwin-4.2.1" path="prebuilts/gcc/darwin-x86/host/i686-apple-darwin-4.2.1" revision="ec5aa66aaa4964c27564d0ec84dc1f18a2d72b7e" />
 
-  <project name="platform/external/python/cpython3" path="external/python/cpython3" revision="a96e7088a2af2183aef894b5f9a80358d8cadb3b" />
+  <project name="platform/external/python/cpython3" path="external/python/cpython3" revision="95637f40c7d76ba52d6fdc9b6327ec3dcb6ccb0f" />
 
-  <project name="platform/external/compiler-rt" path="external/compiler-rt" revision="45fa029b005498895181b2385131471dc206c4bd" />
+  <project name="platform/external/compiler-rt" path="external/compiler-rt" revision="c3c4d5dcbe329224ae09d0765f185a239a4d73da" />
 
-  <project name="platform/build/blueprint" path="build/blueprint" revision="e21c14594e4e1f879629bb7b945649361ec7ff44" />
+  <project name="platform/build/blueprint" path="build/blueprint" revision="d6d76f814ed3bbfaf6681289d5e5763de7e427fc" />
+
+  <project name="platform/external/pcre" path="external/pcre" revision="35bd209e23dcbc3e58ee4345c8a1da7523a05b9d" />
 
   <project name="platform/external/libunwind_llvm" path="external/libunwind_llvm" revision="d88b1fc62511d02ee2021628af7c571528a09b8c" />
 
+  <project name="platform/external/fmtlib" path="external/fmtlib" revision="17b3fc8df3a7c9dc7ebb240d9a9698153b8429cb" />
+
   <project name="platform/external/llvm" path="external/llvm" revision="ba5d4cafb78946be436f583faf7baa40dc75d853" />
 
-  <project name="platform/system/tools/aidl" path="system/tools/aidl" revision="64783eddeb9c4683a58693da0170cf163a401eb6" />
+  <project name="platform/system/tools/aidl" path="system/tools/aidl" revision="c681625195e52a0a0e05556d814571285c8538c6" />
 
-  <project name="platform/build" path="build/make" revision="4934e7293301414141282b8ec724daef749a458b">
+  <project name="platform/build" path="build/make" revision="10115f54b90ed8ce13ac4a3d898679db122aa204">
     <linkfile dest="build/tools" src="tools" />
 </project>
 
-  <project clone-depth="1" name="platform/prebuilts/misc" path="prebuilts/misc" revision="cdf25317a1e22b3eb94ed84143d23778dc6b97d2" />
+  <project clone-depth="1" name="platform/prebuilts/misc" path="prebuilts/misc" revision="47b27ea368a08d5b131cd1d1c450a3ca777d8f01" />
 
   <project name="platform/external/bison" path="external/bison" revision="a8ab20ff88a9b962a8eb39cdb6944a2354f78748" />
 
   <project name="platform/external/bazelbuild-remote-apis" path="external/bazelbuild-remote-apis" revision="e0e5a5351a4571f63506eec04ee49a3dd1e60327" />
 
-  <project clone-depth="1" groups="darwin" name="platform/prebuilts/clang/host/darwin-x86" path="prebuilts/clang/host/darwin-x86" revision="94eb60ab127c596e8d532d2acbf35dc510eabf02" />
+  <project clone-depth="1" groups="darwin" name="platform/prebuilts/clang/host/darwin-x86" path="prebuilts/clang/host/darwin-x86" revision="9f9ac9dcfa9b8b663ecbdf3305fc3ff186f5e85b" />
 
-  <project name="platform/external/arm-optimized-routines" path="external/arm-optimized-routines" revision="00a3aca4009bfc79da0ecacc38141010c7f6e059" />
+  <project name="platform/external/arm-optimized-routines" path="external/arm-optimized-routines" revision="1b24d9e283ca981b15915465b1f345ce35892714" />
 
-  <project name="platform/external/protobuf" path="external/protobuf" revision="5b973490097e2c2b44e6744263c9cc0a237e1e0a" />
+  <project name="platform/external/protobuf" path="external/protobuf" revision="461b2ecad42e4cc26b25640b7be5d48147a428c0" />
+
+  <project name="toolchain/go" revision="7c56932d710ab341d1f0ea2d797eba3bda46a782" />
 
   <project name="platform/external/nsjail" path="external/nsjail" revision="a25cd900710305660a653c6b63d76286d8d6cdfe" />
 
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/ninja/darwin-x86" path="prebuilts/ninja/darwin-x86" revision="00f798346dedb4a7a6a6dcc9ad32ff09d66ee0db" />
 
-  <project name="platform/external/one-true-awk" path="external/one-true-awk" revision="e1b8a0d7bac9941b21b0296fe83a09bb28b42f2d" />
+  <project name="platform/external/one-true-awk" path="external/one-true-awk" revision="0d4dee352dbb7b103cfc5dd60195741de381e657" />
 
   <project name="platform/external/python/cpython2" path="external/python/cpython2" revision="f8562989fcefeed7b7d7e1c805b42ce32defbb2a" />
 
-  <project name="platform/development" path="development" revision="08a2bdae08363b4a3b51e0f413cc7413de004dd9" />
+  <project name="platform/development" path="development" revision="f82839906cdc30945724d9eac8733ef1f19379d6" />
 
   <project name="platform/dalvik" path="dalvik" revision="09d4dccf0521602a419e78849d9cdaceda93af0d" />
 
-  <project name="toolchain/go" revision="7c56932d710ab341d1f0ea2d797eba3bda46a782" />
+  <project clone-depth="1" groups="linux" name="platform/prebuilts/clang/host/linux-x86" path="prebuilts/clang/host/linux-x86" revision="6b3ed95308ab05a665238633396237e9b0c56988" />
 
   <project name="platform/external/turbine" path="external/turbine" revision="534a24a4547bcf776e9e0b0034a7a1676baac511" />
 </manifest>
