@@ -26,7 +26,6 @@ if [ -d ${TOP}/toolchain/go ]; then
 fi
 
 if [ -n ${build_soong} ]; then
-    # ckati and makeparallel (Soong)
     SOONG_OUT=${OUT_DIR}/soong
     SOONG_HOST_OUT=${OUT_DIR}/soong/host/${OS}-x86
     rm -rf ${SOONG_OUT}
@@ -48,7 +47,6 @@ EOF
         flex
         m4
         make
-        makeparallel
         ninja
         one-true-awk
         py2-cmd
@@ -62,7 +60,6 @@ EOF
         acp
         aidl
         ckati
-        makeparallel
         ninja
         zipalign
         ziptime
