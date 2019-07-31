@@ -45,6 +45,7 @@ EOF
         ckati
         ckati_stamp_dump
         flex
+        hidl-lint
         m4
         make
         ninja
