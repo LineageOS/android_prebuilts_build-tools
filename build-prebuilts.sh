@@ -52,6 +52,7 @@ EOF
         one-true-awk
         py2-cmd
         soong_zip
+        toybox
         xz
         zip2zip
         zipalign
@@ -62,6 +63,7 @@ EOF
         aidl
         ckati
         ninja
+        toybox
         zipalign
         ziptime
     )
@@ -77,10 +79,6 @@ EOF
     if [[ $OS == "linux" ]]; then
         SOONG_BINARIES+=(
             nsjail
-            toybox
-        )
-        SOONG_ASAN_BINARIES+=(
-            toybox
         )
     fi
 
