@@ -13,7 +13,7 @@
 
   <project name="platform/external/golang-protobuf" path="external/golang-protobuf" revision="af1e65df206fbffc913caf84af9f4638940718ac" />
 
-  <project name="platform/build/soong" path="build/soong" revision="95515641e72af273ffc652b8d530085aefc66aac">
+  <project name="platform/build/soong" path="build/soong" revision="a436b1ae8662c426815508407ebf4b3f2ac1e839">
     <linkfile dest="Android.bp" src="root.bp" />
 
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
@@ -35,9 +35,9 @@
 
   <project name="platform/external/sqlite" path="external/sqlite" revision="39ceab0aea1636255de8f75e8b8c7c91ce41fee7" />
 
-  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="17dbeaedb82a89dfafba5c9b318dfd6ad3c30500" />
+  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="98e6499976f2a887d26dda00eb26d64dd1b60157" />
 
-  <project name="platform/bionic" path="bionic" revision="665e98edf76b2c4465e64df7beee0bbbbf0758ca" />
+  <project name="platform/bionic" path="bionic" revision="8bccbb01e7f6267e1351fed290c625d292d6212b" />
 
   <project name="platform/external/icu" path="external/icu" revision="684fe8af2d33563a3ade72465992c38bd3c3357b" />
 
@@ -79,7 +79,7 @@
 
   <project name="toolchain/make" revision="0e5088b737c763044b8d125b5c018b6e75f0c5a9" />
 
-  <project name="platform/external/toybox" path="external/toybox" revision="00969f62993962b085938dceb099120cb234286b" />
+  <project name="platform/external/toybox" path="external/toybox" revision="d59b05cdbb34decf611c528048b665e88ce1c0cd" />
 
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/gcc/darwin-x86/host/headers" path="prebuilts/gcc/darwin-x86/host/headers" revision="4ac4f7cc41cf3c9e36fc3d6cf37fd1cfa9587a68" />
 
@@ -89,7 +89,7 @@
 
   <project name="platform/external/libunwind" path="external/libunwind" revision="086e0c2a159d1b639725315f79eaa87e6f7d71c4" />
 
-  <project name="platform/system/core" path="system/core" revision="3bd09415a3f859467fae2b1516ffa3e95431bfa0" />
+  <project name="platform/system/core" path="system/core" revision="a033693a9e5e39725be039140851756d88e7cc1b" />
 
   <project name="toolchain/xz" revision="ac90d9b11e02bd6837917f7e981ed40dc2cb7d1b" />
 
@@ -121,11 +121,11 @@
 
   <project name="platform/external/fmtlib" path="external/fmtlib" revision="17b3fc8df3a7c9dc7ebb240d9a9698153b8429cb" />
 
-  <project name="platform/system/tools/hidl" path="system/tools/hidl" revision="d21f3453718482e2c03ea45428a566cf6f8dd0d8" />
+  <project name="platform/system/tools/hidl" path="system/tools/hidl" revision="376d8d4dfd07373c871664731ae66fc77fe09fd3" />
 
   <project name="platform/system/tools/aidl" path="system/tools/aidl" revision="3dc29d83d4af7a029a42e1b4c917f6010f6a8a8c" />
 
-  <project name="platform/build" path="build/make" revision="33dfa52cdda70120075d9191e596ab32a7e73225">
+  <project name="platform/build" path="build/make" revision="11dc247ba99f0c6bf6565531ec430c55fdf0d974">
     <linkfile dest="build/tools" src="tools" />
 </project>
 
