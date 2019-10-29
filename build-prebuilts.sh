@@ -57,6 +57,7 @@ EOF
         zip2zip
         zipalign
         ziptime
+        ziptool
     )
     SOONG_ASAN_BINARIES=(
         acp
@@ -66,6 +67,7 @@ EOF
         toybox
         zipalign
         ziptime
+        ziptool
     )
     SOONG_JAVA_LIBRARIES=(
         desugar
