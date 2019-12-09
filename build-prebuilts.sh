@@ -47,6 +47,7 @@ EOF
         ninja
         one-true-awk
         py2-cmd
+        py3-cmd
         soong_zip
         toybox
         xz
