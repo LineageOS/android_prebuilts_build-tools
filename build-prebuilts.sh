@@ -41,6 +41,7 @@ EOF
         ckati
         ckati_stamp_dump
         flex
+        gavinhoward-bc
         hidl-lint
         m4
         make
@@ -60,6 +61,7 @@ EOF
         acp
         aidl
         ckati
+        gavinhoward-bc
         ninja
         toybox
         zipalign
