@@ -42,6 +42,7 @@ EOF
         ckati_stamp_dump
         flex
         gavinhoward-bc
+        go_extractor
         hidl-lint
         m4
         make
