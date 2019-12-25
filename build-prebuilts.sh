@@ -110,11 +110,14 @@ EOF
     cp -R ${SOONG_HOST_OUT}/lib* ${SOONG_OUT}/dist/
 
     # Copy jars and wrappers
-    mkdir -p ${SOONG_OUT}/dist-common/bin ${SOONG_OUT}/dist-common/framework
+    mkdir -p ${SOONG_OUT}/dist-common/{bin,flex,framework}
     cp ${wrappers} ${SOONG_OUT}/dist-common/bin
     cp ${jars} ${SOONG_OUT}/dist-common/framework
 
     cp -r external/bison/data ${SOONG_OUT}/dist-common/bison
+    cp external/bison/NOTICE ${SOONG_OUT}/dist-common/bison/
+    cp -r external/flex/src/FlexLexer.h ${SOONG_OUT}/dist-common/flex/
+    cp external/flex/NOTICE ${SOONG_OUT}/dist-common/flex/
 
     if [[ $OS == "linux" ]]; then
         # Build ASAN versions
