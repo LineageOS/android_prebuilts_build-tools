@@ -13,7 +13,7 @@
 
   <project name="platform/external/golang-protobuf" path="external/golang-protobuf" revision="1f5e56d3c60e4990a6fdc0cac58368fe225e6a82" />
 
-  <project name="platform/build/soong" path="build/soong" revision="d732beed90e7a8ebf55c8884891011c927ed7f93">
+  <project name="platform/build/soong" path="build/soong" revision="29d1336d117fd0b8bba87d9e7ae6868abb756771">
     <linkfile dest="Android.bp" src="root.bp" />
 
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
@@ -39,11 +39,11 @@
 
   <project name="platform/external/sqlite" path="external/sqlite" revision="7b99e6b1484c73dc520874552e698add4dc96038" />
 
-  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="ba266a9fe77e9e1dfdab81f1ba762364802b7b97" />
+  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="97f1b904d40349c41f201f33506ff25b383997f5" />
 
-  <project name="platform/bionic" path="bionic" revision="508d270886e90fac23ce51f81864d009307f13ae" />
+  <project name="platform/bionic" path="bionic" revision="e592dacfa254f59bb097c98d118d0c860b181da1" />
 
-  <project name="platform/external/icu" path="external/icu" revision="fc5de11a673e5ede70859a095e0aea1a8639d1e6" />
+  <project name="platform/external/icu" path="external/icu" revision="b9f38534528e59959de9e0f6b93df9d589c11da2" />
 
   <project clone-depth="1" groups="linux" name="platform/prebuilts/go/linux-x86" path="prebuilts/go/linux-x86" revision="537e2072e1affb379b4da1ecfbcb41a270544d1a" />
 
@@ -87,7 +87,7 @@
 
   <project name="toolchain/make" revision="0e5088b737c763044b8d125b5c018b6e75f0c5a9" />
 
-  <project name="platform/external/toybox" path="external/toybox" revision="c0c89164d1e772f9df88491967a5d9a4e746abaa" />
+  <project name="platform/external/toybox" path="external/toybox" revision="a5c015bd1102787e012f00caac1c8a02ee81cb01" />
 
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/gcc/darwin-x86/host/headers" path="prebuilts/gcc/darwin-x86/host/headers" revision="4ac4f7cc41cf3c9e36fc3d6cf37fd1cfa9587a68" />
 
@@ -97,7 +97,7 @@
 
   <project name="platform/external/libunwind" path="external/libunwind" revision="2f060ec263cd6fa3ea56140c84439d08e360621d" />
 
-  <project name="platform/system/core" path="system/core" revision="5bc7941be3c3f566c6c3b5735d5e13437905f4f3" />
+  <project name="platform/system/core" path="system/core" revision="e1c879c816564b11f0096cb0e02f5cc86bb2a429" />
 
   <project name="platform/external/nsjail" path="external/nsjail" revision="a25cd900710305660a653c6b63d76286d8d6cdfe" />
 
@@ -139,9 +139,9 @@
 
   <project name="platform/system/tools/hidl" path="system/tools/hidl" revision="ced1d2892f171777ddb83887b36343786af56cb9" />
 
-  <project name="platform/system/tools/aidl" path="system/tools/aidl" revision="91a5c41effb917ca616ec2e4c1b9fc63c3413814" />
+  <project name="platform/system/tools/aidl" path="system/tools/aidl" revision="dc6253b12a87a7ec89e46ee6c4d68b5d2d71e769" />
 
-  <project name="platform/build" path="build/make" revision="b516ddd5398800fdcb920653f9393ba78ae35fc0">
+  <project name="platform/build" path="build/make" revision="e8139b905dcd556c5fb75ba1ab4e5912bedaaaab">
     <linkfile dest="build/tools" src="tools" />
 </project>
 
@@ -165,7 +165,7 @@
 
   <project name="platform/external/python/cpython2" path="external/python/cpython2" revision="8c8f0bb4662076c4acab2123bd8de180f9f8ecaf" />
 
-  <project name="platform/development" path="development" revision="519a9f6d57a2500691a29b0e78f5f53173a84f35" />
+  <project name="platform/development" path="development" revision="1bc6c36e3e8b7cbe632542c49911c5f2c3287462" />
 
   <project name="platform/dalvik" path="dalvik" revision="54cc4ca1beb7eba4509005553e89ad1ea4528812" />
 
