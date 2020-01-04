@@ -130,6 +130,8 @@ EOF
 }
 EOF
 
+        export ASAN_SYMBOLIZER_PATH=${PWD}/prebuilts/clang/host/linux-x86/llvm-binutils-stable/llvm-symbolizer
+
         # Clean up non-ASAN installed versions
         rm -rf ${SOONG_HOST_OUT}
 
