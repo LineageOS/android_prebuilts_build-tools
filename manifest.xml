@@ -13,7 +13,7 @@
 
   <project name="platform/external/golang-protobuf" path="external/golang-protobuf" revision="fcdf38bba2f334cda94ca7a01fef5b3a55307deb" />
 
-  <project name="platform/build/soong" path="build/soong" revision="7c78b3c98ee42a72131cf3e522a06c61b8fdfe1c">
+  <project name="platform/build/soong" path="build/soong" revision="55f3001447c1b8fe914f3c065e31dee289cd6e3b">
     <linkfile dest="Android.bp" src="root.bp" />
 
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
@@ -21,7 +21,7 @@
 
   <project name="platform/external/desugar" path="external/desugar" revision="3041d69a3395243035260e72e56b43835c70a6cd" />
 
-  <project name="platform/external/ninja" path="external/ninja" revision="20255e08887f8f5987663644cd237030615d2e09" />
+  <project name="platform/external/ninja" path="external/ninja" revision="e5a9d70b45ebecf68a8aec37edf5857b4d635c4e" />
 
   <project name="platform/build/blueprint" path="build/blueprint" revision="a70b3381cb261a2c9075befbbfb4e66473d47a62" />
 
@@ -39,9 +39,9 @@
 
   <project name="platform/external/sqlite" path="external/sqlite" revision="7b99e6b1484c73dc520874552e698add4dc96038" />
 
-  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="78ae13f38c920a32db8a9c57ceae247a9faead0d" />
+  <project clone-depth="1" name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="864ab14cac6360dad83230ee9647c3a1247ffa90" />
 
-  <project name="platform/bionic" path="bionic" revision="1d8f6f2f5d180db07158e9d75c50adabd2826f30" />
+  <project name="platform/bionic" path="bionic" revision="ee12e47788ec0398b18fb60d4db7a9d72cbea8d2" />
 
   <project name="platform/external/icu" path="external/icu" revision="ecdb11822c61af945a256bf2f9e73278a0ef3415" />
 
@@ -63,7 +63,7 @@
 
   <project name="platform/external/selinux" path="external/selinux" revision="a8173ef21e91b6db955e631138262cd6788d6b8d" />
 
-  <project name="platform/external/kythe" path="external/kythe" revision="066084e20dc9d7950a790a97b396c648b4d9a4d4" />
+  <project name="platform/external/kythe" path="external/kythe" revision="645491397c0f0a61c6a514588b0348a305ed0fa9" />
 
   <project name="platform/external/golang-x-tools" path="external/golang-x-tools" revision="bcc6484babb4e999e4bdb6a982bfa7e92fc640d2" />
 
@@ -87,7 +87,7 @@
 
   <project name="toolchain/make" revision="0e5088b737c763044b8d125b5c018b6e75f0c5a9" />
 
-  <project name="platform/external/toybox" path="external/toybox" revision="9327ec8bec12da81b4e82c5e97b540ada6e45c5e" />
+  <project name="platform/external/toybox" path="external/toybox" revision="c66260f6bd8f75f9191783b41c3cfb17f15bb552" />
 
   <project clone-depth="1" groups="darwin" name="platform/prebuilts/gcc/darwin-x86/host/headers" path="prebuilts/gcc/darwin-x86/host/headers" revision="4ac4f7cc41cf3c9e36fc3d6cf37fd1cfa9587a68" />
 
@@ -97,7 +97,7 @@
 
   <project name="platform/external/libunwind" path="external/libunwind" revision="2f060ec263cd6fa3ea56140c84439d08e360621d" />
 
-  <project name="platform/system/core" path="system/core" revision="144f42d23dcc92f37aa894b439ed02dd6323c02f" />
+  <project name="platform/system/core" path="system/core" revision="077839ab239f0aeae95e0b3814da70f6a0eb9699" />
 
   <project name="platform/external/nsjail" path="external/nsjail" revision="a25cd900710305660a653c6b63d76286d8d6cdfe" />
 
@@ -141,7 +141,7 @@
 
   <project name="platform/system/tools/aidl" path="system/tools/aidl" revision="1af5423bc1460f7179dacc637066f843c214fa6c" />
 
-  <project name="platform/build" path="build/make" revision="15e0680af13667a01930f00c67e915a800c6078a">
+  <project name="platform/build" path="build/make" revision="c99128cdbf52256c8e7eae3504ddf53f380574f6">
     <linkfile dest="build/tools" src="tools" />
 </project>
 
