@@ -53,6 +53,7 @@ EOF
         one-true-awk
         py2-cmd
         py3-cmd
+        runextractor
         soong_zip
         toybox
         xz
