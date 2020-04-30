@@ -21,6 +21,9 @@ build_soong=1
 clean=t
 [[ "${1:-}" != '--resume' ]] || clean=''
 
+# Use toybox and other prebuilts even outside of the build (test running, go, etc)
+export PATH=${TOP}/prebuilts/build-tools/path/${OS}-x86:$PATH
+
 if [ -n ${build_soong} ]; then
     SOONG_OUT=${OUT_DIR}/soong
     SOONG_HOST_OUT=${OUT_DIR}/soong/host/${OS}-x86
