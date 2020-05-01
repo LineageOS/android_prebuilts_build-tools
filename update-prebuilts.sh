@@ -24,7 +24,7 @@ function finish {
 trap finish EXIT
 
 function fetch_artifact() {
-    /google/data/ro/projects/android/fetch_artifact --bid ${BUILD_NUMBER} --target $1 "$2" "$3"
+    /google/data/ro/projects/android/fetch_artifact --branch aosp-build-tools-release --bid ${BUILD_NUMBER} --target $1 "$2" "$3"
 }
 
 fetch_artifact linux build-prebuilts.zip "${tmpdir}/linux.zip"
@@ -47,6 +47,6 @@ cp -f "${tmpdir}/manifest.xml" manifest.xml
 git add manifest.xml linux-x86 darwin-x86 common
 git commit -m "Update build-tools to ab/${BUILD_NUMBER}
 
-https://ci.android.com/builds/branches/aosp-build-tools/grid?head=${BUILD_NUMBER}&tail=${BUILD_NUMBER}
+https://ci.android.com/builds/branches/aosp-build-tools-release/grid?head=${BUILD_NUMBER}&tail=${BUILD_NUMBER}
 
 Test: treehugger"
