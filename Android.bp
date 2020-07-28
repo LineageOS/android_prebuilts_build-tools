@@ -14,7 +14,7 @@ prebuilt_build_tool {
     target: {
         darwin: {
             src: "darwin-x86/bin/bison",
-            deps: ["darwin-x86/lib64/libc++.dylib"],
+            deps: ["darwin-x86/lib64/libc++.so"],
         },
         linux: {
             src: "linux-x86/bin/bison",
