@@ -11,6 +11,7 @@ cc_library_headers {
 prebuilt_build_tool {
     name: "bison",
     deps: ["common/bison/**/*"],
+    export_to_make_var: "BISON",
     target: {
         darwin: {
             src: "darwin-x86/bin/bison",
@@ -25,6 +26,7 @@ prebuilt_build_tool {
 
 prebuilt_build_tool {
     name: "flex",
+    export_to_make_var: "LEX",
     target: {
         darwin: {
             src: "darwin-x86/bin/flex",
@@ -37,6 +39,7 @@ prebuilt_build_tool {
 
 prebuilt_build_tool {
     name: "m4",
+    export_to_make_var: "M4",
     target: {
         darwin: {
             src: "darwin-x86/bin/m4",
