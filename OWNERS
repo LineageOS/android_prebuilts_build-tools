@@ -1,2 +1,2 @@
-ccross@android.com
-dwillemsen@google.com
+include platform/build/soong:/OWNERS
+
