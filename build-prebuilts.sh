@@ -53,6 +53,7 @@ EOF
         acp
         aidl
         bison
+        bloaty
         bpfmt
         bzip2
         ckati
