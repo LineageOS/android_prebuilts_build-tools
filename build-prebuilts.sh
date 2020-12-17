@@ -43,6 +43,7 @@ if [ -n ${build_soong} ]; then
     SOONG_HOST_OUT=${OUT_DIR}/soong/host/${OS}-x86
     [[ -z "${clean}" ]] || rm -rf ${SOONG_OUT}
     mkdir -p ${SOONG_OUT}
+    rm -rf ${SOONG_OUT}/dist ${SOONG_OUT}/dist-common
     cat > ${SOONG_OUT}/soong.variables << EOF
 {
     "Allow_missing_dependencies": true,
@@ -70,6 +71,8 @@ EOF
         openssl
         py2-cmd
         py3-cmd
+        py3-launcher64
+        py3-launcher-autorun64
         runextractor
         soong_zip
         toybox
@@ -110,11 +113,15 @@ EOF
     jars="${SOONG_JAVA_LIBRARIES[@]/#/${SOONG_HOST_OUT}/framework/}"
     wrappers="${SOONG_JAVA_WRAPPERS[@]/#/${SOONG_HOST_OUT}/bin/}"
 
+    # TODO: When we have a better method of extracting zips from Soong, use that.
+    py3_stdlib_zip="${SOONG_OUT}/.intermediates/external/python/cpython3/Lib/py3-stdlib-zip/gen/py3-stdlib.zip"
+
     # Build everything
     build/soong/soong_ui.bash --make-mode --skip-make \
         ${binaries} \
         ${wrappers} \
         ${jars} \
+        ${py3_stdlib_zip} \
         ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test \
         ${SOONG_HOST_OUT}/nativetest64/ckati_test/find_test \
         soong_docs
@@ -131,7 +138,7 @@ EOF
     cp -R ${SOONG_HOST_OUT}/lib* ${SOONG_OUT}/dist/
 
     # Copy jars and wrappers
-    mkdir -p ${SOONG_OUT}/dist-common/{bin,flex,framework}
+    mkdir -p ${SOONG_OUT}/dist-common/{bin,flex,framework,py3-stdlib}
     cp ${wrappers} ${SOONG_OUT}/dist-common/bin
     cp ${jars} ${SOONG_OUT}/dist-common/framework
 
@@ -139,6 +146,9 @@ EOF
     cp external/bison/NOTICE ${SOONG_OUT}/dist-common/bison/
     cp -r external/flex/src/FlexLexer.h ${SOONG_OUT}/dist-common/flex/
     cp external/flex/NOTICE ${SOONG_OUT}/dist-common/flex/
+
+    unzip -q -d ${SOONG_OUT}/dist-common/py3-stdlib ${py3_stdlib_zip}
+    cp external/python/cpython3/LICENSE ${SOONG_OUT}/dist-common/py3-stdlib/
 
     if [[ $OS == "linux" ]]; then
         # Build ASAN versions
