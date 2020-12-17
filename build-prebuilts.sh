@@ -67,6 +67,7 @@ EOF
         make
         ninja
         one-true-awk
+        openssl
         py2-cmd
         py3-cmd
         runextractor
