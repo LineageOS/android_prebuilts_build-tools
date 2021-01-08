@@ -47,7 +47,12 @@ if [ -n ${build_soong} ]; then
     cat > ${SOONG_OUT}/soong.variables << EOF
 {
     "Allow_missing_dependencies": true,
-    "HostArch":"x86_64"
+    "HostArch":"x86_64",
+    "VendorVars": {
+        "cpython3": {
+            "force_build_host": "true"
+        }
+    }
 }
 EOF
     SOONG_BINARIES=(
