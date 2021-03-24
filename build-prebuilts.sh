@@ -64,6 +64,7 @@ EOF
         bzip2
         ckati
         ckati_stamp_dump
+        create_minidebuginfo
         flex
         gavinhoward-bc
         go_extractor
