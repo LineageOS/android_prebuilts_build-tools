@@ -109,6 +109,7 @@ EOF
     )
     if [[ $OS == "linux" ]]; then
         SOONG_BINARIES+=(
+            create_minidebuginfo
             nsjail
         )
     fi
