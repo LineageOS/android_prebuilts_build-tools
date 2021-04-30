@@ -71,6 +71,7 @@ EOF
         hidl-lint
         m4
         make
+        mkbootfs
         ninja
         one-true-awk
         openssl
