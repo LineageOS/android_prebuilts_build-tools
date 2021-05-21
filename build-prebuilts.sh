@@ -51,6 +51,9 @@ if [ -n ${build_soong} ]; then
     "VendorVars": {
         "cpython3": {
             "force_build_host": "true"
+        },
+        "art_module": {
+            "source_build": "true"
         }
     }
 }
@@ -163,7 +166,12 @@ EOF
 {
     "Allow_missing_dependencies": true,
     "HostArch":"x86_64",
-    "SanitizeHost": ["address"]
+    "SanitizeHost": ["address"],
+    "VendorVars": {
+        "art_module": {
+            "source_build": "true"
+        }
+    }
 }
 EOF
 
