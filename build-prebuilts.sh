@@ -126,7 +126,7 @@ EOF
     py3_stdlib_zip="${SOONG_OUT}/.intermediates/external/python/cpython3/Lib/py3-stdlib-zip/gen/py3-stdlib.zip"
 
     # Build everything
-    build/soong/soong_ui.bash --make-mode --skip-make \
+    build/soong/soong_ui.bash --make-mode --soong-only --skip-config \
         ${binaries} \
         ${wrappers} \
         ${jars} \
@@ -181,7 +181,7 @@ EOF
         rm -rf ${SOONG_HOST_OUT}
 
         # Build everything with ASAN
-        build/soong/soong_ui.bash --make-mode --skip-make \
+        build/soong/soong_ui.bash --make-mode --soong-only --skip-config \
             ${asan_binaries} \
             ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test \
             ${SOONG_HOST_OUT}/nativetest64/ckati_test/find_test
