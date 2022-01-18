@@ -8,3 +8,13 @@ package(default_visibility = ["//visibility:public"])
         "%s/lib64/*" % platform,
     ]),
 ) for platform in ("linux-x86", "darwin")]
+
+
+# TODO(b/199038020): Temporary solution. Use py_runtime_pair and
+# python_toolchain as soon as Python rules are checked-in.
+py_runtime(
+    name = "python3",
+    files = ["linux-x86/bin/py3-cmd"],
+    interpreter = "linux-x86/bin/py3-cmd",
+    python_version = "PY3",
+)
