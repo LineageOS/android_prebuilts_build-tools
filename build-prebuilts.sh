@@ -77,6 +77,7 @@ EOF
         bison
         bloaty
         bpfmt
+        bssl_inject_hash
         bzip2
         ckati
         ckati_stamp_dump
