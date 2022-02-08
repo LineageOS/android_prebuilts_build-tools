@@ -47,6 +47,11 @@ while getopts ":-:" opt; do
     esac
 done
 
+secondary_arch=""
+if [[ ${OS} = linux ]]; then
+    secondary_arch="\"HostSecondaryArch\":\"x86\","
+fi
+
 # Use toybox and other prebuilts even outside of the build (test running, go, etc)
 export PATH=${TOP}/prebuilts/build-tools/path/${OS}-x86:$PATH
 
@@ -60,7 +65,7 @@ if [ -n ${build_soong} ]; then
 {
     "Allow_missing_dependencies": true,
     "HostArch":"x86_64",
-    "HostSecondaryArch":"x86",
+    ${secondary_arch}
     "HostMusl": $use_musl,
     "VendorVars": {
         "cpython3": {
@@ -195,7 +200,7 @@ EOF
 {
     "Allow_missing_dependencies": true,
     "HostArch":"x86_64",
-    "HostSecondaryArch":"x86",
+    ${secondary_arch}
     "SanitizeHost": ["address"],
     "VendorVars": {
         "art_module": {
