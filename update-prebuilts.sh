@@ -45,6 +45,8 @@ fetch_artifact linux build-prebuilts.zip "${tmpdir}/linux.zip"
 fetch_artifact linux build-common-prebuilts.zip "${tmpdir}/common.zip"
 fetch_artifact linux manifest_${BUILD_NUMBER}.xml "${tmpdir}/manifest.xml"
 fetch_artifact darwin_mac build-prebuilts.zip "${tmpdir}/darwin.zip"
+fetch_artifact linux_musl musl-sysroot32.zip "${tmpdir}/musl-sysroot32.zip"
+fetch_artifact linux_musl musl-sysroot64.zip "${tmpdir}/musl-sysroot64.zip"
 
 function unzip_to() {
     rm -rf "$1"
@@ -55,10 +57,12 @@ function unzip_to() {
 unzip_to linux-x86 "${tmpdir}/linux.zip"
 unzip_to common "${tmpdir}/common.zip"
 unzip_to darwin-x86 "${tmpdir}/darwin.zip"
+unzip_to x86_64-linux-musl "${tmpdir}/musl-sysroot64.zip"
+unzip_to i686-linux-musl "${tmpdir}/musl-sysroot32.zip"
 
 cp -f "${tmpdir}/manifest.xml" manifest.xml
 
-git add manifest.xml linux-x86 darwin-x86 common
+git add manifest.xml linux-x86 darwin-x86 common x86_64-linux-musl i686-linux-musl
 git commit -m "Update build-tools to ab/${BUILD_NUMBER}
 
 https://ci.android.com/builds/branches/aosp-build-tools-release/grid?head=${BUILD_NUMBER}&tail=${BUILD_NUMBER}
