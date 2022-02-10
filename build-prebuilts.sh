@@ -47,6 +47,11 @@ while getopts ":-:" opt; do
     esac
 done
 
+secondary_arch=""
+if [[ ${OS} = linux ]]; then
+    secondary_arch="\"HostSecondaryArch\":\"x86\","
+fi
+
 # Use toybox and other prebuilts even outside of the build (test running, go, etc)
 export PATH=${TOP}/prebuilts/build-tools/path/${OS}-x86:$PATH
 
@@ -60,6 +65,7 @@ if [ -n ${build_soong} ]; then
 {
     "Allow_missing_dependencies": true,
     "HostArch":"x86_64",
+    ${secondary_arch}
     "HostMusl": $use_musl,
     "VendorVars": {
         "cpython3": {
@@ -139,12 +145,21 @@ EOF
     # TODO: When we have a better method of extracting zips from Soong, use that.
     py3_stdlib_zip="${SOONG_OUT}/.intermediates/external/python/cpython3/Lib/py3-stdlib-zip/gen/py3-stdlib.zip"
 
+    musl_sysroot32=""
+    musl_sysroot64=""
+    if [[ ${use_musl} = "true" ]]; then
+        musl_sysroot32="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86/gen/libc_musl_sysroot.zip"
+        musl_sysroot64="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86_64/gen/libc_musl_sysroot.zip"
+    fi
+
     # Build everything
     build/soong/soong_ui.bash --make-mode --soong-only --skip-config \
         ${binaries} \
         ${wrappers} \
         ${jars} \
         ${py3_stdlib_zip} \
+        ${musl_sysroot32} \
+        ${musl_sysroot64} \
         ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test \
         ${SOONG_HOST_OUT}/nativetest64/ckati_test/find_test \
         soong_docs
@@ -173,6 +188,11 @@ EOF
     unzip -q -d ${SOONG_OUT}/dist-common/py3-stdlib ${py3_stdlib_zip}
     cp external/python/cpython3/LICENSE ${SOONG_OUT}/dist-common/py3-stdlib/
 
+    if [[ ${use_musl} = "true" ]]; then
+        cp ${musl_sysroot64} ${SOONG_OUT}/musl-sysroot64.zip
+        cp ${musl_sysroot32} ${SOONG_OUT}/musl-sysroot32.zip
+    fi
+
     if [[ $OS == "linux" ]]; then
         # Build ASAN versions
         export ASAN_OPTIONS=detect_leaks=0
@@ -180,6 +200,7 @@ EOF
 {
     "Allow_missing_dependencies": true,
     "HostArch":"x86_64",
+    ${secondary_arch}
     "SanitizeHost": ["address"],
     "VendorVars": {
         "art_module": {
@@ -254,6 +275,10 @@ if [ -n "${DIST_DIR}" ]; then
         cp ${SOONG_OUT}/dist/build-prebuilts.zip ${DIST_DIR}/
         cp ${SOONG_OUT}/dist-common/build-common-prebuilts.zip ${DIST_DIR}/
         cp ${SOONG_OUT}/docs/*.html ${DIST_DIR}/
+        if [ ${use_musl} = "true" ]; then
+            cp ${SOONG_OUT}/musl-sysroot64.zip ${DIST_DIR}/
+            cp ${SOONG_OUT}/musl-sysroot32.zip ${DIST_DIR}/
+        fi
     fi
     if [ -n ${build_go} ]; then
         cp ${GO_OUT}/go.zip ${DIST_DIR}/
