@@ -57,8 +57,8 @@ function unzip_to() {
 unzip_to linux-x86 "${tmpdir}/linux.zip"
 unzip_to common "${tmpdir}/common.zip"
 unzip_to darwin-x86 "${tmpdir}/darwin.zip"
-unzip_to x86_64-linux-musl "${tmpdir}/musl-sysroot64.zip"
-unzip_to i686-linux-musl "${tmpdir}/musl-sysroot32.zip"
+unzip_to sysroots/x86_64-linux-musl "${tmpdir}/musl-sysroot64.zip"
+unzip_to sysroots/i686-linux-musl "${tmpdir}/musl-sysroot32.zip"
 
 cp -f "${tmpdir}/manifest.xml" manifest.xml
 
