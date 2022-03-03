@@ -12,5 +12,6 @@ SECTIONS {
   .linker_rw2 0x1258b0 : {
     KEEP(*(.linker_rw2));
   }
+  /DISCARD/ : { *(.interp) }
 }
 INSERT BEFORE .note.android.embedded_linker;
