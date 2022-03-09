@@ -112,6 +112,10 @@ EOF
         ziptime
         ziptool
     )
+    SOONG_MUSL_BINARIES=(
+        py3-launcher-static64
+        py3-launcher-autorun-static64
+    )
     SOONG_ASAN_BINARIES=(
         acp
         aidl
@@ -150,6 +154,7 @@ EOF
     musl_sysroot32=""
     musl_sysroot64=""
     if [[ ${use_musl} = "true" ]]; then
+        binaries="${binaries} ${SOONG_MUSL_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
         musl_sysroot32="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86/gen/libc_musl_sysroot.zip"
         musl_sysroot64="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86_64/gen/libc_musl_sysroot.zip"
     fi
