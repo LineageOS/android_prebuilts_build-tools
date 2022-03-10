@@ -41,6 +41,8 @@ while getopts ":-:" opt; do
             case "${OPTARG}" in
                 resume) clean= ;;
                 musl) use_musl=true ;;
+                skip-go) unset build_go ;;
+                skip-soong-tests) skip_soong_tests=--skip-soong-tests ;;
                 *) echo "Unknown option --${OPTARG}"; exit 1 ;;
             esac;;
         *) echo "'${opt}' '${OPTARG}'"
@@ -55,7 +57,7 @@ fi
 # Use toybox and other prebuilts even outside of the build (test running, go, etc)
 export PATH=${TOP}/prebuilts/build-tools/path/${OS}-x86:$PATH
 
-if [ -n ${build_soong} ]; then
+if [ -n "${build_soong}" ]; then
     SOONG_OUT=${OUT_DIR}/soong
     SOONG_HOST_OUT=${OUT_DIR}/soong/host/${OS}-x86
     [[ -z "${clean}" ]] || rm -rf ${SOONG_OUT}
@@ -110,6 +112,10 @@ EOF
         ziptime
         ziptool
     )
+    SOONG_MUSL_BINARIES=(
+        py3-launcher-static64
+        py3-launcher-autorun-static64
+    )
     SOONG_ASAN_BINARIES=(
         acp
         aidl
@@ -148,12 +154,13 @@ EOF
     musl_sysroot32=""
     musl_sysroot64=""
     if [[ ${use_musl} = "true" ]]; then
+        binaries="${binaries} ${SOONG_MUSL_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
         musl_sysroot32="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86/gen/libc_musl_sysroot.zip"
         musl_sysroot64="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86_64/gen/libc_musl_sysroot.zip"
     fi
 
     # Build everything
-    build/soong/soong_ui.bash --make-mode --soong-only --skip-config \
+    build/soong/soong_ui.bash --make-mode --soong-only --skip-config ${skip_soong_tests} \
         ${binaries} \
         ${wrappers} \
         ${jars} \
@@ -216,7 +223,7 @@ EOF
         rm -rf ${SOONG_HOST_OUT}
 
         # Build everything with ASAN
-        build/soong/soong_ui.bash --make-mode --soong-only --skip-config \
+        build/soong/soong_ui.bash --make-mode --soong-only --skip-config ${skip_soong_tests} \
             ${asan_binaries} \
             ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test \
             ${SOONG_HOST_OUT}/nativetest64/ckati_test/find_test
@@ -247,7 +254,7 @@ EOF
 fi
 
 # Go
-if [ -n ${build_go} ]; then
+if [ -n "${build_go}" ]; then
     GO_OUT=${OUT_DIR}/obj/go
     rm -rf ${GO_OUT}
     mkdir -p ${GO_OUT}
@@ -271,7 +278,7 @@ fi
 if [ -n "${DIST_DIR}" ]; then
     mkdir -p ${DIST_DIR} || true
 
-    if [ -n ${build_soong} ]; then
+    if [ -n "${build_soong}" ]; then
         cp ${SOONG_OUT}/dist/build-prebuilts.zip ${DIST_DIR}/
         cp ${SOONG_OUT}/dist-common/build-common-prebuilts.zip ${DIST_DIR}/
         cp ${SOONG_OUT}/docs/*.html ${DIST_DIR}/
@@ -280,7 +287,7 @@ if [ -n "${DIST_DIR}" ]; then
             cp ${SOONG_OUT}/musl-sysroot32.zip ${DIST_DIR}/
         fi
     fi
-    if [ -n ${build_go} ]; then
+    if [ -n "${build_go}" ]; then
         cp ${GO_OUT}/go.zip ${DIST_DIR}/
     fi
 fi
