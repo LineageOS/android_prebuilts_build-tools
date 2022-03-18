@@ -96,6 +96,7 @@ EOF
         hidl-lint
         m4
         make
+        merge_zips
         ninja
         one-true-awk
         openssl
