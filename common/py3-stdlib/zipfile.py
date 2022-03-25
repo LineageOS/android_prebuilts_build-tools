@@ -16,7 +16,6 @@ import sys
 import threading
 import time
 import contextlib
-import pathlib
 
 try:
     import zlib # We may need its compression method
@@ -1121,15 +1120,8 @@ class _ZipWriteFile(io.BufferedIOBase):
     def write(self, data):
         if self.closed:
             raise ValueError('I/O operation on closed file.')
-
-        # Accept any data that supports the buffer protocol
-        if isinstance(data, (bytes, bytearray)):
-            nbytes = len(data)
-        else:
-            data = memoryview(data)
-            nbytes = data.nbytes
+        nbytes = len(data)
         self._file_size += nbytes
-
         self._crc = crc32(data, self._crc)
         if self._compressor:
             data = self._compressor.compress(data)
@@ -2205,12 +2197,13 @@ class CompleteDirs(ZipFile):
         if not isinstance(source, ZipFile):
             return cls(source)
 
-        # Only allow for FastLookup when supplied zipfile is read-only
+        # Only allow for FastPath when supplied zipfile is read-only
         if 'r' not in source.mode:
             cls = CompleteDirs
 
-        source.__class__ = cls
-        return source
+        res = cls.__new__(cls)
+        vars(res).update(vars(source))
+        return res
 
 
 class FastLookup(CompleteDirs):
@@ -2218,7 +2211,6 @@ class FastLookup(CompleteDirs):
     ZipFile subclass to ensure implicit
     dirs exist and are resolved rapidly.
     """
-
     def namelist(self):
         with contextlib.suppress(AttributeError):
             return self.__names
@@ -2250,7 +2242,7 @@ class Path:
     >>> zf.writestr('a.txt', 'content of a')
     >>> zf.writestr('b/c.txt', 'content of c')
     >>> zf.writestr('b/d/e.txt', 'content of e')
-    >>> zf.filename = 'mem/abcde.zip'
+    >>> zf.filename = 'abcde.zip'
 
     Path accepts the zipfile object itself or a filename
 
@@ -2262,9 +2254,9 @@ class Path:
 
     >>> a, b = root.iterdir()
     >>> a
-    Path('mem/abcde.zip', 'a.txt')
+    Path('abcde.zip', 'a.txt')
     >>> b
-    Path('mem/abcde.zip', 'b/')
+    Path('abcde.zip', 'b/')
 
     name property:
 
@@ -2275,7 +2267,7 @@ class Path:
 
     >>> c = b / 'c.txt'
     >>> c
-    Path('mem/abcde.zip', 'b/c.txt')
+    Path('abcde.zip', 'b/c.txt')
     >>> c.name
     'c.txt'
 
@@ -2293,68 +2285,36 @@ class Path:
 
     Coercion to string:
 
-    >>> import os
-    >>> str(c).replace(os.sep, posixpath.sep)
-    'mem/abcde.zip/b/c.txt'
-
-    At the root, ``name``, ``filename``, and ``parent``
-    resolve to the zipfile. Note these attributes are not
-    valid and will raise a ``ValueError`` if the zipfile
-    has no filename.
-
-    >>> root.name
-    'abcde.zip'
-    >>> str(root.filename).replace(os.sep, posixpath.sep)
-    'mem/abcde.zip'
-    >>> str(root.parent)
-    'mem'
+    >>> str(c)
+    'abcde.zip/b/c.txt'
     """
 
     __repr = "{self.__class__.__name__}({self.root.filename!r}, {self.at!r})"
 
     def __init__(self, root, at=""):
-        """
-        Construct a Path from a ZipFile or filename.
-
-        Note: When the source is an existing ZipFile object,
-        its type (__class__) will be mutated to a
-        specialized type. If the caller wishes to retain the
-        original type, the caller should either create a
-        separate ZipFile object or pass a filename.
-        """
         self.root = FastLookup.make(root)
         self.at = at
 
-    def open(self, mode='r', *args, pwd=None, **kwargs):
+    def open(self, mode='r', *args, **kwargs):
         """
         Open this entry as text or binary following the semantics
         of ``pathlib.Path.open()`` by passing arguments through
         to io.TextIOWrapper().
         """
-        if self.is_dir():
-            raise IsADirectoryError(self)
+        pwd = kwargs.pop('pwd', None)
         zip_mode = mode[0]
-        if not self.exists() and zip_mode == 'r':
-            raise FileNotFoundError(self)
         stream = self.root.open(self.at, zip_mode, pwd=pwd)
         if 'b' in mode:
             if args or kwargs:
                 raise ValueError("encoding args invalid for binary operation")
             return stream
-        else:
-            kwargs["encoding"] = io.text_encoding(kwargs.get("encoding"))
         return io.TextIOWrapper(stream, *args, **kwargs)
 
     @property
     def name(self):
-        return pathlib.Path(self.at).name or self.filename.name
-
-    @property
-    def filename(self):
-        return pathlib.Path(self.root.filename).joinpath(self.at)
+        return posixpath.basename(self.at.rstrip("/"))
 
     def read_text(self, *args, **kwargs):
-        kwargs["encoding"] = io.text_encoding(kwargs.get("encoding"))
         with self.open('r', *args, **kwargs) as strm:
             return strm.read()
 
@@ -2366,13 +2326,13 @@ class Path:
         return posixpath.dirname(path.at.rstrip("/")) == self.at.rstrip("/")
 
     def _next(self, at):
-        return self.__class__(self.root, at)
+        return Path(self.root, at)
 
     def is_dir(self):
         return not self.at or self.at.endswith("/")
 
     def is_file(self):
-        return self.exists() and not self.is_dir()
+        return not self.is_dir()
 
     def exists(self):
         return self.at in self.root._name_set()
@@ -2389,16 +2349,14 @@ class Path:
     def __repr__(self):
         return self.__repr.format(self=self)
 
-    def joinpath(self, *other):
-        next = posixpath.join(self.at, *other)
+    def joinpath(self, add):
+        next = posixpath.join(self.at, add)
         return self._next(self.root.resolve_dir(next))
 
     __truediv__ = joinpath
 
     @property
     def parent(self):
-        if not self.at:
-            return self.filename.parent
         parent_at = posixpath.dirname(self.at.rstrip('/'))
         if parent_at:
             parent_at += '/'

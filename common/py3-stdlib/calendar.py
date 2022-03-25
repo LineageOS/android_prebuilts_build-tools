@@ -15,9 +15,7 @@ __all__ = ["IllegalMonthError", "IllegalWeekdayError", "setfirstweekday",
            "monthcalendar", "prmonth", "month", "prcal", "calendar",
            "timegm", "month_name", "month_abbr", "day_name", "day_abbr",
            "Calendar", "TextCalendar", "HTMLCalendar", "LocaleTextCalendar",
-           "LocaleHTMLCalendar", "weekheader",
-           "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY",
-           "SATURDAY", "SUNDAY"]
+           "LocaleHTMLCalendar", "weekheader"]
 
 # Exception raised for bad input (with string parameter for details)
 error = ValueError
@@ -573,11 +571,19 @@ class LocaleTextCalendar(TextCalendar):
 
     def formatweekday(self, day, width):
         with different_locale(self.locale):
-            return super().formatweekday(day, width)
+            if width >= 9:
+                names = day_name
+            else:
+                names = day_abbr
+            name = names[day]
+            return name[:width].center(width)
 
     def formatmonthname(self, theyear, themonth, width, withyear=True):
         with different_locale(self.locale):
-            return super().formatmonthname(theyear, themonth, width, withyear)
+            s = month_name[themonth]
+            if withyear:
+                s = "%s %r" % (s, theyear)
+            return s.center(width)
 
 
 class LocaleHTMLCalendar(HTMLCalendar):
@@ -595,11 +601,16 @@ class LocaleHTMLCalendar(HTMLCalendar):
 
     def formatweekday(self, day):
         with different_locale(self.locale):
-            return super().formatweekday(day)
+            s = day_abbr[day]
+            return '<th class="%s">%s</th>' % (self.cssclasses[day], s)
 
     def formatmonthname(self, theyear, themonth, withyear=True):
         with different_locale(self.locale):
-            return super().formatmonthname(theyear, themonth, withyear)
+            s = month_name[themonth]
+            if withyear:
+                s = '%s %s' % (s, theyear)
+            return '<tr><th colspan="7" class="month">%s</th></tr>' % s
+
 
 # Support for old module level interface
 c = TextCalendar()
