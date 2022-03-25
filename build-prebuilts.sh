@@ -106,6 +106,7 @@ EOF
         py3-launcher-autorun64
         runextractor
         soong_zip
+        symbol_inject
         toybox
         xz
         zip2zip
