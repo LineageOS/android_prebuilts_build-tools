@@ -951,7 +951,7 @@ class Decimal(object):
             if self.is_snan():
                 raise TypeError('Cannot hash a signaling NaN value.')
             elif self.is_nan():
-                return object.__hash__(self)
+                return _PyHASH_NAN
             else:
                 if self._sign:
                     return -_PyHASH_INF

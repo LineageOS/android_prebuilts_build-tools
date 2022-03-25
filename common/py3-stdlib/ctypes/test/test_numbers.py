@@ -134,7 +134,8 @@ class NumberTestCase(unittest.TestCase):
         for t in signed_types + unsigned_types:
             self.assertRaises(TypeError, t, 3.14)
             self.assertRaises(TypeError, t, f)
-            self.assertRaises(TypeError, t, d)
+            with self.assertWarns(DeprecationWarning):
+                self.assertEqual(t(d).value, 2)
             self.assertEqual(t(i).value, 2)
 
     def test_sizes(self):

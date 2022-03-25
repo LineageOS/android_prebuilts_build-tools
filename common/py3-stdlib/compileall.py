@@ -84,14 +84,12 @@ def compile_dir(dir, maxlevels=None, ddir=None, force=False,
     if workers < 0:
         raise ValueError('workers must be greater or equal to 0')
     if workers != 1:
-        # Check if this is a system where ProcessPoolExecutor can function.
-        from concurrent.futures.process import _check_system_limits
         try:
-            _check_system_limits()
-        except NotImplementedError:
-            workers = 1
-        else:
+            # Only import when needed, as low resource platforms may
+            # fail to import it
             from concurrent.futures import ProcessPoolExecutor
+        except ImportError:
+            workers = 1
     if maxlevels is None:
         maxlevels = sys.getrecursionlimit()
     files = _walk_dir(dir, quiet=quiet, maxlevels=maxlevels)
@@ -221,8 +219,8 @@ def compile_file(fullname, ddir=None, force=False, rx=None, quiet=0,
             if not force:
                 try:
                     mtime = int(os.stat(fullname).st_mtime)
-                    expect = struct.pack('<4sLL', importlib.util.MAGIC_NUMBER,
-                                         0, mtime & 0xFFFF_FFFF)
+                    expect = struct.pack('<4sll', importlib.util.MAGIC_NUMBER,
+                                         0, mtime)
                     for cfile in opt_cfiles.values():
                         with open(cfile, 'rb') as chandle:
                             actual = chandle.read(12)
@@ -254,8 +252,9 @@ def compile_file(fullname, ddir=None, force=False, rx=None, quiet=0,
                 else:
                     print('*** ', end='')
                 # escape non-printable characters in msg
-                encoding = sys.stdout.encoding or sys.getdefaultencoding()
-                msg = err.msg.encode(encoding, errors='backslashreplace').decode(encoding)
+                msg = err.msg.encode(sys.stdout.encoding,
+                                     errors='backslashreplace')
+                msg = msg.decode(sys.stdout.encoding)
                 print(msg)
             except (SyntaxError, UnicodeError, OSError) as e:
                 success = False
@@ -367,9 +366,9 @@ def main():
                               'environment variable is set, and '
                               '"timestamp" otherwise.'))
     parser.add_argument('-o', action='append', type=int, dest='opt_levels',
-                        help=('Optimization levels to run compilation with. '
-                              'Default is -1 which uses the optimization level '
-                              'of the Python interpreter itself (see -O).'))
+                        help=('Optimization levels to run compilation with.'
+                              'Default is -1 which uses optimization level of'
+                              'Python interpreter itself (specified by -O).'))
     parser.add_argument('-e', metavar='DIR', dest='limit_sl_dest',
                         help='Ignore symlinks pointing outsite of the DIR')
     parser.add_argument('--hardlink-dupes', action='store_true',
@@ -406,8 +405,7 @@ def main():
     # if flist is provided then load it
     if args.flist:
         try:
-            with (sys.stdin if args.flist=='-' else
-                    open(args.flist, encoding="utf-8")) as f:
+            with (sys.stdin if args.flist=='-' else open(args.flist)) as f:
                 for line in f:
                     compile_dests.append(line.strip())
         except OSError:

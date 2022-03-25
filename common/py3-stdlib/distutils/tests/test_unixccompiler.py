@@ -1,8 +1,7 @@
 """Tests for distutils.unixccompiler."""
 import sys
 import unittest
-from test.support import run_unittest
-from test.support.os_helper import EnvironmentVarGuard
+from test.support import EnvironmentVarGuard, run_unittest
 
 from distutils import sysconfig
 from distutils.unixccompiler import UnixCCompiler
@@ -12,7 +11,6 @@ class UnixCCompilerTestCase(unittest.TestCase):
     def setUp(self):
         self._backup_platform = sys.platform
         self._backup_get_config_var = sysconfig.get_config_var
-        self._backup_config_vars = dict(sysconfig._config_vars)
         class CompilerWrapper(UnixCCompiler):
             def rpath_foo(self):
                 return self.runtime_library_dir_option('/foo')
@@ -21,8 +19,6 @@ class UnixCCompilerTestCase(unittest.TestCase):
     def tearDown(self):
         sys.platform = self._backup_platform
         sysconfig.get_config_var = self._backup_get_config_var
-        sysconfig._config_vars.clear()
-        sysconfig._config_vars.update(self._backup_config_vars)
 
     @unittest.skipIf(sys.platform == 'win32', "can't test on Windows")
     def test_runtime_libdir_option(self):

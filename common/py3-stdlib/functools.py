@@ -88,84 +88,84 @@ def wraps(wrapped,
 
 def _gt_from_lt(self, other, NotImplemented=NotImplemented):
     'Return a > b.  Computed by @total_ordering from (not a < b) and (a != b).'
-    op_result = type(self).__lt__(self, other)
+    op_result = self.__lt__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result and self != other
 
 def _le_from_lt(self, other, NotImplemented=NotImplemented):
     'Return a <= b.  Computed by @total_ordering from (a < b) or (a == b).'
-    op_result = type(self).__lt__(self, other)
+    op_result = self.__lt__(other)
     if op_result is NotImplemented:
         return op_result
     return op_result or self == other
 
 def _ge_from_lt(self, other, NotImplemented=NotImplemented):
     'Return a >= b.  Computed by @total_ordering from (not a < b).'
-    op_result = type(self).__lt__(self, other)
+    op_result = self.__lt__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result
 
 def _ge_from_le(self, other, NotImplemented=NotImplemented):
     'Return a >= b.  Computed by @total_ordering from (not a <= b) or (a == b).'
-    op_result = type(self).__le__(self, other)
+    op_result = self.__le__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result or self == other
 
 def _lt_from_le(self, other, NotImplemented=NotImplemented):
     'Return a < b.  Computed by @total_ordering from (a <= b) and (a != b).'
-    op_result = type(self).__le__(self, other)
+    op_result = self.__le__(other)
     if op_result is NotImplemented:
         return op_result
     return op_result and self != other
 
 def _gt_from_le(self, other, NotImplemented=NotImplemented):
     'Return a > b.  Computed by @total_ordering from (not a <= b).'
-    op_result = type(self).__le__(self, other)
+    op_result = self.__le__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result
 
 def _lt_from_gt(self, other, NotImplemented=NotImplemented):
     'Return a < b.  Computed by @total_ordering from (not a > b) and (a != b).'
-    op_result = type(self).__gt__(self, other)
+    op_result = self.__gt__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result and self != other
 
 def _ge_from_gt(self, other, NotImplemented=NotImplemented):
     'Return a >= b.  Computed by @total_ordering from (a > b) or (a == b).'
-    op_result = type(self).__gt__(self, other)
+    op_result = self.__gt__(other)
     if op_result is NotImplemented:
         return op_result
     return op_result or self == other
 
 def _le_from_gt(self, other, NotImplemented=NotImplemented):
     'Return a <= b.  Computed by @total_ordering from (not a > b).'
-    op_result = type(self).__gt__(self, other)
+    op_result = self.__gt__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result
 
 def _le_from_ge(self, other, NotImplemented=NotImplemented):
     'Return a <= b.  Computed by @total_ordering from (not a >= b) or (a == b).'
-    op_result = type(self).__ge__(self, other)
+    op_result = self.__ge__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result or self == other
 
 def _gt_from_ge(self, other, NotImplemented=NotImplemented):
     'Return a > b.  Computed by @total_ordering from (a >= b) and (a != b).'
-    op_result = type(self).__ge__(self, other)
+    op_result = self.__ge__(other)
     if op_result is NotImplemented:
         return op_result
     return op_result and self != other
 
 def _lt_from_ge(self, other, NotImplemented=NotImplemented):
     'Return a < b.  Computed by @total_ordering from (not a >= b).'
-    op_result = type(self).__ge__(self, other)
+    op_result = self.__ge__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result
@@ -236,14 +236,14 @@ _initial_missing = object()
 
 def reduce(function, sequence, initial=_initial_missing):
     """
-    reduce(function, iterable[, initial]) -> value
+    reduce(function, sequence[, initial]) -> value
 
-    Apply a function of two arguments cumulatively to the items of a sequence
-    or iterable, from left to right, so as to reduce the iterable to a single
-    value.  For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates
+    Apply a function of two arguments cumulatively to the items of a sequence,
+    from left to right, so as to reduce the sequence to a single value.
+    For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates
     ((((1+2)+3)+4)+5).  If initial is present, it is placed before the items
-    of the iterable in the calculation, and serves as a default when the
-    iterable is empty.
+    of the sequence in the calculation, and serves as a default when the
+    sequence is empty.
     """
 
     it = iter(sequence)
@@ -252,8 +252,7 @@ def reduce(function, sequence, initial=_initial_missing):
         try:
             value = next(it)
         except StopIteration:
-            raise TypeError(
-                "reduce() of empty iterable with no initial value") from None
+            raise TypeError("reduce() of empty sequence with no initial value") from None
     else:
         value = initial
 
@@ -492,7 +491,7 @@ def lru_cache(maxsize=128, typed=False):
     with f.cache_info().  Clear the cache and statistics with f.cache_clear().
     Access the underlying function with f.__wrapped__.
 
-    See:  https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)
+    See:  http://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)
 
     """
 
@@ -660,7 +659,7 @@ def cache(user_function, /):
 def _c3_merge(sequences):
     """Merges MROs in *sequences* to a single MRO using the C3 algorithm.
 
-    Adapted from https://www.python.org/download/releases/2.3/mro/.
+    Adapted from http://www.python.org/download/releases/2.3/mro/.
 
     """
     result = []
@@ -740,7 +739,6 @@ def _compose_mro(cls, types):
     # Remove entries which are already present in the __mro__ or unrelated.
     def is_related(typ):
         return (typ not in bases and hasattr(typ, '__mro__')
-                                 and not isinstance(typ, GenericAlias)
                                  and issubclass(cls, typ))
     types = [n for n in types if is_related(n)]
     # Remove entries which are strict bases of other entries (they will end up
@@ -838,9 +836,6 @@ def singledispatch(func):
             dispatch_cache[cls] = impl
         return impl
 
-    def _is_valid_dispatch_type(cls):
-        return isinstance(cls, type) and not isinstance(cls, GenericAlias)
-
     def register(cls, func=None):
         """generic_func.register(cls, func) -> func
 
@@ -848,15 +843,9 @@ def singledispatch(func):
 
         """
         nonlocal cache_token
-        if _is_valid_dispatch_type(cls):
-            if func is None:
+        if func is None:
+            if isinstance(cls, type):
                 return lambda f: register(cls, f)
-        else:
-            if func is not None:
-                raise TypeError(
-                    f"Invalid first argument to `register()`. "
-                    f"{cls!r} is not a class."
-                )
             ann = getattr(cls, '__annotations__', {})
             if not ann:
                 raise TypeError(
@@ -869,12 +858,11 @@ def singledispatch(func):
             # only import typing if annotation parsing is necessary
             from typing import get_type_hints
             argname, cls = next(iter(get_type_hints(func).items()))
-            if not _is_valid_dispatch_type(cls):
+            if not isinstance(cls, type):
                 raise TypeError(
                     f"Invalid annotation for {argname!r}. "
                     f"{cls!r} is not a class."
                 )
-
         registry[cls] = func
         if cache_token is None and hasattr(cls, '__abstractmethods__'):
             cache_token = get_cache_token()

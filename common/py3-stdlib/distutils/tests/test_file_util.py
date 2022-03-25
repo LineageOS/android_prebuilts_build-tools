@@ -8,9 +8,7 @@ from distutils.file_util import move_file, copy_file
 from distutils import log
 from distutils.tests import support
 from distutils.errors import DistutilsFileError
-from test.support import run_unittest
-from test.support.os_helper import unlink
-
+from test.support import run_unittest, unlink
 
 class FileUtilTestCase(support.TempdirManager, unittest.TestCase):
 
