@@ -2,7 +2,7 @@
 
 This module is an implementation of PEP 205:
 
-https://www.python.org/dev/peps/pep-0205/
+http://www.python.org/dev/peps/pep-0205/
 """
 
 # Naming convention: Variables named "wr" are weak reference objects;
@@ -119,17 +119,14 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
         self.data = {}
         self.update(other, **kw)
 
-    def _commit_removals(self, _atomic_removal=_remove_dead_weakref):
-        pop = self._pending_removals.pop
+    def _commit_removals(self):
+        l = self._pending_removals
         d = self.data
         # We shouldn't encounter any KeyError, because this method should
         # always be called *before* mutating the dict.
-        while True:
-            try:
-                key = pop()
-            except IndexError:
-                return
-            _atomic_removal(d, key)
+        while l:
+            key = l.pop()
+            _remove_dead_weakref(d, key)
 
     def __getitem__(self, key):
         if self._pending_removals:
@@ -373,10 +370,7 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
                 if self._iterating:
                     self._pending_removals.append(k)
                 else:
-                    try:
-                        del self.data[k]
-                    except KeyError:
-                        pass
+                    del self.data[k]
         self._remove = remove
         # A list of dead weakrefs (keys to be removed)
         self._pending_removals = []
@@ -390,16 +384,11 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
         # because a dead weakref never compares equal to a live weakref,
         # even if they happened to refer to equal objects.
         # However, it means keys may already have been removed.
-        pop = self._pending_removals.pop
+        l = self._pending_removals
         d = self.data
-        while True:
+        while l:
             try:
-                key = pop()
-            except IndexError:
-                return
-
-            try:
-                del d[key]
+                del d[l.pop()]
             except KeyError:
                 pass
 

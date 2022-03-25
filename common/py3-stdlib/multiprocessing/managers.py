@@ -8,7 +8,8 @@
 # Licensed to PSF under a Contributor Agreement.
 #
 
-__all__ = [ 'BaseManager', 'SyncManager', 'BaseProxy', 'Token' ]
+__all__ = [ 'BaseManager', 'SyncManager', 'BaseProxy', 'Token',
+            'SharedMemoryManager' ]
 
 #
 # Imports
@@ -34,11 +35,9 @@ from . import util
 from . import get_context
 try:
     from . import shared_memory
+    HAS_SHMEM = True
 except ImportError:
     HAS_SHMEM = False
-else:
-    HAS_SHMEM = True
-    __all__.append('SharedMemoryManager')
 
 #
 # Register some things for pickling
@@ -193,8 +192,11 @@ class Server(object):
             t.daemon = True
             t.start()
 
-    def _handle_request(self, c):
-        request = None
+    def handle_request(self, c):
+        '''
+        Handle a new connection
+        '''
+        funcname = result = request = None
         try:
             connection.deliver_challenge(c, self.authkey)
             connection.answer_challenge(c, self.authkey)
@@ -211,7 +213,6 @@ class Server(object):
                 msg = ('#TRACEBACK', format_exc())
             else:
                 msg = ('#RETURN', result)
-
         try:
             c.send(msg)
         except Exception as e:
@@ -223,17 +224,7 @@ class Server(object):
             util.info(' ... request was %r', request)
             util.info(' ... exception was %r', e)
 
-    def handle_request(self, conn):
-        '''
-        Handle a new connection
-        '''
-        try:
-            self._handle_request(conn)
-        except SystemExit:
-            # Server.serve_client() calls sys.exit(0) on EOF
-            pass
-        finally:
-            conn.close()
+        c.close()
 
     def serve_client(self, conn):
         '''
@@ -968,7 +959,7 @@ def MakeProxyType(name, exposed, _cache={}):
 
 
 def AutoProxy(token, serializer, manager=None, authkey=None,
-              exposed=None, incref=True, manager_owned=False):
+              exposed=None, incref=True):
     '''
     Return an auto-proxy for `token`
     '''
@@ -988,7 +979,7 @@ def AutoProxy(token, serializer, manager=None, authkey=None,
 
     ProxyType = MakeProxyType('AutoProxy[%s]' % token.typeid, exposed)
     proxy = ProxyType(token, serializer, manager=manager, authkey=authkey,
-                      incref=incref, manager_owned=manager_owned)
+                      incref=incref)
     proxy._isauto = True
     return proxy
 
