@@ -5,8 +5,7 @@ import getpass
 import urllib
 import warnings
 
-from test.support import run_unittest
-from test.support.warnings_helper import check_warnings
+from test.support import check_warnings, run_unittest
 
 from distutils.command import register as register_module
 from distutils.command.register import register

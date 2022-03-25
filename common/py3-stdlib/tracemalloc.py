@@ -226,7 +226,7 @@ class Traceback(Sequence):
         return str(self[0])
 
     def __repr__(self):
-        s = f"<Traceback {tuple(self)}"
+        s = "<Traceback %r" % tuple(self)
         if self._total_nframe is None:
             s += ">"
         else:

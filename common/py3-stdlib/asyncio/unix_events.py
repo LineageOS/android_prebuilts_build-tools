@@ -44,16 +44,6 @@ def _sighandler_noop(signum, frame):
     pass
 
 
-def waitstatus_to_exitcode(status):
-    try:
-        return os.waitstatus_to_exitcode(status)
-    except ValueError:
-        # The child exited, but we don't understand its status.
-        # This shouldn't happen, but if it does, let's just
-        # return that status; perhaps that helps debug it.
-        return status
-
-
 class _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     """Unix event loop.
 
@@ -333,7 +323,7 @@ class _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             server._start_serving()
             # Skip one loop iteration so that all 'loop.add_reader'
             # go through.
-            await tasks.sleep(0)
+            await tasks.sleep(0, loop=self)
 
         return server
 
@@ -951,7 +941,7 @@ class PidfdChildWatcher(AbstractChildWatcher):
                 " will report returncode 255",
                 pid)
         else:
-            returncode = waitstatus_to_exitcode(status)
+            returncode = _compute_returncode(status)
 
         os.close(pidfd)
         callback(pid, returncode, *args)
@@ -964,6 +954,20 @@ class PidfdChildWatcher(AbstractChildWatcher):
         self._loop._remove_reader(pidfd)
         os.close(pidfd)
         return True
+
+
+def _compute_returncode(status):
+    if os.WIFSIGNALED(status):
+        # The child process died because of a signal.
+        return -os.WTERMSIG(status)
+    elif os.WIFEXITED(status):
+        # The child process exited (e.g sys.exit()).
+        return os.WEXITSTATUS(status)
+    else:
+        # The child exited, but we don't understand its status.
+        # This shouldn't happen, but if it does, let's just
+        # return that status; perhaps that helps debug it.
+        return status
 
 
 class BaseChildWatcher(AbstractChildWatcher):
@@ -1076,7 +1080,7 @@ class SafeChildWatcher(BaseChildWatcher):
                 # The child process is still alive.
                 return
 
-            returncode = waitstatus_to_exitcode(status)
+            returncode = _compute_returncode(status)
             if self._loop.get_debug():
                 logger.debug('process %s exited with returncode %s',
                              expected_pid, returncode)
@@ -1169,7 +1173,7 @@ class FastChildWatcher(BaseChildWatcher):
                     # A child process is still alive.
                     return
 
-                returncode = waitstatus_to_exitcode(status)
+                returncode = _compute_returncode(status)
 
             with self._lock:
                 try:
@@ -1226,15 +1230,13 @@ class MultiLoopChildWatcher(AbstractChildWatcher):
 
     def close(self):
         self._callbacks.clear()
-        if self._saved_sighandler is None:
-            return
-
-        handler = signal.getsignal(signal.SIGCHLD)
-        if handler != self._sig_chld:
-            logger.warning("SIGCHLD handler was changed by outside code")
-        else:
-            signal.signal(signal.SIGCHLD, self._saved_sighandler)
-        self._saved_sighandler = None
+        if self._saved_sighandler is not None:
+            handler = signal.getsignal(signal.SIGCHLD)
+            if handler != self._sig_chld:
+                logger.warning("SIGCHLD handler was changed by outside code")
+            else:
+                signal.signal(signal.SIGCHLD, self._saved_sighandler)
+            self._saved_sighandler = None
 
     def __enter__(self):
         return self
@@ -1261,17 +1263,15 @@ class MultiLoopChildWatcher(AbstractChildWatcher):
         # The reason to do it here is that attach_loop() is called from
         # unix policy only for the main thread.
         # Main thread is required for subscription on SIGCHLD signal
-        if self._saved_sighandler is not None:
-            return
-
-        self._saved_sighandler = signal.signal(signal.SIGCHLD, self._sig_chld)
         if self._saved_sighandler is None:
-            logger.warning("Previous SIGCHLD handler was set by non-Python code, "
-                           "restore to default handler on watcher close.")
-            self._saved_sighandler = signal.SIG_DFL
+            self._saved_sighandler = signal.signal(signal.SIGCHLD, self._sig_chld)
+            if self._saved_sighandler is None:
+                logger.warning("Previous SIGCHLD handler was set by non-Python code, "
+                               "restore to default handler on watcher close.")
+                self._saved_sighandler = signal.SIG_DFL
 
-        # Set SA_RESTART to limit EINTR occurrences.
-        signal.siginterrupt(signal.SIGCHLD, False)
+            # Set SA_RESTART to limit EINTR occurrences.
+            signal.siginterrupt(signal.SIGCHLD, False)
 
     def _do_waitpid_all(self):
         for pid in list(self._callbacks):
@@ -1296,7 +1296,7 @@ class MultiLoopChildWatcher(AbstractChildWatcher):
                 # The child process is still alive.
                 return
 
-            returncode = waitstatus_to_exitcode(status)
+            returncode = _compute_returncode(status)
             debug_log = True
         try:
             loop, callback, args = self._callbacks.pop(pid)
@@ -1379,7 +1379,7 @@ class ThreadedChildWatcher(AbstractChildWatcher):
     def remove_child_handler(self, pid):
         # asyncio never calls remove_child_handler() !!!
         # The method is no-op but is implemented because
-        # abstract base classes require it.
+        # abstract base classe requires it
         return True
 
     def attach_loop(self, loop):
@@ -1399,7 +1399,7 @@ class ThreadedChildWatcher(AbstractChildWatcher):
                 "Unknown child process pid %d, will report returncode 255",
                 pid)
         else:
-            returncode = waitstatus_to_exitcode(status)
+            returncode = _compute_returncode(status)
             if loop.get_debug():
                 logger.debug('process %s exited with returncode %s',
                              expected_pid, returncode)
