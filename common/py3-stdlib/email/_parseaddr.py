@@ -65,10 +65,8 @@ def _parsedate_tz(data):
 
     """
     if not data:
-        return None
+        return
     data = data.split()
-    if not data:  # This happens for whitespace-only input.
-        return None
     # The FWS after the comma after the day-of-week is optional, so search and
     # adjust for this.
     if data[0].endswith(',') or data[0].lower() in _daynames:
@@ -128,8 +126,6 @@ def _parsedate_tz(data):
             tss = 0
         elif len(tm) == 3:
             [thh, tmm, tss] = tm
-        else:
-            return None
     else:
         return None
     try:

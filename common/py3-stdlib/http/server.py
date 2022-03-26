@@ -103,6 +103,8 @@ import socketserver
 import sys
 import time
 import urllib.parse
+import contextlib
+from functools import partial
 
 from http import HTTPStatus
 
@@ -412,7 +414,7 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             method = getattr(self, mname)
             method()
             self.wfile.flush() #actually send the response if not already done.
-        except TimeoutError as e:
+        except socket.timeout as e:
             #a read or a write timed out.  Discard this connection
             self.log_error("Request timed out: %r", e)
             self.close_connection = True
@@ -687,7 +689,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                              parts[3], parts[4])
                 new_url = urllib.parse.urlunsplit(new_parts)
                 self.send_header("Location", new_url)
-                self.send_header("Content-Length", "0")
                 self.end_headers()
                 return None
             for index in "index.html", "index.htm":
@@ -1091,7 +1092,8 @@ class CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
         env['PATH_INFO'] = uqrest
         env['PATH_TRANSLATED'] = self.translate_path(uqrest)
         env['SCRIPT_NAME'] = scriptname
-        env['QUERY_STRING'] = query
+        if query:
+            env['QUERY_STRING'] = query
         env['REMOTE_ADDR'] = self.client_address[0]
         authorization = self.headers.get("authorization")
         if authorization:
@@ -1237,6 +1239,7 @@ def test(HandlerClass=BaseHTTPRequestHandler,
 
     """
     ServerClass.address_family, addr = _get_best_family(bind, port)
+
     HandlerClass.protocol_version = protocol
     with ServerClass(addr, HandlerClass) as httpd:
         host, port = httpd.socket.getsockname()[:2]
@@ -1253,39 +1256,35 @@ def test(HandlerClass=BaseHTTPRequestHandler,
 
 if __name__ == '__main__':
     import argparse
-    import contextlib
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--cgi', action='store_true',
-                        help='run as CGI server')
+                       help='Run as CGI Server')
     parser.add_argument('--bind', '-b', metavar='ADDRESS',
-                        help='specify alternate bind address '
-                             '(default: all interfaces)')
+                        help='Specify alternate bind address '
+                             '[default: all interfaces]')
     parser.add_argument('--directory', '-d', default=os.getcwd(),
-                        help='specify alternate directory '
-                             '(default: current directory)')
-    parser.add_argument('port', action='store', default=8000, type=int,
+                        help='Specify alternative directory '
+                        '[default:current directory]')
+    parser.add_argument('port', action='store',
+                        default=8000, type=int,
                         nargs='?',
-                        help='specify alternate port (default: 8000)')
+                        help='Specify alternate port [default: 8000]')
     args = parser.parse_args()
     if args.cgi:
         handler_class = CGIHTTPRequestHandler
     else:
-        handler_class = SimpleHTTPRequestHandler
+        handler_class = partial(SimpleHTTPRequestHandler,
+                                directory=args.directory)
 
     # ensure dual-stack is not disabled; ref #38907
     class DualStackServer(ThreadingHTTPServer):
-
         def server_bind(self):
             # suppress exception when protocol is IPv4
             with contextlib.suppress(Exception):
                 self.socket.setsockopt(
                     socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
             return super().server_bind()
-
-        def finish_request(self, request, client_address):
-            self.RequestHandlerClass(request, client_address, self,
-                                     directory=args.directory)
 
     test(
         HandlerClass=handler_class,

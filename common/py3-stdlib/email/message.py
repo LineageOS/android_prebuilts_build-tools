@@ -948,7 +948,7 @@ class MIMEPart(Message):
         if policy is None:
             from email.policy import default
             policy = default
-        super().__init__(policy)
+        Message.__init__(self, policy)
 
 
     def as_string(self, unixfrom=False, maxheaderlen=None, policy=None):
@@ -965,7 +965,7 @@ class MIMEPart(Message):
         policy = self.policy if policy is None else policy
         if maxheaderlen is None:
             maxheaderlen = policy.max_line_length
-        return super().as_string(unixfrom, maxheaderlen, policy)
+        return super().as_string(maxheaderlen=maxheaderlen, policy=policy)
 
     def __str__(self):
         return self.as_string(policy=self.policy.clone(utf8=True))
@@ -982,7 +982,7 @@ class MIMEPart(Message):
             if subtype in preferencelist:
                 yield (preferencelist.index(subtype), part)
             return
-        if maintype != 'multipart' or not self.is_multipart():
+        if maintype != 'multipart':
             return
         if subtype != 'related':
             for subpart in part.iter_parts():
@@ -1087,7 +1087,7 @@ class MIMEPart(Message):
 
         Return an empty iterator for a non-multipart.
         """
-        if self.is_multipart():
+        if self.get_content_maintype() == 'multipart':
             yield from self.get_payload()
 
     def get_content(self, *args, content_manager=None, **kw):

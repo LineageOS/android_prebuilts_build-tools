@@ -48,7 +48,7 @@
 # --------------------------------------------------------------------
 
 # Licensed to PSF under a Contributor Agreement.
-# See https://www.python.org/psf/license for licensing details.
+# See http://www.python.org/psf/license for licensing details.
 
 ##
 # Implementation module for XPath support.  There's usually no reason
@@ -65,9 +65,8 @@ xpath_tokenizer_re = re.compile(
     r"//?|"
     r"\.\.|"
     r"\(\)|"
-    r"!=|"
     r"[/.*:\[\]\(\)@=])|"
-    r"((?:\{[^}]+\})?[^/\[\]\(\)@!=\s]+)|"
+    r"((?:\{[^}]+\})?[^/\[\]\(\)@=\s]+)|"
     r"\s+"
     )
 
@@ -254,19 +253,15 @@ def prepare_predicate(next, token):
                 if elem.get(key) is not None:
                     yield elem
         return select
-    if signature == "@-='" or signature == "@-!='":
-        # [@attribute='value'] or [@attribute!='value']
+    if signature == "@-='":
+        # [@attribute='value']
         key = predicate[1]
         value = predicate[-1]
         def select(context, result):
             for elem in result:
                 if elem.get(key) == value:
                     yield elem
-        def select_negated(context, result):
-            for elem in result:
-                if (attr_value := elem.get(key)) is not None and attr_value != value:
-                    yield elem
-        return select_negated if '!=' in signature else select
+        return select
     if signature == "-" and not re.match(r"\-?\d+$", predicate[0]):
         # [tag]
         tag = predicate[0]
@@ -275,10 +270,8 @@ def prepare_predicate(next, token):
                 if elem.find(tag) is not None:
                     yield elem
         return select
-    if signature == ".='" or signature == ".!='" or (
-            (signature == "-='" or signature == "-!='")
-            and not re.match(r"\-?\d+$", predicate[0])):
-        # [.='value'] or [tag='value'] or [.!='value'] or [tag!='value']
+    if signature == ".='" or (signature == "-='" and not re.match(r"\-?\d+$", predicate[0])):
+        # [.='value'] or [tag='value']
         tag = predicate[0]
         value = predicate[-1]
         if tag:
@@ -288,22 +281,12 @@ def prepare_predicate(next, token):
                         if "".join(e.itertext()) == value:
                             yield elem
                             break
-            def select_negated(context, result):
-                for elem in result:
-                    for e in elem.iterfind(tag):
-                        if "".join(e.itertext()) != value:
-                            yield elem
-                            break
         else:
             def select(context, result):
                 for elem in result:
                     if "".join(elem.itertext()) == value:
                         yield elem
-            def select_negated(context, result):
-                for elem in result:
-                    if "".join(elem.itertext()) != value:
-                        yield elem
-        return select_negated if '!=' in signature else select
+        return select
     if signature == "-" or signature == "-()" or signature == "-()-":
         # [index] or [last()] or [last()-index]
         if signature == "-":

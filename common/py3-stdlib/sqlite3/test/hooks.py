@@ -1,6 +1,7 @@
+#-*- coding: iso-8859-1 -*-
 # pysqlite2/test/hooks.py: tests for various SQLite-specific hooks
 #
-# Copyright (C) 2006-2007 Gerhard HÃ¤ring <gh@ghaering.de>
+# Copyright (C) 2006-2007 Gerhard Häring <gh@ghaering.de>
 #
 # This file is part of pysqlite.
 #
@@ -23,27 +24,26 @@
 import unittest
 import sqlite3 as sqlite
 
-from test.support.os_helper import TESTFN, unlink
-
+from test.support import TESTFN, unlink
 
 class CollationTests(unittest.TestCase):
-    def test_create_collation_not_string(self):
+    def CheckCreateCollationNotString(self):
         con = sqlite.connect(":memory:")
         with self.assertRaises(TypeError):
             con.create_collation(None, lambda x, y: (x > y) - (x < y))
 
-    def test_create_collation_not_callable(self):
+    def CheckCreateCollationNotCallable(self):
         con = sqlite.connect(":memory:")
         with self.assertRaises(TypeError) as cm:
             con.create_collation("X", 42)
         self.assertEqual(str(cm.exception), 'parameter must be callable')
 
-    def test_create_collation_not_ascii(self):
+    def CheckCreateCollationNotAscii(self):
         con = sqlite.connect(":memory:")
         with self.assertRaises(sqlite.ProgrammingError):
-            con.create_collation("collÃ¤", lambda x, y: (x > y) - (x < y))
+            con.create_collation("collä", lambda x, y: (x > y) - (x < y))
 
-    def test_create_collation_bad_upper(self):
+    def CheckCreateCollationBadUpper(self):
         class BadUpperStr(str):
             def upper(self):
                 return None
@@ -60,7 +60,9 @@ class CollationTests(unittest.TestCase):
         self.assertEqual(result[0][0], 'b')
         self.assertEqual(result[1][0], 'a')
 
-    def test_collation_is_used(self):
+    @unittest.skipIf(sqlite.sqlite_version_info < (3, 2, 1),
+                     'old SQLite versions crash on this test')
+    def CheckCollationIsUsed(self):
         def mycoll(x, y):
             # reverse order
             return -((x > y) - (x < y))
@@ -85,7 +87,7 @@ class CollationTests(unittest.TestCase):
             result = con.execute(sql).fetchall()
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
-    def test_collation_returns_large_integer(self):
+    def CheckCollationReturnsLargeInteger(self):
         def mycoll(x, y):
             # reverse order
             return -((x > y) - (x < y)) * 2**32
@@ -104,7 +106,7 @@ class CollationTests(unittest.TestCase):
         self.assertEqual(result, [('c',), ('b',), ('a',)],
                          msg="the expected order was not returned")
 
-    def test_collation_register_twice(self):
+    def CheckCollationRegisterTwice(self):
         """
         Register two different collation functions under the same name.
         Verify that the last one is actually used.
@@ -118,7 +120,7 @@ class CollationTests(unittest.TestCase):
         self.assertEqual(result[0][0], 'b')
         self.assertEqual(result[1][0], 'a')
 
-    def test_deregister_collation(self):
+    def CheckDeregisterCollation(self):
         """
         Register a collation, then deregister it. Make sure an error is raised if we try
         to use it.
@@ -131,7 +133,7 @@ class CollationTests(unittest.TestCase):
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
 class ProgressTests(unittest.TestCase):
-    def test_progress_handler_used(self):
+    def CheckProgressHandlerUsed(self):
         """
         Test that the progress handler is invoked once it is set.
         """
@@ -147,7 +149,7 @@ class ProgressTests(unittest.TestCase):
         self.assertTrue(progress_calls)
 
 
-    def test_opcode_count(self):
+    def CheckOpcodeCount(self):
         """
         Test that the opcode argument is respected.
         """
@@ -170,7 +172,7 @@ class ProgressTests(unittest.TestCase):
         second_count = len(progress_calls)
         self.assertGreaterEqual(first_count, second_count)
 
-    def test_cancel_operation(self):
+    def CheckCancelOperation(self):
         """
         Test that returning a non-zero value stops the operation in progress.
         """
@@ -184,7 +186,7 @@ class ProgressTests(unittest.TestCase):
             curs.execute,
             "create table bar (a, b)")
 
-    def test_clear_handler(self):
+    def CheckClearHandler(self):
         """
         Test that setting the progress handler to None clears the previously set handler.
         """
@@ -200,7 +202,7 @@ class ProgressTests(unittest.TestCase):
         self.assertEqual(action, 0, "progress handler was not cleared")
 
 class TraceCallbackTests(unittest.TestCase):
-    def test_trace_callback_used(self):
+    def CheckTraceCallbackUsed(self):
         """
         Test that the trace callback is invoked once it is set.
         """
@@ -213,7 +215,7 @@ class TraceCallbackTests(unittest.TestCase):
         self.assertTrue(traced_statements)
         self.assertTrue(any("create table foo" in stmt for stmt in traced_statements))
 
-    def test_clear_trace_callback(self):
+    def CheckClearTraceCallback(self):
         """
         Test that setting the trace callback to None clears the previously set callback.
         """
@@ -226,7 +228,7 @@ class TraceCallbackTests(unittest.TestCase):
         con.execute("create table foo(a, b)")
         self.assertFalse(traced_statements, "trace callback was not cleared")
 
-    def test_unicode_content(self):
+    def CheckUnicodeContent(self):
         """
         Test that the statement can contain unicode literals.
         """
@@ -237,13 +239,17 @@ class TraceCallbackTests(unittest.TestCase):
             traced_statements.append(statement)
         con.set_trace_callback(trace)
         con.execute("create table foo(x)")
-        con.execute("insert into foo(x) values ('%s')" % unicode_value)
+        # Can't execute bound parameters as their values don't appear
+        # in traced statements before SQLite 3.6.21
+        # (cf. http://www.sqlite.org/draft/releaselog/3_6_21.html)
+        con.execute('insert into foo(x) values ("%s")' % unicode_value)
         con.commit()
         self.assertTrue(any(unicode_value in stmt for stmt in traced_statements),
                         "Unicode data %s garbled in trace callback: %s"
                         % (ascii(unicode_value), ', '.join(map(ascii, traced_statements))))
 
-    def test_trace_callback_content(self):
+    @unittest.skipIf(sqlite.sqlite_version_info < (3, 3, 9), "sqlite3_prepare_v2 is not available")
+    def CheckTraceCallbackContent(self):
         # set_trace_callback() shouldn't produce duplicate content (bpo-26187)
         traced_statements = []
         def trace(statement):
@@ -263,14 +269,10 @@ class TraceCallbackTests(unittest.TestCase):
 
 
 def suite():
-    tests = [
-        CollationTests,
-        ProgressTests,
-        TraceCallbackTests,
-    ]
-    return unittest.TestSuite(
-        [unittest.TestLoader().loadTestsFromTestCase(t) for t in tests]
-    )
+    collation_suite = unittest.makeSuite(CollationTests, "Check")
+    progress_suite = unittest.makeSuite(ProgressTests, "Check")
+    trace_suite = unittest.makeSuite(TraceCallbackTests, "Check")
+    return unittest.TestSuite((collation_suite, progress_suite, trace_suite))
 
 def test():
     runner = unittest.TextTestRunner()

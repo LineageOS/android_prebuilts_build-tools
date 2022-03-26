@@ -316,7 +316,7 @@ class ParsingError(Error):
     def filename(self):
         """Deprecated, use `source'."""
         warnings.warn(
-            "The 'filename' attribute will be removed in Python 3.12. "
+            "The 'filename' attribute will be removed in future versions.  "
             "Use 'source' instead.",
             DeprecationWarning, stacklevel=2
         )
@@ -326,7 +326,7 @@ class ParsingError(Error):
     def filename(self, value):
         """Deprecated, user `source'."""
         warnings.warn(
-            "The 'filename' attribute will be removed in Python 3.12. "
+            "The 'filename' attribute will be removed in future versions.  "
             "Use 'source' instead.",
             DeprecationWarning, stacklevel=2
         )
@@ -563,7 +563,7 @@ class RawConfigParser(MutableMapping):
     # Regular expressions for parsing section headers and options
     _SECT_TMPL = r"""
         \[                                 # [
-        (?P<header>.+)                     # very permissive!
+        (?P<header>[^]]+)                  # very permissive!
         \]                                 # ]
         """
     _OPT_TMPL = r"""
@@ -690,7 +690,6 @@ class RawConfigParser(MutableMapping):
         """
         if isinstance(filenames, (str, bytes, os.PathLike)):
             filenames = [filenames]
-        encoding = io.text_encoding(encoding)
         read_ok = []
         for filename in filenames:
             try:
@@ -757,7 +756,7 @@ class RawConfigParser(MutableMapping):
     def readfp(self, fp, filename=None):
         """Deprecated, use read_file instead."""
         warnings.warn(
-            "This method will be removed in Python 3.12. "
+            "This method will be removed in future versions.  "
             "Use 'parser.read_file()' instead.",
             DeprecationWarning, stacklevel=2
         )
@@ -908,9 +907,6 @@ class RawConfigParser(MutableMapping):
 
         If `space_around_delimiters' is True (the default), delimiters
         between keys and values are surrounded by spaces.
-
-        Please note that comments in the original configuration file are not
-        preserved when writing the configuration back.
         """
         if space_around_delimiters:
             d = " {} ".format(self._delimiters[0])
@@ -1009,7 +1005,7 @@ class RawConfigParser(MutableMapping):
         Configuration files may include comments, prefixed by specific
         characters (`#' and `;' by default). Comments may appear on their own
         in an otherwise empty line or may be entered in lines holding values or
-        section names. Please note that comments get stripped off when reading configuration files.
+        section names.
         """
         elements_added = set()
         cursect = None                        # None, or a dictionary
@@ -1232,7 +1228,7 @@ class SafeConfigParser(ConfigParser):
         super().__init__(*args, **kwargs)
         warnings.warn(
             "The SafeConfigParser class has been renamed to ConfigParser "
-            "in Python 3.2. This alias will be removed in Python 3.12."
+            "in Python 3.2. This alias will be removed in future versions."
             " Use ConfigParser directly instead.",
             DeprecationWarning, stacklevel=2
         )
