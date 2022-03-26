@@ -4,6 +4,7 @@ import inspect
 from .case import TestCase
 
 
+
 class IsolatedAsyncioTestCase(TestCase):
     # Names intentionally have a long prefix
     # to reduce a chance of clashing with user-defined attributes
@@ -51,7 +52,7 @@ class IsolatedAsyncioTestCase(TestCase):
         # We intentionally don't add inspect.iscoroutinefunction() check
         # for func argument because there is no way
         # to check for async function reliably:
-        # 1. It can be "async def func()" itself
+        # 1. It can be "async def func()" iself
         # 2. Class can implement "async def __call__()" method
         # 3. Regular "def func()" that returns awaitable object
         self.addCleanup(*(func, *args), **kwargs)
@@ -71,15 +72,15 @@ class IsolatedAsyncioTestCase(TestCase):
         self._callMaybeAsync(function, *args, **kwargs)
 
     def _callAsync(self, func, /, *args, **kwargs):
-        assert self._asyncioTestLoop is not None, 'asyncio test loop is not initialized'
+        assert self._asyncioTestLoop is not None
         ret = func(*args, **kwargs)
-        assert inspect.isawaitable(ret), f'{func!r} returned non-awaitable'
+        assert inspect.isawaitable(ret)
         fut = self._asyncioTestLoop.create_future()
         self._asyncioCallsQueue.put_nowait((fut, ret))
         return self._asyncioTestLoop.run_until_complete(fut)
 
     def _callMaybeAsync(self, func, /, *args, **kwargs):
-        assert self._asyncioTestLoop is not None, 'asyncio test loop is not initialized'
+        assert self._asyncioTestLoop is not None
         ret = func(*args, **kwargs)
         if inspect.isawaitable(ret):
             fut = self._asyncioTestLoop.create_future()
@@ -101,14 +102,14 @@ class IsolatedAsyncioTestCase(TestCase):
                 ret = await awaitable
                 if not fut.cancelled():
                     fut.set_result(ret)
-            except (SystemExit, KeyboardInterrupt):
+            except asyncio.CancelledError:
                 raise
-            except (BaseException, asyncio.CancelledError) as ex:
+            except Exception as ex:
                 if not fut.cancelled():
                     fut.set_exception(ex)
 
     def _setupAsyncioLoop(self):
-        assert self._asyncioTestLoop is None, 'asyncio test loop already initialized'
+        assert self._asyncioTestLoop is None
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.set_debug(True)
@@ -118,7 +119,7 @@ class IsolatedAsyncioTestCase(TestCase):
         loop.run_until_complete(fut)
 
     def _tearDownAsyncioLoop(self):
-        assert self._asyncioTestLoop is not None, 'asyncio test loop is not initialized'
+        assert self._asyncioTestLoop is not None
         loop = self._asyncioTestLoop
         self._asyncioTestLoop = None
         self._asyncioCallsQueue.put_nowait(None)
@@ -134,7 +135,7 @@ class IsolatedAsyncioTestCase(TestCase):
                 task.cancel()
 
             loop.run_until_complete(
-                asyncio.gather(*to_cancel, return_exceptions=True))
+                asyncio.gather(*to_cancel, loop=loop, return_exceptions=True))
 
             for task in to_cancel:
                 if task.cancelled():
@@ -156,13 +157,4 @@ class IsolatedAsyncioTestCase(TestCase):
         try:
             return super().run(result)
         finally:
-            self._tearDownAsyncioLoop()
-
-    def debug(self):
-        self._setupAsyncioLoop()
-        super().debug()
-        self._tearDownAsyncioLoop()
-
-    def __del__(self):
-        if self._asyncioTestLoop is not None:
             self._tearDownAsyncioLoop()

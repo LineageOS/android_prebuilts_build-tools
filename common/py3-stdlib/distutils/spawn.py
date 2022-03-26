@@ -54,22 +54,18 @@ def spawn(cmd, search_path=1, verbose=0, dry_run=0):
         global _cfg_target, _cfg_target_split
         if _cfg_target is None:
             from distutils import sysconfig
-            _cfg_target = sysconfig.get_config_var(
-                                  'MACOSX_DEPLOYMENT_TARGET') or ''
+            _cfg_target = str(sysconfig.get_config_var(
+                                  'MACOSX_DEPLOYMENT_TARGET') or '')
             if _cfg_target:
                 _cfg_target_split = [int(x) for x in _cfg_target.split('.')]
         if _cfg_target:
-            # Ensure that the deployment target of the build process is not
-            # less than 10.3 if the interpreter was built for 10.3 or later.
-            # This ensures extension modules are built with correct
-            # compatibility values, specifically LDSHARED which can use
-            # '-undefined dynamic_lookup' which only works on >= 10.3.
+            # ensure that the deployment target of build process is not less
+            # than that used when the interpreter was built. This ensures
+            # extension modules are built with correct compatibility values
             cur_target = os.environ.get('MACOSX_DEPLOYMENT_TARGET', _cfg_target)
-            cur_target_split = [int(x) for x in cur_target.split('.')]
-            if _cfg_target_split[:2] >= [10, 3] and cur_target_split[:2] < [10, 3]:
+            if _cfg_target_split > [int(x) for x in cur_target.split('.')]:
                 my_msg = ('$MACOSX_DEPLOYMENT_TARGET mismatch: '
-                          'now "%s" but "%s" during configure;'
-                          'must use 10.3 or later'
+                          'now "%s" but "%s" during configure'
                                 % (cur_target, _cfg_target))
                 raise DistutilsPlatformError(my_msg)
             env = dict(os.environ,

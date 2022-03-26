@@ -3,9 +3,10 @@
 __all__ = ('Lock', 'Event', 'Condition', 'Semaphore', 'BoundedSemaphore')
 
 import collections
+import warnings
 
+from . import events
 from . import exceptions
-from . import mixins
 
 
 class _ContextManagerMixin:
@@ -19,7 +20,7 @@ class _ContextManagerMixin:
         self.release()
 
 
-class Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
+class Lock(_ContextManagerMixin):
     """Primitive lock objects.
 
     A primitive lock is a synchronization primitive that is not owned
@@ -73,10 +74,16 @@ class Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
 
     """
 
-    def __init__(self, *, loop=mixins._marker):
-        super().__init__(loop=loop)
+    def __init__(self, *, loop=None):
         self._waiters = None
         self._locked = False
+        if loop is None:
+            self._loop = events.get_event_loop()
+        else:
+            self._loop = loop
+            warnings.warn("The loop argument is deprecated since Python 3.8, "
+                          "and scheduled for removal in Python 3.10.",
+                          DeprecationWarning, stacklevel=2)
 
     def __repr__(self):
         res = super().__repr__()
@@ -102,7 +109,7 @@ class Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
 
         if self._waiters is None:
             self._waiters = collections.deque()
-        fut = self._get_loop().create_future()
+        fut = self._loop.create_future()
         self._waiters.append(fut)
 
         # Finally block should be called before the CancelledError
@@ -154,7 +161,7 @@ class Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
             fut.set_result(True)
 
 
-class Event(mixins._LoopBoundMixin):
+class Event:
     """Asynchronous equivalent to threading.Event.
 
     Class implementing event objects. An event manages a flag that can be set
@@ -163,10 +170,16 @@ class Event(mixins._LoopBoundMixin):
     false.
     """
 
-    def __init__(self, *, loop=mixins._marker):
-        super().__init__(loop=loop)
+    def __init__(self, *, loop=None):
         self._waiters = collections.deque()
         self._value = False
+        if loop is None:
+            self._loop = events.get_event_loop()
+        else:
+            self._loop = loop
+            warnings.warn("The loop argument is deprecated since Python 3.8, "
+                          "and scheduled for removal in Python 3.10.",
+                          DeprecationWarning, stacklevel=2)
 
     def __repr__(self):
         res = super().__repr__()
@@ -207,7 +220,7 @@ class Event(mixins._LoopBoundMixin):
         if self._value:
             return True
 
-        fut = self._get_loop().create_future()
+        fut = self._loop.create_future()
         self._waiters.append(fut)
         try:
             await fut
@@ -216,7 +229,7 @@ class Event(mixins._LoopBoundMixin):
             self._waiters.remove(fut)
 
 
-class Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
+class Condition(_ContextManagerMixin):
     """Asynchronous equivalent to threading.Condition.
 
     This class implements condition variable objects. A condition variable
@@ -226,10 +239,19 @@ class Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
     A new Lock object is created and used as the underlying lock.
     """
 
-    def __init__(self, lock=None, *, loop=mixins._marker):
-        super().__init__(loop=loop)
+    def __init__(self, lock=None, *, loop=None):
+        if loop is None:
+            self._loop = events.get_event_loop()
+        else:
+            self._loop = loop
+            warnings.warn("The loop argument is deprecated since Python 3.8, "
+                          "and scheduled for removal in Python 3.10.",
+                          DeprecationWarning, stacklevel=2)
+
         if lock is None:
-            lock = Lock()
+            lock = Lock(loop=loop)
+        elif lock._loop is not self._loop:
+            raise ValueError("loop argument must agree with lock")
 
         self._lock = lock
         # Export the lock's locked(), acquire() and release() methods.
@@ -262,7 +284,7 @@ class Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
 
         self.release()
         try:
-            fut = self._get_loop().create_future()
+            fut = self._loop.create_future()
             self._waiters.append(fut)
             try:
                 await fut
@@ -329,7 +351,7 @@ class Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         self.notify(len(self._waiters))
 
 
-class Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
+class Semaphore(_ContextManagerMixin):
     """A Semaphore implementation.
 
     A semaphore manages an internal counter which is decremented by each
@@ -344,12 +366,18 @@ class Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
     ValueError is raised.
     """
 
-    def __init__(self, value=1, *, loop=mixins._marker):
-        super().__init__(loop=loop)
+    def __init__(self, value=1, *, loop=None):
         if value < 0:
             raise ValueError("Semaphore initial value must be >= 0")
         self._value = value
         self._waiters = collections.deque()
+        if loop is None:
+            self._loop = events.get_event_loop()
+        else:
+            self._loop = loop
+            warnings.warn("The loop argument is deprecated since Python 3.8, "
+                          "and scheduled for removal in Python 3.10.",
+                          DeprecationWarning, stacklevel=2)
 
     def __repr__(self):
         res = super().__repr__()
@@ -379,7 +407,7 @@ class Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
         True.
         """
         while self._value <= 0:
-            fut = self._get_loop().create_future()
+            fut = self._loop.create_future()
             self._waiters.append(fut)
             try:
                 await fut
@@ -408,7 +436,12 @@ class BoundedSemaphore(Semaphore):
     above the initial value.
     """
 
-    def __init__(self, value=1, *, loop=mixins._marker):
+    def __init__(self, value=1, *, loop=None):
+        if loop:
+            warnings.warn("The loop argument is deprecated since Python 3.8, "
+                          "and scheduled for removal in Python 3.10.",
+                          DeprecationWarning, stacklevel=2)
+
         self._bound_value = value
         super().__init__(value, loop=loop)
 
