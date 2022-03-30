@@ -6,10 +6,10 @@ SECTIONS {
   .linker_rx 0x48aa0 : {
     KEEP(*(.linker_rx));
   }
-  .linker_rw 0x124450 : {
+  .linker_rw 0x124570 : {
     KEEP(*(.linker_rw));
   }
-  .linker_rw2 0x1258b0 : {
+  .linker_rw2 0x1259d0 : {
     KEEP(*(.linker_rw2));
   }
   /DISCARD/ : { *(.interp) }
