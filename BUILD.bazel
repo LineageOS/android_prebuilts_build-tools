@@ -8,6 +8,7 @@ package(default_visibility = ["//visibility:public"])
         "common/**",
         "%s/bin/*" % platform,
         "%s/lib64/*" % platform,
+        "path/%s/*" % platform,
     ]),
 ) for platform in ("linux-x86", "darwin")]
 
