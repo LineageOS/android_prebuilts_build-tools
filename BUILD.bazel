@@ -37,3 +37,24 @@ toolchain(
     toolchain = ":py_runtime_pair",
     toolchain_type = "@bazel_tools//tools/python:toolchain_type",
 )
+
+sh_binary(
+    name = "flex",
+    srcs = select({
+        "//build/bazel/platforms/os:darwin": ["darwin-x86/bin/flex"],
+        "//build/bazel/platforms/os:linux": ["linux-x86/bin/flex"],
+        "//build/bazel/platforms/os_arch:linux_musl_x86": ["linux_musl-x86/bin/flex"],
+        "//conditions:default": None,
+    })
+)
+
+sh_binary(
+    name = "m4",
+    srcs = select({
+        "//build/bazel/platforms/os:darwin": ["darwin-x86/bin/m4"],
+        "//build/bazel/platforms/os:linux": ["linux-x86/bin/m4"],
+        "//build/bazel/platforms/os_arch:linux_musl_x86": ["linux_musl-x86/bin/m4"],
+        "//conditions:default": None,
+    })
+)
+
