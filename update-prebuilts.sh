@@ -48,6 +48,8 @@ fetch_artifact darwin_mac build-prebuilts.zip "${tmpdir}/darwin.zip"
 fetch_artifact linux_musl build-prebuilts.zip "${tmpdir}/linux_musl.zip"
 fetch_artifact linux_musl musl-sysroot32.zip "${tmpdir}/musl-sysroot32.zip"
 fetch_artifact linux_musl musl-sysroot64.zip "${tmpdir}/musl-sysroot64.zip"
+fetch_artifact linux_musl musl-sysroot-aarch64-linux-musl.zip "${tmpdir}/musl-sysroot-aarch64-linux-musl.zip"
+fetch_artifact linux_musl musl-sysroot-arm-linux-musleabihf.zip "${tmpdir}/musl-sysroot-arm-linux-musleabihf.zip"
 
 function unzip_to() {
     rm -rf "$1"
@@ -61,10 +63,12 @@ unzip_to darwin-x86 "${tmpdir}/darwin.zip"
 unzip_to linux_musl-x86 "${tmpdir}/linux_musl.zip"
 unzip_to sysroots/x86_64-linux-musl "${tmpdir}/musl-sysroot64.zip"
 unzip_to sysroots/i686-linux-musl "${tmpdir}/musl-sysroot32.zip"
+unzip_to sysroots/aarch64-linux-musl "${tmpdir}/musl-sysroot-aarch64-linux-musl.zip"
+unzip_to sysroots/arm-linux-musleabihf "${tmpdir}/musl-sysroot-arm-linux-musleabihf.zip"
 
 cp -f "${tmpdir}/manifest.xml" manifest.xml
 
-git add manifest.xml linux-x86 linux_musl-x86 darwin-x86 common sysroots/x86_64-linux-musl sysroots/i686-linux-musl
+git add manifest.xml linux-x86 linux_musl-x86 darwin-x86 common sysroots/x86_64-linux-musl sysroots/i686-linux-musl sysroots/aarch64-linux-musl sysroots/arm-linux-musleabihf
 git commit -m "Update build-tools to ab/${BUILD_NUMBER}
 
 https://ci.android.com/builds/branches/aosp-build-tools-release/grid?head=${BUILD_NUMBER}&tail=${BUILD_NUMBER}
