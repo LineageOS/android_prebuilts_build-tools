@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a699c615_f433ede1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4550
+      },
+      "writtenOn": "2022-07-08T12:49:26Z",
+      "side": 1,
+      "message": "This already exists in https://github.com/LineageOS/android_prebuilts_tools-lineage/tree/lineage-19.1/linux-x86/bin",
+      "revId": "a2f019b798d1bf9028fb73e175a14410d2e87609",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
