@@ -16,6 +16,41 @@
       "message": "This already exists in https://github.com/LineageOS/android_prebuilts_tools-lineage/tree/lineage-19.1/linux-x86/bin",
       "revId": "a2f019b798d1bf9028fb73e175a14410d2e87609",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f425110_321f6311",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18205
+      },
+      "writtenOn": "2022-07-08T15:04:05Z",
+      "side": 1,
+      "message": "We should update that",
+      "parentUuid": "a699c615_f433ede1",
+      "revId": "a2f019b798d1bf9028fb73e175a14410d2e87609",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d3eedc9_461a5b8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18205
+      },
+      "writtenOn": "2022-07-08T15:04:05Z",
+      "side": 1,
+      "message": "See also:\nhttps://review.lineageos.org/c/LineageOS/android_kernel_google_redbull/+/319876/2\nhttps://review.lineageos.org/c/LineageOS/android_kernel_google_redbull/+/319877/2",
+      "revId": "a2f019b798d1bf9028fb73e175a14410d2e87609",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
