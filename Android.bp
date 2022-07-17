@@ -30,7 +30,26 @@ license {
         "SPDX-license-identifier-Zlib",
         "legacy_unencumbered",
     ],
-    // large-scale-change unable to identify any license_text files
+    license_text: [
+        "common/bison/NOTICE",
+        "common/flex/NOTICE",
+        "sysroots/aarch64-linux-musl/NOTICE.bionic",
+        "sysroots/aarch64-linux-musl/NOTICE.libc++",
+        "sysroots/aarch64-linux-musl/NOTICE.libc++abi",
+        "sysroots/aarch64-linux-musl/NOTICE.zlib",
+        "sysroots/arm-linux-musleabihf/NOTICE.bionic",
+        "sysroots/arm-linux-musleabihf/NOTICE.libc++",
+        "sysroots/arm-linux-musleabihf/NOTICE.libc++abi",
+        "sysroots/arm-linux-musleabihf/NOTICE.zlib",
+        "sysroots/i686-linux-musl/NOTICE.bionic",
+        "sysroots/i686-linux-musl/NOTICE.libc++",
+        "sysroots/i686-linux-musl/NOTICE.libc++abi",
+        "sysroots/i686-linux-musl/NOTICE.zlib",
+        "sysroots/x86_64-linux-musl/NOTICE.bionic",
+        "sysroots/x86_64-linux-musl/NOTICE.libc++",
+        "sysroots/x86_64-linux-musl/NOTICE.libc++abi",
+        "sysroots/x86_64-linux-musl/NOTICE.zlib",
+    ],
 }
 
 cc_library_headers {
@@ -40,7 +59,6 @@ cc_library_headers {
     // TODO(b/153609531): remove when no longer needed.
     native_bridge_supported: true,
     export_include_dirs: ["common/flex"],
-    notice: "common/flex/NOTICE",
 }
 
 prebuilt_build_tool {
@@ -120,7 +138,6 @@ cpython3_cc_prebuilt_binary {
     device_supported: false,
     compile_multilib: "64",
     stl: "none",
-    notice: "common/py3-stdlib/NOTICE",
     target: {
         glibc_x86_64: {
             srcs: ["linux-x86/bin/py3-launcher64"]
@@ -148,7 +165,6 @@ cpython3_cc_prebuilt_binary {
     device_supported: false,
     compile_multilib: "64",
     stl: "none",
-    notice: "common/py3-stdlib/NOTICE",
     target: {
         musl_x86_64: {
             srcs: ["linux_musl-x86/bin/py3-launcher-static64"]
@@ -170,7 +186,6 @@ cpython3_cc_prebuilt_binary {
     device_supported: false,
     compile_multilib: "64",
     stl: "none",
-    notice: "common/py3-stdlib/NOTICE",
     target: {
         glibc_x86_64: {
             srcs: ["linux-x86/bin/py3-launcher-autorun64"]
@@ -198,7 +213,6 @@ cpython3_cc_prebuilt_binary {
     device_supported: false,
     compile_multilib: "64",
     stl: "none",
-    notice: "common/py3-stdlib/NOTICE",
     target: {
         musl_x86_64: {
             srcs: ["linux_musl-x86/bin/py3-launcher-autorun-static64"]
