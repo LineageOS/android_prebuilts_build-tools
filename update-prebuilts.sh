@@ -16,6 +16,9 @@
 
 if [ -z $1 ]; then
     echo "usage: $0 <build number>"
+    echo
+    echo "The build number should be from a *snap* [not a buildkick] of aosp-build-tools-release."
+    echo "https://android-build.googleplex.com/coastguard/branch/aosp-build-tools-release/#/request/"
     exit 1
 fi
 
