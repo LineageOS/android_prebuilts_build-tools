@@ -112,7 +112,6 @@ EOF
         ninja
         one-true-awk
         openssl
-        py2-cmd
         py3-cmd
         py3-launcher64
         py3-launcher-autorun64
@@ -155,6 +154,7 @@ EOF
         SOONG_BINARIES+=(
             create_minidebuginfo
             nsjail
+            py2-cmd
         )
     fi
 
