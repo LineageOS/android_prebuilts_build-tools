@@ -62,6 +62,12 @@ if [[ ${use_musl} = "true" ]]; then
     "CrossHostSecondaryArch": "arm",
 EOF
     )
+elif [[ ${OS} = darwin ]]; then
+    cross_compile=$(cat <<EOF
+    "CrossHost": "darwin",
+    "CrossHostArch": "arm64",
+EOF
+    )
 fi
 
 # Use toybox and other prebuilts even outside of the build (test running, go, etc)
