@@ -150,8 +150,9 @@ EOF
     SOONG_JAVA_LIBRARIES=(
         desugar.jar
         dx.jar
-        turbine.jar
         javac_extractor.jar
+        ktfmt.jar
+        turbine.jar
     )
     SOONG_JAVA_WRAPPERS=(
         dx
