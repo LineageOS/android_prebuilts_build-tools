@@ -31,6 +31,7 @@ Darwin)
 esac
 
 build_soong=1
+build_asan=1
 [[ ! -d ${TOP}/toolchain/go ]] || build_go=1
 
 use_musl=false
@@ -43,6 +44,7 @@ while getopts ":-:" opt; do
                 musl) use_musl=true ;;
                 skip-go) unset build_go ;;
                 skip-soong-tests) skip_soong_tests=--skip-soong-tests ;;
+		skip-asan) unset build_asan ;;
                 *) echo "Unknown option --${OPTARG}"; exit 1 ;;
             esac;;
         *) echo "'${opt}' '${OPTARG}'"
@@ -79,7 +81,7 @@ if [ -n "${build_soong}" ]; then
     [[ -z "${clean}" ]] || rm -rf ${SOONG_OUT}
     mkdir -p ${SOONG_OUT}
     rm -rf ${SOONG_OUT}/dist ${SOONG_OUT}/dist-common
-    cat > ${SOONG_OUT}/soong.variables << EOF
+    cat > ${SOONG_OUT}/soong.variables.tmp << EOF
 {
     "Allow_missing_dependencies": true,
     "HostArch":"x86_64",
@@ -96,38 +98,45 @@ if [ -n "${build_soong}" ]; then
     }
 }
 EOF
+    if cmp -s ${SOONG_OUT}/soong.variables.tmp ${SOONG_OUT}/soong.variables; then
+	rm ${SOONG_OUT}/soong.variables.tmp
+    else
+	mv -f ${SOONG_OUT}/soong.variables.tmp ${SOONG_OUT}/soong.variables
+    fi
+    SOONG_GO_BINARIES=(
+        bpfmt
+        bssl_inject_hash
+        go_extractor
+        merge_zips
+        soong_zip
+        runextractor
+        rust_extractor
+        symbol_inject
+        zip2zip
+    )
     SOONG_BINARIES=(
         acp
         aidl
         bison
         bloaty
-        bpfmt
         brotli
-        bssl_inject_hash
         bzip2
         ckati
         ckati_stamp_dump
         flex
         gavinhoward-bc
-        go_extractor
         hidl-gen
         hidl-lint
         m4
         make
-        merge_zips
         ninja
         one-true-awk
         openssl
         py3-cmd
         py3-launcher64
         py3-launcher-autorun64
-        runextractor
-        rust_extractor
-        soong_zip
-        symbol_inject
         toybox
         xz
-        zip2zip
         zipalign
         ziptime
         ziptool
@@ -165,6 +174,7 @@ EOF
         )
     fi
 
+    go_binaries="${SOONG_GO_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
     binaries="${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
     asan_binaries="${SOONG_ASAN_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
     jars="${SOONG_JAVA_LIBRARIES[@]/#/${SOONG_HOST_OUT}/framework/}"
@@ -173,14 +183,18 @@ EOF
     # TODO: When we have a better method of extracting zips from Soong, use that.
     py3_stdlib_zip="${SOONG_OUT}/.intermediates/external/python/cpython3/Lib/py3-stdlib-zip/gen/py3-stdlib.zip"
 
-    musl_sysroot32=""
-    musl_sysroot64=""
+    musl_x86_sysroot=""
+    musl_x86_64_sysroot=""
     musl_arm_sysroot=""
     musl_arm64_sysroot=""
     if [[ ${use_musl} = "true" ]]; then
         binaries="${binaries} ${SOONG_MUSL_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
-        musl_sysroot32="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86/gen/libc_musl_sysroot.zip"
-        musl_sysroot64="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86_64/gen/libc_musl_sysroot.zip"
+        musl_x86_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86/gen/libc_musl_sysroot.zip"
+        musl_x86_64_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86_64/gen/libc_musl_sysroot.zip"
+
+        SOONG_HOST_ARM_OUT=${OUT_DIR}/soong/host/linux-arm64
+        binaries="${binaries} ${SOONG_BINARIES[@]/#/${SOONG_HOST_ARM_OUT}/bin/}"
+        binaries="${binaries} ${SOONG_MUSL_BINARIES[@]/#/${SOONG_HOST_ARM_OUT}/bin/}"
 
         musl_arm_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_arm/gen/libc_musl_sysroot.zip"
         musl_arm64_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_arm64/gen/libc_musl_sysroot.zip"
@@ -188,12 +202,13 @@ EOF
 
     # Build everything
     build/soong/soong_ui.bash --make-mode --soong-only --skip-config ${skip_soong_tests} \
+        ${go_binaries} \
         ${binaries} \
         ${wrappers} \
         ${jars} \
         ${py3_stdlib_zip} \
-        ${musl_sysroot32} \
-        ${musl_sysroot64} \
+        ${musl_x86_sysroot} \
+        ${musl_x86_64_sysroot} \
         ${musl_arm_sysroot} \
         ${musl_arm64_sysroot} \
         ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test \
@@ -225,13 +240,14 @@ EOF
     cp external/python/cpython3/LICENSE ${SOONG_OUT}/dist-common/py3-stdlib/
 
     if [[ ${use_musl} = "true" ]]; then
-        cp ${musl_sysroot64} ${SOONG_OUT}/musl-sysroot64.zip
-        cp ${musl_sysroot32} ${SOONG_OUT}/musl-sysroot32.zip
-        cp ${musl_arm_sysroot} ${SOONG_OUT}/musl-sysroot-arm-linux-musleabihf.zip
-        cp ${musl_arm64_sysroot} ${SOONG_OUT}/musl-sysroot-aarch64-linux-musl.zip
+        cp ${musl_x86_64_sysroot} ${SOONG_OUT}/musl-sysroot-x86_64-unknown-linux-musl.zip
+        cp ${musl_x86_sysroot} ${SOONG_OUT}/musl-sysroot-i686-unknown-linux-musl.zip
+        cp ${musl_arm_sysroot} ${SOONG_OUT}/musl-sysroot-arm-unknown-linux-musleabihf.zip
+        cp ${musl_arm64_sysroot} ${SOONG_OUT}/musl-sysroot-aarch64-unknown-linux-musl.zip
     fi
 
-    if [[ $OS == "linux" ]]; then
+
+    if [[ $OS == "linux" && -n "${build_go}" ]]; then
         # Build ASAN versions
         export ASAN_OPTIONS=detect_leaks=0
         cat > ${SOONG_OUT}/soong.variables << EOF
@@ -314,10 +330,10 @@ if [ -n "${DIST_DIR}" ]; then
         cp ${SOONG_OUT}/dist-common/build-common-prebuilts.zip ${DIST_DIR}/
         cp ${SOONG_OUT}/docs/*.html ${DIST_DIR}/
         if [ ${use_musl} = "true" ]; then
-            cp ${SOONG_OUT}/musl-sysroot64.zip ${DIST_DIR}/
-            cp ${SOONG_OUT}/musl-sysroot32.zip ${DIST_DIR}/
-            cp ${SOONG_OUT}/musl-sysroot-arm-linux-musleabihf.zip ${DIST_DIR}/
-            cp ${SOONG_OUT}/musl-sysroot-aarch64-linux-musl.zip ${DIST_DIR}/
+            cp ${SOONG_OUT}/musl-sysroot-x86_64-unknown-linux-musl.zip ${DIST_DIR}/
+            cp ${SOONG_OUT}/musl-sysroot-i686-unknown-linux-musl.zip ${DIST_DIR}/
+            cp ${SOONG_OUT}/musl-sysroot-arm-unknown-linux-musleabihf.zip ${DIST_DIR}/
+            cp ${SOONG_OUT}/musl-sysroot-aarch64-unknown-linux-musl.zip ${DIST_DIR}/
         fi
     fi
     if [ -n "${build_go}" ]; then
