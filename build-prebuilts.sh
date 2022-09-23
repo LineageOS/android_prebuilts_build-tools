@@ -173,14 +173,14 @@ EOF
     # TODO: When we have a better method of extracting zips from Soong, use that.
     py3_stdlib_zip="${SOONG_OUT}/.intermediates/external/python/cpython3/Lib/py3-stdlib-zip/gen/py3-stdlib.zip"
 
-    musl_sysroot32=""
-    musl_sysroot64=""
+    musl_x86_sysroot=""
+    musl_x86_64_sysroot=""
     musl_arm_sysroot=""
     musl_arm64_sysroot=""
     if [[ ${use_musl} = "true" ]]; then
         binaries="${binaries} ${SOONG_MUSL_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
-        musl_sysroot32="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86/gen/libc_musl_sysroot.zip"
-        musl_sysroot64="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86_64/gen/libc_musl_sysroot.zip"
+        musl_x86_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86/gen/libc_musl_sysroot.zip"
+        musl_x86_64_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86_64/gen/libc_musl_sysroot.zip"
 
         musl_arm_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_arm/gen/libc_musl_sysroot.zip"
         musl_arm64_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_arm64/gen/libc_musl_sysroot.zip"
@@ -192,8 +192,8 @@ EOF
         ${wrappers} \
         ${jars} \
         ${py3_stdlib_zip} \
-        ${musl_sysroot32} \
-        ${musl_sysroot64} \
+        ${musl_x86_sysroot} \
+        ${musl_x86_64_sysroot} \
         ${musl_arm_sysroot} \
         ${musl_arm64_sysroot} \
         ${SOONG_HOST_OUT}/nativetest64/ninja_test/ninja_test \
@@ -225,10 +225,10 @@ EOF
     cp external/python/cpython3/LICENSE ${SOONG_OUT}/dist-common/py3-stdlib/
 
     if [[ ${use_musl} = "true" ]]; then
-        cp ${musl_sysroot64} ${SOONG_OUT}/musl-sysroot64.zip
-        cp ${musl_sysroot32} ${SOONG_OUT}/musl-sysroot32.zip
-        cp ${musl_arm_sysroot} ${SOONG_OUT}/musl-sysroot-arm-linux-musleabihf.zip
-        cp ${musl_arm64_sysroot} ${SOONG_OUT}/musl-sysroot-aarch64-linux-musl.zip
+        cp ${musl_x86_64_sysroot} ${SOONG_OUT}/musl-sysroot-x86_64-unknown-linux-musl.zip
+        cp ${musl_x86_sysroot} ${SOONG_OUT}/musl-sysroot-i686-unknown-linux-musl.zip
+        cp ${musl_arm_sysroot} ${SOONG_OUT}/musl-sysroot-arm-unknown-linux-musleabihf.zip
+        cp ${musl_arm64_sysroot} ${SOONG_OUT}/musl-sysroot-aarch64-unknown-linux-musl.zip
     fi
 
     if [[ $OS == "linux" ]]; then
@@ -314,10 +314,10 @@ if [ -n "${DIST_DIR}" ]; then
         cp ${SOONG_OUT}/dist-common/build-common-prebuilts.zip ${DIST_DIR}/
         cp ${SOONG_OUT}/docs/*.html ${DIST_DIR}/
         if [ ${use_musl} = "true" ]; then
-            cp ${SOONG_OUT}/musl-sysroot64.zip ${DIST_DIR}/
-            cp ${SOONG_OUT}/musl-sysroot32.zip ${DIST_DIR}/
-            cp ${SOONG_OUT}/musl-sysroot-arm-linux-musleabihf.zip ${DIST_DIR}/
-            cp ${SOONG_OUT}/musl-sysroot-aarch64-linux-musl.zip ${DIST_DIR}/
+            cp ${SOONG_OUT}/musl-sysroot-x86_64-unknown-linux-musl.zip ${DIST_DIR}/
+            cp ${SOONG_OUT}/musl-sysroot-i686-unknown-linux-musl.zip ${DIST_DIR}/
+            cp ${SOONG_OUT}/musl-sysroot-arm-unknown-linux-musleabihf.zip ${DIST_DIR}/
+            cp ${SOONG_OUT}/musl-sysroot-aarch64-unknown-linux-musl.zip ${DIST_DIR}/
         fi
     fi
     if [ -n "${build_go}" ]; then
