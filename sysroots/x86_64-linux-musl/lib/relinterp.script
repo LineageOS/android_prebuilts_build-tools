@@ -1,5 +1,0 @@
-ENTRY(__ri__start)
-SECTIONS {
-  /DISCARD/ : { *(.interp) }
-}
-INSERT BEFORE .note.google.relinterp;
