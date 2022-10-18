@@ -23,16 +23,12 @@ license {
         "SPDX-license-identifier-0BSD",
         "SPDX-license-identifier-Apache-2.0",
         "SPDX-license-identifier-BSD",
-        "SPDX-license-identifier-GPL",
-        "SPDX-license-identifier-GPL-3.0",
         "SPDX-license-identifier-MIT",
         "SPDX-license-identifier-PSF-2.0",
         "SPDX-license-identifier-Zlib",
         "legacy_unencumbered",
     ],
     license_text: [
-        "common/bison/NOTICE",
-        "common/flex/NOTICE",
         "sysroots/aarch64-unknown-linux-musl/NOTICE.bionic",
         "sysroots/aarch64-unknown-linux-musl/NOTICE.libc++",
         "sysroots/aarch64-unknown-linux-musl/NOTICE.libc++abi",
@@ -52,18 +48,44 @@ license {
     ],
 }
 
+license {
+    name: "prebuilts_build-tools_bison_license",
+    package_name: "bison",
+    visibility: [":__subpackages__"],
+    license_kinds: ["SPDX-license-identifier-GPL-3.0"],
+    license_text: ["common/bison/NOTICE"],
+}
+
+license {
+    name: "prebuilts_build-tools_gnu_license",
+    package_name: "Official GNU software",
+    visibility: [":__subpackages__"],
+    license_kinds: ["SPDX-license-identifier-GPL-3.0"],
+    license_text: ["LICENSE-GPL-3.0"],
+}
+
+license {
+    name: "prebuilts_build-tools_flex_license",
+    package_name: "flex",
+    visibility: [":__subpackages__"],
+    license_kinds: ["SPDX-license-identifier-BSD"],
+    license_text: ["common/flex/NOTICE"],
+}
+
 cc_library_headers {
     name: "FlexLexer",
     host_supported: true,
     vendor_available: true,
     // TODO(b/153609531): remove when no longer needed.
     native_bridge_supported: true,
+    licenses: ["prebuilts_build-tools_flex_license"],
     export_include_dirs: ["common/flex"],
 }
 
 prebuilt_build_tool {
     name: "bison",
     deps: ["common/bison/**/*"],
+    licenses: ["prebuilts_build-tools_bison_license"],
     export_to_make_var: "BISON",
     enabled: false,
     arch: {
@@ -92,6 +114,7 @@ prebuilt_build_tool {
             enabled: true,
         },
     },
+    licenses: ["prebuilts_build-tools_flex_license"],
     target: {
         darwin: {
             src: "darwin-x86/bin/flex",
@@ -111,6 +134,7 @@ prebuilt_build_tool {
             enabled: true,
         },
     },
+    licenses: ["prebuilts_build-tools_gnu_license"],
     target: {
         darwin: {
             src: "darwin-x86/bin/m4",
