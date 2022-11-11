@@ -99,6 +99,7 @@ EOF
     SOONG_BINARIES=(
         acp
         aidl
+        bazel_notice_gen
         bison
         bloaty
         bpfmt
