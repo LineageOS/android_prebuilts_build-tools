@@ -44,8 +44,13 @@ sh_binary(
         "//build/bazel/platforms/os:darwin": ["darwin-x86/bin/flex"],
         "//build/bazel/platforms/os:linux": ["linux-x86/bin/flex"],
         "//build/bazel/platforms/os_arch:linux_musl_x86": ["linux_musl-x86/bin/flex"],
-        "//conditions:default": None,
-    })
+    }),
+    target_compatible_with = select({
+        "//build/bazel/platforms/os:darwin": [],
+        "//build/bazel/platforms/os:linux": [],
+        "//build/bazel/platforms/os_arch:linux_musl_x86": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
 )
 
 sh_binary(
@@ -54,7 +59,11 @@ sh_binary(
         "//build/bazel/platforms/os:darwin": ["darwin-x86/bin/m4"],
         "//build/bazel/platforms/os:linux": ["linux-x86/bin/m4"],
         "//build/bazel/platforms/os_arch:linux_musl_x86": ["linux_musl-x86/bin/m4"],
-        "//conditions:default": None,
-    })
+    }),
+    target_compatible_with = select({
+        "//build/bazel/platforms/os:darwin": [],
+        "//build/bazel/platforms/os:linux": [],
+        "//build/bazel/platforms/os_arch:linux_musl_x86": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
 )
-
