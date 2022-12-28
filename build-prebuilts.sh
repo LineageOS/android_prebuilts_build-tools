@@ -31,6 +31,7 @@ Darwin)
 esac
 
 build_soong=1
+build_asan=1
 [[ ! -d ${TOP}/toolchain/go ]] || build_go=1
 
 use_musl=false
@@ -43,6 +44,7 @@ while getopts ":-:" opt; do
                 musl) use_musl=true ;;
                 skip-go) unset build_go ;;
                 skip-soong-tests) skip_soong_tests=--skip-soong-tests ;;
+                skip-asan) unset build_asan ;;
                 *) echo "Unknown option --${OPTARG}"; exit 1 ;;
             esac;;
         *) echo "'${opt}' '${OPTARG}'"
@@ -79,7 +81,7 @@ if [ -n "${build_soong}" ]; then
     [[ -z "${clean}" ]] || rm -rf ${SOONG_OUT}
     mkdir -p ${SOONG_OUT}
     rm -rf ${SOONG_OUT}/dist ${SOONG_OUT}/dist-common
-    cat > ${SOONG_OUT}/soong.variables << EOF
+    cat > ${SOONG_OUT}/soong.variables.tmp << EOF
 {
     "Allow_missing_dependencies": true,
     "HostArch":"x86_64",
@@ -96,6 +98,11 @@ if [ -n "${build_soong}" ]; then
     }
 }
 EOF
+    if cmp -s ${SOONG_OUT}/soong.variables.tmp ${SOONG_OUT}/soong.variables; then
+        rm ${SOONG_OUT}/soong.variables.tmp
+    else
+        mv -f ${SOONG_OUT}/soong.variables.tmp ${SOONG_OUT}/soong.variables
+    fi
     SOONG_BINARIES=(
         acp
         aidl
@@ -234,7 +241,8 @@ EOF
         cp ${musl_arm64_sysroot} ${SOONG_OUT}/musl-sysroot-aarch64-unknown-linux-musl.zip
     fi
 
-    if [[ $OS == "linux" ]]; then
+
+    if [[ $OS == "linux" && -n "${build_asan}" ]]; then
         # Build ASAN versions
         export ASAN_OPTIONS=detect_leaks=0
         cat > ${SOONG_OUT}/soong.variables << EOF
