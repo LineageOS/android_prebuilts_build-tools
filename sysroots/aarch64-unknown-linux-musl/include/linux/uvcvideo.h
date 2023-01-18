@@ -68,5 +68,5 @@ struct uvc_meta_buf {
   __u8 length;
   __u8 flags;
   __u8 buf[];
-} __attribute__((__packed__));
+} __packed;
 #endif

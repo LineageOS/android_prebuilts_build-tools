@@ -54,5 +54,5 @@ struct qrtr_ctrl_pkt {
       __le32 port;
     } client;
   };
-} __attribute__((__packed__));
+} __packed;
 #endif
