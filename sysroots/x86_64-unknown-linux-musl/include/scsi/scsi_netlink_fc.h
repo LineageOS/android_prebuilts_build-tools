@@ -30,9 +30,6 @@ struct fc_nl_event {
   __u16 event_datalen;
   __u32 event_num;
   __u32 event_code;
-  union {
-    __u32 event_data;
-    __DECLARE_FLEX_ARRAY(__u8, event_data_flex);
-  };
+  __u32 event_data;
 } __attribute__((aligned(sizeof(__u64))));
 #endif
