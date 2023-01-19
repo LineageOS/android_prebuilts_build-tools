@@ -49,7 +49,6 @@ struct efa_ibv_alloc_pd_resp {
 };
 enum {
   EFA_CREATE_CQ_WITH_COMPLETION_CHANNEL = 1 << 0,
-  EFA_CREATE_CQ_WITH_SGID = 1 << 1,
 };
 struct efa_ibv_create_cq {
   __u32 comp_mask;
@@ -103,7 +102,6 @@ enum {
   EFA_QUERY_DEVICE_CAPS_RDMA_READ = 1 << 0,
   EFA_QUERY_DEVICE_CAPS_RNR_RETRY = 1 << 1,
   EFA_QUERY_DEVICE_CAPS_CQ_NOTIFICATIONS = 1 << 2,
-  EFA_QUERY_DEVICE_CAPS_CQ_WITH_SGID = 1 << 3,
 };
 struct efa_ibv_ex_query_device_resp {
   __u32 comp_mask;
