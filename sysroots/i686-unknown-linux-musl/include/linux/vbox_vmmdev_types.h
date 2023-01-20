@@ -157,7 +157,7 @@ struct vmmdev_hgcm_function_parameter32 {
       __u32 offset;
     } page_list;
   } u;
-} __attribute__((__packed__));
+} __packed;
 struct vmmdev_hgcm_function_parameter64 {
   enum vmmdev_hgcm_function_parameter_type type;
   union {
@@ -169,13 +169,13 @@ struct vmmdev_hgcm_function_parameter64 {
         __u64 phys_addr;
         __u64 linear_addr;
       } u;
-    } __attribute__((__packed__)) pointer;
+    } __packed pointer;
     struct {
       __u32 size;
       __u32 offset;
     } page_list;
-  } __attribute__((__packed__)) u;
-} __attribute__((__packed__));
+  } __packed u;
+} __packed;
 #if __BITS_PER_LONG == 64
 #define vmmdev_hgcm_function_parameter vmmdev_hgcm_function_parameter64
 #else

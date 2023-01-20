@@ -61,7 +61,6 @@ struct io_uring_sqe {
     __u32 hardlink_flags;
     __u32 xattr_flags;
     __u32 msg_ring_flags;
-    __u32 uring_cmd_flags;
   };
   __u64 user_data;
   union {
@@ -115,7 +114,6 @@ enum {
 #define IORING_SETUP_SQE128 (1U << 10)
 #define IORING_SETUP_CQE32 (1U << 11)
 #define IORING_SETUP_SINGLE_ISSUER (1U << 12)
-#define IORING_SETUP_DEFER_TASKRUN (1U << 13)
 enum io_uring_op {
   IORING_OP_NOP,
   IORING_OP_READV,
@@ -165,10 +163,8 @@ enum io_uring_op {
   IORING_OP_SOCKET,
   IORING_OP_URING_CMD,
   IORING_OP_SEND_ZC,
-  IORING_OP_SENDMSG_ZC,
   IORING_OP_LAST,
 };
-#define IORING_URING_CMD_FIXED (1U << 0)
 #define IORING_FSYNC_DATASYNC (1U << 0)
 #define IORING_TIMEOUT_ABS (1U << 0)
 #define IORING_TIMEOUT_UPDATE (1U << 1)

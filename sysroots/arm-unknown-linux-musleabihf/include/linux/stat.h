@@ -78,8 +78,7 @@ struct statx {
   __u32 stx_dev_major;
   __u32 stx_dev_minor;
   __u64 stx_mnt_id;
-  __u32 stx_dio_mem_align;
-  __u32 stx_dio_offset_align;
+  __u64 __spare2;
   __u64 __spare3[12];
 };
 #define STATX_TYPE 0x00000001U
@@ -96,7 +95,6 @@ struct statx {
 #define STATX_BASIC_STATS 0x000007ffU
 #define STATX_BTIME 0x00000800U
 #define STATX_MNT_ID 0x00001000U
-#define STATX_DIOALIGN 0x00002000U
 #define STATX__RESERVED 0x80000000U
 #define STATX_ALL 0x00000fffU
 #define STATX_ATTR_COMPRESSED 0x00000004
