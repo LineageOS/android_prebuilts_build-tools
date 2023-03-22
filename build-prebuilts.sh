@@ -297,6 +297,7 @@ if [ -n "${build_go}" ]; then
         export GOROOT_BOOTSTRAP=${TOP}/prebuilts/go/${OS}-x86
         export GOROOT_FINAL=./prebuilts/go/${OS}-x86
         export GO_TEST_TIMEOUT_SCALE=100
+        export GODEBUG=installgoroot=all
         ./make.bash
         rm -rf ../pkg/bootstrap
         rm -rf ../pkg/obj
