@@ -114,6 +114,7 @@ EOF
         go_extractor
         hidl-gen
         hidl-lint
+        htmlnotice
         m4
         make
         merge_zips
