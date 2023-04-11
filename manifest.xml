@@ -5,7 +5,7 @@
 
   <default revision="build-tools-release" remote="aosp" sync-j="4" />
 
-  <project path="build/make" name="platform/build" revision="979c62b22d828deeede204f9155e5e1ea86107ac" upstream="build-tools-release">
+  <project path="build/make" name="platform/build" revision="3f9a4e1ac3be3d1c0209703528c3583c8ab474cd" upstream="build-tools-release">
     <linkfile dest="build/tools" src="tools" />
 </project>
 
@@ -37,7 +37,7 @@
 
   <project path="prebuilts/bazel/linux-x86_64" name="platform/prebuilts/bazel/linux-x86_64" groups="linux,pdk" clone-depth="1" revision="951bd90aeabf9e4745a32ae2f36fdf1828d9d0a6" upstream="build-tools-release" />
 
-  <project path="prebuilts/build-tools" name="platform/prebuilts/build-tools" clone-depth="1" revision="acb18c46ea62fded62492453b3eb90feb98196c4" upstream="build-tools-release" />
+  <project path="prebuilts/build-tools" name="platform/prebuilts/build-tools" clone-depth="1" revision="025f45cbe15c4cda1c0cc74fcf7bdb96b6d1551c" upstream="build-tools-release" />
 
   <project path="prebuilts/remoteexecution-client" name="platform/prebuilts/remoteexecution-client" groups="pdk" clone-depth="1" revision="49a65f78fea4f12e20f00a571ec7216926ae2a52" upstream="build-tools-release" />
 
@@ -179,7 +179,7 @@
 
   <project path="external/zopfli" name="platform/external/zopfli" revision="553c25fd956818afbae5e5f90ce2ddaa8863293a" upstream="build-tools-release" />
 
-  <project path="system/core" name="platform/system/core" revision="fcc3bb4efb4aef18ae4d520710e0efc6379d6e66" upstream="build-tools-release" />
+  <project path="system/core" name="platform/system/core" revision="a3e857566c7503fbe6866884d21e8f0efac753d9" upstream="build-tools-release" />
 
   <project path="system/libbase" name="platform/system/libbase" revision="bba57940eed4dfe40c77fabbf4da6a316526e99a" upstream="build-tools-release" />
 
