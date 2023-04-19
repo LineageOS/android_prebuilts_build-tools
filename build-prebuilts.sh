@@ -31,6 +31,7 @@ Darwin)
 esac
 
 build_soong=1
+build_asan=1
 [[ ! -d ${TOP}/toolchain/go ]] || build_go=1
 
 use_musl=false
@@ -43,6 +44,7 @@ while getopts ":-:" opt; do
                 musl) use_musl=true ;;
                 skip-go) unset build_go ;;
                 skip-soong-tests) skip_soong_tests=--skip-soong-tests ;;
+                skip-asan) unset build_asan ;;
                 *) echo "Unknown option --${OPTARG}"; exit 1 ;;
             esac;;
         *) echo "'${opt}' '${OPTARG}'"
@@ -78,8 +80,8 @@ if [ -n "${build_soong}" ]; then
     SOONG_HOST_OUT=${OUT_DIR}/soong/host/${OS}-x86
     [[ -z "${clean}" ]] || rm -rf ${SOONG_OUT}
     mkdir -p ${SOONG_OUT}
-    rm -rf ${SOONG_OUT}/dist ${SOONG_OUT}/dist-common
-    cat > ${SOONG_OUT}/soong.variables << EOF
+    rm -rf ${SOONG_OUT}/dist ${SOONG_OUT}/dist-common ${SOONG_OUT}/dist-arm64
+    cat > ${SOONG_OUT}/soong.variables.tmp << EOF
 {
     "Allow_missing_dependencies": true,
     "HostArch":"x86_64",
@@ -96,41 +98,48 @@ if [ -n "${build_soong}" ]; then
     }
 }
 EOF
+    if cmp -s ${SOONG_OUT}/soong.variables.tmp ${SOONG_OUT}/soong.variables; then
+        rm ${SOONG_OUT}/soong.variables.tmp
+    else
+        mv -f ${SOONG_OUT}/soong.variables.tmp ${SOONG_OUT}/soong.variables
+    fi
+    SOONG_GO_BINARIES=(
+        bazel_notice_gen
+        bpfmt
+        bssl_inject_hash
+        extract_linker
+        go_extractor
+        htmlnotice
+        merge_zips
+        soong_zip
+        runextractor
+        rust_extractor
+        symbol_inject
+        zip2zip
+    )
     SOONG_BINARIES=(
         acp
         aidl
-        bazel_notice_gen
         bison
         bloaty
-        bpfmt
         brotli
-        bssl_inject_hash
         bzip2
         ckati
         ckati_stamp_dump
-        extract_linker
         flex
         gavinhoward-bc
-        go_extractor
         hidl-gen
         hidl-lint
-        htmlnotice
         m4
         make
-        merge_zips
         ninja
         one-true-awk
         openssl
         py3-cmd
         py3-launcher64
         py3-launcher-autorun64
-        runextractor
-        rust_extractor
-        soong_zip
-        symbol_inject
         toybox
         xz
-        zip2zip
         zipalign
         ziptime
         ziptool
@@ -168,6 +177,7 @@ EOF
         )
     fi
 
+    go_binaries="${SOONG_GO_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
     binaries="${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
     asan_binaries="${SOONG_ASAN_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
     jars="${SOONG_JAVA_LIBRARIES[@]/#/${SOONG_HOST_OUT}/framework/}"
@@ -180,10 +190,17 @@ EOF
     musl_x86_64_sysroot=""
     musl_arm_sysroot=""
     musl_arm64_sysroot=""
+    cross_binaries=""
     if [[ ${use_musl} = "true" ]]; then
         binaries="${binaries} ${SOONG_MUSL_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
         musl_x86_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86/gen/libc_musl_sysroot.zip"
         musl_x86_64_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86_64/gen/libc_musl_sysroot.zip"
+
+        # Build cross-compiled musl arm64 binaries, except for go binaries
+        # since Blueprint doesn't have cross compilation support for them.
+        SOONG_HOST_ARM_OUT=${OUT_DIR}/soong/host/linux-arm64
+        cross_binaries="${SOONG_BINARIES[@]/#/${SOONG_HOST_ARM_OUT}/bin/}"
+        cross_binaries="${cross_binaries} ${SOONG_MUSL_BINARIES[@]/#/${SOONG_HOST_ARM_OUT}/bin/}"
 
         musl_arm_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_arm/gen/libc_musl_sysroot.zip"
         musl_arm64_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_arm64/gen/libc_musl_sysroot.zip"
@@ -191,7 +208,9 @@ EOF
 
     # Build everything
     build/soong/soong_ui.bash --make-mode --soong-only --skip-config BUILD_BROKEN_DISABLE_BAZEL=true ${skip_soong_tests} \
+        ${go_binaries} \
         ${binaries} \
+        ${cross_binaries} \
         ${wrappers} \
         ${jars} \
         ${py3_stdlib_zip} \
@@ -211,8 +230,15 @@ EOF
 
     # Copy arch-specific binaries
     mkdir -p ${SOONG_OUT}/dist/bin
-    cp ${binaries} ${SOONG_OUT}/dist/bin/
+    cp ${go_binaries} ${binaries} ${SOONG_OUT}/dist/bin/
     cp -R ${SOONG_HOST_OUT}/lib* ${SOONG_OUT}/dist/
+
+    # Copy cross-compiled binaries
+    if [[ ${use_musl} = "true" ]]; then
+        mkdir -p ${SOONG_OUT}/dist-arm64/bin
+        cp ${cross_binaries} ${SOONG_OUT}/dist-arm64/bin/
+        cp -R ${SOONG_HOST_ARM_OUT}/lib* ${SOONG_OUT}/dist-arm64/
+    fi
 
     # Copy jars and wrappers
     mkdir -p ${SOONG_OUT}/dist-common/{bin,flex,framework,py3-stdlib}
@@ -234,7 +260,8 @@ EOF
         cp ${musl_arm64_sysroot} ${SOONG_OUT}/musl-sysroot-aarch64-unknown-linux-musl.zip
     fi
 
-    if [[ $OS == "linux" ]]; then
+
+    if [[ $OS == "linux" && -n "${build_asan}" ]]; then
         # Build ASAN versions
         export ASAN_OPTIONS=detect_leaks=0
         cat > ${SOONG_OUT}/soong.variables << EOF
@@ -280,6 +307,14 @@ EOF
         zip -qryX build-prebuilts.zip *
     )
 
+    if [[ ${use_musl} = "true" ]]; then
+        # Package cross-compiled prebuilts
+        (
+            cd ${SOONG_OUT}/dist-arm64
+            zip -qryX build-arm64-prebuilts.zip *
+        )
+    fi
+
     # Package common prebuilts
     (
         cd ${SOONG_OUT}/dist-common
@@ -318,6 +353,8 @@ if [ -n "${DIST_DIR}" ]; then
         cp ${SOONG_OUT}/dist-common/build-common-prebuilts.zip ${DIST_DIR}/
         cp ${SOONG_OUT}/docs/*.html ${DIST_DIR}/
         if [ ${use_musl} = "true" ]; then
+            cp ${SOONG_OUT}/dist-arm64/build-arm64-prebuilts.zip ${DIST_DIR}/
+
             cp ${SOONG_OUT}/musl-sysroot-x86_64-unknown-linux-musl.zip ${DIST_DIR}/
             cp ${SOONG_OUT}/musl-sysroot-i686-unknown-linux-musl.zip ${DIST_DIR}/
             cp ${SOONG_OUT}/musl-sysroot-arm-unknown-linux-musleabihf.zip ${DIST_DIR}/
