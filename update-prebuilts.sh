@@ -49,6 +49,7 @@ fetch_artifact linux build-common-prebuilts.zip "${tmpdir}/common.zip"
 fetch_artifact linux manifest_${BUILD_NUMBER}.xml "${tmpdir}/manifest.xml"
 fetch_artifact darwin_mac build-prebuilts.zip "${tmpdir}/darwin.zip"
 fetch_artifact linux_musl build-prebuilts.zip "${tmpdir}/linux_musl.zip"
+fetch_artifact linux_musl build-arm64-prebuilts.zip "${tmpdir}/linux_musl_arm64.zip"
 fetch_artifact linux_musl musl-sysroot-i686-unknown-linux-musl.zip "${tmpdir}/musl-sysroot-i686-unknown-linux-musl.zip"
 fetch_artifact linux_musl musl-sysroot-x86_64-unknown-linux-musl.zip "${tmpdir}/musl-sysroot-x86_64-unknown-linux-musl.zip"
 fetch_artifact linux_musl musl-sysroot-aarch64-unknown-linux-musl.zip "${tmpdir}/musl-sysroot-aarch64-unknown-linux-musl.zip"
@@ -64,6 +65,7 @@ unzip_to linux-x86 "${tmpdir}/linux.zip"
 unzip_to common "${tmpdir}/common.zip"
 unzip_to darwin-x86 "${tmpdir}/darwin.zip"
 unzip_to linux_musl-x86 "${tmpdir}/linux_musl.zip"
+unzip_to linux_musl-arm64 "${tmpdir}/linux_musl_arm64.zip"
 unzip_to sysroots/x86_64-unknown-linux-musl "${tmpdir}/musl-sysroot-x86_64-unknown-linux-musl.zip"
 unzip_to sysroots/i686-unknown-linux-musl "${tmpdir}/musl-sysroot-i686-unknown-linux-musl.zip"
 unzip_to sysroots/aarch64-unknown-linux-musl "${tmpdir}/musl-sysroot-aarch64-unknown-linux-musl.zip"
@@ -71,7 +73,7 @@ unzip_to sysroots/arm-unknown-linux-musleabihf "${tmpdir}/musl-sysroot-arm-unkno
 
 cp -f "${tmpdir}/manifest.xml" manifest.xml
 
-git add manifest.xml linux-x86 linux_musl-x86 darwin-x86 common sysroots/x86_64-unknown-linux-musl sysroots/i686-unknown-linux-musl sysroots/aarch64-unknown-linux-musl sysroots/arm-unknown-linux-musleabihf
+git add manifest.xml linux-x86 linux_musl-arm64 linux_musl-x86 darwin-x86 common sysroots/x86_64-unknown-linux-musl sysroots/i686-unknown-linux-musl sysroots/aarch64-unknown-linux-musl sysroots/arm-unknown-linux-musleabihf
 git commit -m "Update build-tools to ab/${BUILD_NUMBER}
 
 https://ci.android.com/builds/branches/aosp-build-tools-release/grid?head=${BUILD_NUMBER}&tail=${BUILD_NUMBER}
