@@ -166,6 +166,9 @@ cpython3_cc_prebuilt_binary {
         glibc_x86_64: {
             srcs: ["linux-x86/bin/py3-launcher64"]
         },
+        musl_arm64: {
+            srcs: ["linux_musl-arm64/bin/py3-launcher64"]
+        },
         musl_x86_64: {
             srcs: ["linux_musl-x86/bin/py3-launcher64"]
         },
@@ -190,6 +193,9 @@ cpython3_cc_prebuilt_binary {
     compile_multilib: "64",
     stl: "none",
     target: {
+        musl_arm64: {
+            srcs: ["linux_musl-arm64/bin/py3-launcher-static64"]
+        },
         musl_x86_64: {
             srcs: ["linux_musl-x86/bin/py3-launcher-static64"]
         },
@@ -213,6 +219,9 @@ cpython3_cc_prebuilt_binary {
     target: {
         glibc_x86_64: {
             srcs: ["linux-x86/bin/py3-launcher-autorun64"]
+        },
+        musl_arm64: {
+            srcs: ["linux_musl-arm64/bin/py3-launcher-autorun64"]
         },
         musl_x86_64: {
             srcs: ["linux_musl-x86/bin/py3-launcher-autorun64"]
@@ -238,6 +247,9 @@ cpython3_cc_prebuilt_binary {
     compile_multilib: "64",
     stl: "none",
     target: {
+        musl_arm64: {
+            srcs: ["linux_musl-arm64/bin/py3-launcher-autorun-static64"]
+        },
         musl_x86_64: {
             srcs: ["linux_musl-x86/bin/py3-launcher-autorun-static64"]
         },
